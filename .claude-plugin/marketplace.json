@@ -1,0 +1,25 @@
+{
+	"registryVersion": 1,
+	"name": "zantarix",
+	"owner": {
+		"name": "Zantarix",
+		"email": "github@zantarix.com"
+	},
+	"metadata": {
+		"description": "Claude Code plugins for development of Zantarix projects"
+	},
+	"plugins": [
+		{
+			"name": "base",
+			"source": "./plugins/base",
+			"description": "Basic skills for working with Zantarix projects",
+			"homepage": "https://github.com/zantarix/claude-code"
+		},
+		{
+			"name": "rust",
+			"source": "./plugins/rust",
+			"description": "Helpful skills for working with Rust projects",
+			"homepage": "https://github.com/zantarix/claude-code"
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"name": "rust",
+	"description": "Helpful skills for working with Rust projects",
+	"author": {
+		"name": "Zantarix",
+		"email": "github@zantarix.com"
+	}
+}

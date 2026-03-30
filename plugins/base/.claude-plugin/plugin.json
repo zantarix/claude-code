@@ -1,0 +1,8 @@
+{
+	"name": "base",
+	"description": "Basic skills for working with Zantarix projects",
+	"author": {
+		"name": "Zantarix",
+		"email": "github@zantarix.com"
+	}
+}
