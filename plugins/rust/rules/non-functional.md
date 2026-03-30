@@ -2,7 +2,7 @@
 paths: "**/*.rs"
 ---
 
-## Non-functional Requirements
+# Non-functional Requirements
 
 All new changes should meet the coverage thresholds:
 

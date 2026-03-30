@@ -1,4 +1,4 @@
-## Architecture Decision Register
+# Architecture Decision Register
 
 Big decisions are documented in ADR format in the `docs/adr/` folder. To see what ADRs exist, their titles, statuses, and summaries, consult @docs/adr/README.md
 

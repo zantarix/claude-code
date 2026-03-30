@@ -2,7 +2,7 @@
 paths: "**/*.rs"
 ---
 
-## Code Style
+# Code Style
 
 Format code before making any commit. Prefer functional style over imperative.
 
