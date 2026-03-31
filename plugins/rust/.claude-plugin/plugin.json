@@ -4,5 +4,20 @@
 	"author": {
 		"name": "Zantarix",
 		"email": "github@zantarix.com"
+	},
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Edit|Write",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "${CLAUDE_PLUGIN_ROOT}/scripts/format.sh",
+						"timeout": 5,
+						"statusMessage": "Formatting file..."
+					}
+				]
+			}
+		]
 	}
 }
