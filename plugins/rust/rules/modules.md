@@ -1,5 +1,5 @@
 ---
-paths: "**/*.rs"
+paths: **/*.rs
 ---
 
 # Rust modules guidelines

@@ -1,5 +1,5 @@
 ---
-paths: "**/*.rs"
+paths: **/*.rs
 ---
 
 # Code Style
