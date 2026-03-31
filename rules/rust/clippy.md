@@ -1,5 +1,6 @@
 ---
-paths: **/*.rs
+paths:
+  - "**/*.rs"
 ---
 
 # Clippy exceptions

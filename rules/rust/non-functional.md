@@ -1,5 +1,6 @@
 ---
-paths: **/*.rs
+paths:
+  - "**/*.rs"
 ---
 
 # Non-functional Requirements
