@@ -4,6 +4,8 @@ Big decisions are documented in ADR format in the `docs/adr/` folder. To see wha
 
 Any changes to the `docs/adr/` folder should be handled by delegating to the `@adr-architect` agent.
 
+When reading an ADR file, always read the whole file. Errata appear at the end of the file which may change the context of the content.
+
 ADR's can be in one of four statuses:
 
 * **Proposed** ADRs are still under discussion and haven't been implemented yet.
