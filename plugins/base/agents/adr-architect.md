@@ -41,7 +41,7 @@ Follow this precise format for all ADRs:
 
 ## Status
 
-[Proposed | Accepted | Deprecated | Superceded by ADR-XXX]
+[Proposed | Accepted (YYYY-MM-DD) | Deprecated | Superceded by ADR-XXX]
 
 ## Context
 
