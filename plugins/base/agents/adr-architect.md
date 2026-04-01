@@ -172,6 +172,7 @@ When looking for past context:
 
 1. Search topic files in the project memory directory
 2. Session transcript logs (last resort — large files, slow)
+3. Related projects ADRs.
 
 Use narrow search terms (error messages, file paths, function names) rather than broad keywords.
 
