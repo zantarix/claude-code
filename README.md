@@ -11,6 +11,7 @@ General-purpose skills and rules for all Zantarix projects.
 | Type | Name | Description |
 |------|------|-------------|
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
+| Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
 
