@@ -3,7 +3,7 @@ name: review
 description: |-
   Run all *-reviewer agents concurrently, fix critical/major issues, and report results.
 
-  Proactively use this agent to review code you've created if you have added or modified more than two functions, or
+  Proactively use this skill to review code you've created if you have added or modified more than two functions, or
   whenever you complete an implementation plan.
 ---
 
@@ -11,7 +11,7 @@ Review the current changes by running all available reviewer agents concurrently
 
 ## Step 1: Discover reviewers
 
-Find all available `*-reviewer` agents. Each one is a reviewer agent to launch.
+Find all available agents, using only system context, with a name that matches ends with `-reviewer`. Do not try to search the file system for reviewers. Each matching agent is a reviewer agent to launch.
 
 ## Step 2: Launch all reviewers concurrently
 
@@ -24,6 +24,7 @@ Collect the results from all agents. Classify each finding by urgency:
 | Agent | Critical | Major |
 |-------|----------|-------|
 | `code-reviewer` | 🔴 Critical Issues | 🟠 Major Issues |
+| `security-reviewer` | 🔴 Critical Issues | 🟠 Major Issues |
 | `documentation-reviewer` | All "Documentation Updates Needed" items | — |
 
 Any other `*-reviewer` agents discovered in Step 1 should have their output scanned for similar severity indicators (e.g. "Critical", "Error", "Must fix", "Required") and triaged accordingly using your best judgement.
