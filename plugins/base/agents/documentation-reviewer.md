@@ -55,6 +55,7 @@ You do NOT write or edit documentation — you produce a report of what needs up
    | `docs/` | User-facing documentation |
    | `docs/adr/` | Architecture Decision Records |
    | `CLAUDE.md` and `.claude/CLAUDE.md` | Developer guidance for Claude Code |
+   | `./claude/rules/*.md` | Project-specific rules. |
    | `CONTRIBUTING.md` | Contributor guidelines |
    | `README.md` (if present) | Project overview |
    | Doc comments | Inline API documentation on public items |
