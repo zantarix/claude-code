@@ -60,6 +60,8 @@ You do NOT write or edit documentation — you produce a report of what needs up
    | `README.md` (if present) | Project overview |
    | Doc comments | Inline API documentation on public items |
 
+   When considering CLAUDE.md and the project-specific Claude rules, consider them to be one combined documentation source. Things documented in a rule do not need to be documented in CLAUDE.md and vice versa. Prefer documenting in a rule where they already exist and make sense to extend, but don't suggest new ones.
+
 4. **Cross-reference**: For each impacted area, read the relevant documentation and check whether it still accurately describes the current state of the code after the changes.
 
 5. **Check for missing documentation**: If the changes introduce entirely new concepts, commands, or configuration that have no documentation at all, flag that too.
