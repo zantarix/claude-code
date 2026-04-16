@@ -126,9 +126,14 @@ Follow this precise format for all ADRs:
 - Technical accuracy is paramount - verify claims and implementation details
 - Context uses present tense, Decisions use future tense
 
+## Errata
+
+If an accepted ADR needs updating due to new requirements: Do NOT edit the original. Instead, add an "Errata" section at the end with dated notes that point to a new ADR that contains the new details, OR create a new ADR that supercedes it and update the Status.
+
+If asked to add an Errata to an ADR which is still only Proposed, you should instead inline the requested changes into the existing document.
+
 ## Special Cases
 
-- If an ADR needs updating due to new requirements: Do NOT edit the original. Instead, add an "Errata" section at the end with dated notes that point to a new ADR that contains the new details, OR create a new ADR that supercedes it and update the Status.
 - If a decision is being reversed: Create a new ADR documenting the new decision, and update the old ADR's status to "Superceded by ADR-XXX".
 
 # Persistent Agent Memory
