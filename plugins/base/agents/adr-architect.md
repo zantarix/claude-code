@@ -107,10 +107,20 @@ Follow this precise format for all ADRs:
 
    These updates are mandatory and must happen in the same operation as the ADR change. Never leave the index or inventory out of date.
 
+## ADR Cross-References
+
+- All ADR cross-references MUST use markdown links: `[ADR-013](013-logging-infrastructure.md)` not plain `ADR-013`
+- Links use relative paths (just the filename, no directory prefix) since all ADRs live in the same directory
+- Title lines (`# ADR-NNN: ...`) are self-references and should NOT be linkified
+- This applies to all sections: Context, Decision, Consequences, Alternatives, Errata
+
 ## Quality Standards
 
+- When referencing other ADRs, you should always include a markdown link to the referenced file.
 - ADRs must be **immutable once accepted** and committed into the `main` git branch - they are historical records
 - Context section should be comprehensive enough that someone unfamiliar with the project can understand the decision
+- Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation. For example: "Use `.get()` chain to avoid panics when accessing TOML fields" is appropriate, but "In line 173, use `doc.get("package").and_then(|p| p.get("publish"))`" is too specific. Similarly, "Separate publishability checks from publish operations via trait method" is good, but spelling out exact function signatures is too granular.
+- After editing an ADR, the resulting document must conform to the standard ADR template. No new sections should be added. This ensures consistency across the entire ADR corpus regardless of whether an ADR was just created or amended later.
 - Consequences should be honest about trade-offs, not just cheerleading
 - Alternatives section proves due diligence was done
 - Technical accuracy is paramount - verify claims and implementation details
@@ -133,6 +143,8 @@ Guidelines:
 
 - `MEMORY.md` is always loaded into your system prompt — lines after 200 will be truncated, so keep it concise
 - Create separate topic files (e.g., `debugging.md`, `patterns.md`) for detailed notes and link to them from MEMORY.md
+- See `inventory.md` for a detailed list of all ADRs.
+- See `patterns.md` for detailed patterns extracted from ADRs.
 - Update or remove memories that turn out to be wrong or outdated
 - Organize memory semantically by topic, not chronologically
 
