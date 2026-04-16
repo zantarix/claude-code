@@ -6,6 +6,19 @@
 		"email": "github@zantarix.com"
 	},
 	"hooks": {
+		"PreToolUse": [
+			{
+				"matcher": "Edit|Write|MultiEdit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "${CLAUDE_PLUGIN_ROOT}/scripts/guard-adr.sh",
+						"timeout": 5,
+						"statusMessage": "Checking ADR ownership..."
+					}
+				]
+			}
+		],
 		"PostToolUse": [
 			{
 				"matcher": "Edit|Write",
