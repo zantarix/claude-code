@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "zantarix": {
+      "source": {
+        "source": "github",
+        "repo": "zantarix/claude-code"
+      },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "base@zantarix": true
+  }
+}
