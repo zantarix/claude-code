@@ -16,6 +16,12 @@
 			"homepage": "https://github.com/zantarix/claude-code"
 		},
 		{
+			"name": "rescript",
+			"source": "./plugins/rescript",
+			"description": "Helpful skills for working with Rescript projects",
+			"homepage": "https://github.com/zantarix/claude-code"
+		},
+		{
 			"name": "rust",
 			"source": "./plugins/rust",
 			"description": "Helpful skills for working with Rust projects",
