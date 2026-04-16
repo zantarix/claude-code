@@ -2,6 +2,10 @@
 
 Claude Code plugins for Zantarix projects.
 
+## Usage
+
+Add this marketplace to your project's Claude Code configuration to pull in the plugins you need.
+
 ## Plugins
 
 ### `base`
@@ -29,7 +33,3 @@ Skills, agents, and rules for Rust projects.
 | Rule | `dependencies` | Dependency management conventions |
 | Rule | `style` | Code style conventions |
 | Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
-
-## Usage
-
-Add this marketplace to your project's Claude Code configuration to pull in the plugins you need.
