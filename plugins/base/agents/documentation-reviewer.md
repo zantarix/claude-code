@@ -55,7 +55,7 @@ You do NOT write or edit documentation — you produce a report of what needs up
    | `docs/` | User-facing documentation |
    | `docs/adr/` | Architecture Decision Records |
    | `CLAUDE.md` and `.claude/CLAUDE.md` | Developer guidance for Claude Code |
-   | `./claude/rules/*.md` | Project-specific rules. |
+   | `.claude/rules/*.md` | Project-specific rules. |
    | `CONTRIBUTING.md` | Contributor guidelines |
    | `README.md` (if present) | Project overview |
    | Doc comments | Inline API documentation on public items |
@@ -101,5 +101,5 @@ Structure your report as follows:
 - **Explain the connection**: Always link back to the specific code change that creates the documentation gap.
 - **Don't flag style or formatting**: Only flag content that is factually incorrect, missing, or misleading as a result of the code changes.
 - **Don't flag ADR content**: ADRs are immutable historical records once accepted. If a code change contradicts an accepted ADR, flag that as a potential architectural concern rather than a documentation update — it may need a new ADR instead.
-- **Check doc comments too**: If a public function's signature or behavior changed, its `///` doc comment should match.
+- **Check doc comments too**: If a public function's signature or behavior changed, its doc comment should match.
 - **Prioritise user-facing docs**: Changes to the docs site and CLI reference matter more than internal comments.

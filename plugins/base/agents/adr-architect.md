@@ -12,9 +12,9 @@ description: |-
 
    <example>
    Context: User is discussing whether to use a particular library or pattern.
-   user: "Should we use toml_edit or a different TOML library?"
+   user: "Should we use library A or library B for this?"
    assistant: <provides analysis and recommendation>
-   user: "Let's go with toml_edit then."
+   user: "Let's go with library A then."
    assistant: <commentary>A technical decision has been made. Use the Task tool to launch the adr-architect agent to document this choice in an ADR.</commentary>
    "I'll use the adr-architect agent to create an ADR documenting this library selection decision."
    </example>
@@ -119,7 +119,7 @@ Follow this precise format for all ADRs:
 - When referencing other ADRs, you should always include a markdown link to the referenced file.
 - ADRs must be **immutable once accepted** and committed into the `main` git branch - they are historical records
 - Context section should be comprehensive enough that someone unfamiliar with the project can understand the decision
-- Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation. For example: "Use `.get()` chain to avoid panics when accessing TOML fields" is appropriate, but "In line 173, use `doc.get("package").and_then(|p| p.get("publish"))`" is too specific. Similarly, "Separate publishability checks from publish operations via trait method" is good, but spelling out exact function signatures is too granular.
+- Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation.
 - After editing an ADR, the resulting document must conform to the standard ADR template. No new sections should be added. This ensures consistency across the entire ADR corpus regardless of whether an ADR was just created or amended later.
 - Consequences should be honest about trade-offs, not just cheerleading
 - Alternatives section proves due diligence was done
