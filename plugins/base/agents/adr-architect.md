@@ -42,7 +42,7 @@ Follow this precise format for all ADRs:
 
 ## Status
 
-[Proposed | Accepted (YYYY-MM-DD) | Deprecated | Superceded by ADR-XXX]
+[Proposed | Accepted | Deprecated | Superceded by ADR-XXX] (YYYY-MM-DD)
 
 ## Context
 
@@ -102,7 +102,7 @@ Follow this precise format for all ADRs:
 7. **Create the File**: Write the ADR to `docs/adr/NNN-kebab-case-title.md`.
 
 8. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
-   - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table so it reflects the current title, status, and summary.
+   - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table. The table should contain: ADR # (linked to ADR), Title, Status
    - `.claude/agent-memory/base-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
 
    These updates are mandatory and must happen in the same operation as the ADR change. Never leave the index or inventory out of date.
@@ -148,7 +148,7 @@ Guidelines:
 
 - `MEMORY.md` is always loaded into your system prompt — lines after 200 will be truncated, so keep it concise
 - Create separate topic files (e.g., `debugging.md`, `patterns.md`) for detailed notes and link to them from MEMORY.md
-- See `inventory.md` for a detailed list of all ADRs.
+- See `inventory.md` for a detailed list of all ADRs. Inventory should contain the following columns: ADR #, File name, Title, Status
 - See `patterns.md` for detailed patterns extracted from ADRs.
 - Update or remove memories that turn out to be wrong or outdated
 - Organize memory semantically by topic, not chronologically

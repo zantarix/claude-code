@@ -26,8 +26,8 @@ case "$FILE_PATH" in
   *) exit 0 ;;
 esac
 
-# Allow only the Task-spawned adr-architect subagent
-if [ "$AGENT_TYPE" = "base:adr-architect" ] && [ -n "$AGENT_ID" ]; then
+# Allow the adr-architect agent whether invoked as a subagent or directly via --agent
+if [ "$AGENT_TYPE" = "base:adr-architect" ]; then
   exit 0
 fi
 
@@ -36,7 +36,7 @@ jq -n '{
   hookSpecificOutput: {
     hookEventName: "PreToolUse",
     permissionDecision: "deny",
-    permissionDecisionReason: "Files under docs/adr/ are owned by the adr-architect subagent. Delegate this change via the Task tool with subagent_type=\"adr-architect\" (see rules/base/adr.md)."
+    permissionDecisionReason: "Files under docs/adr/ are owned by the adr-architect agent. Delegate this change via the Task tool with subagent_type=\"adr-architect\", or invoke directly with `claude --agent base:adr-architect` (see rules/base/adr.md)."
   }
 }'
 exit 0
