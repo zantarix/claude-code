@@ -7,7 +7,6 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 PROJECT_DIR=$(echo "$INPUT" | jq -r '.cwd // empty')
 AGENT_TYPE=$(echo "$INPUT" | jq -r '.agent_type // empty')
-AGENT_ID=$(echo "$INPUT" | jq -r '.agent_id // empty')
 
 # Only care about write-capable tools
 case "$TOOL_NAME" in
@@ -36,7 +35,7 @@ jq -n '{
   hookSpecificOutput: {
     hookEventName: "PreToolUse",
     permissionDecision: "deny",
-    permissionDecisionReason: "Files under docs/adr/ are owned by the adr-architect agent. Delegate this change via the Task tool with subagent_type=\"adr-architect\", or invoke directly with `claude --agent base:adr-architect` (see rules/base/adr.md)."
+    permissionDecisionReason: "Files under docs/adr/ are owned by the base:adr-architect agent. Delegate this change via the Task tool with subagent_type=\"base:adr-architect\", or invoke directly with `claude --agent base:adr-architect` (see rules/base/adr.md)."
   }
 }'
 exit 0
