@@ -48,6 +48,10 @@ Follow this precise format for all ADRs:
 
 [Describe the forces at play: technical constraints, business requirements, team capabilities, existing architecture, etc. Paint a complete picture of WHY this decision is being made.]
 
+## References
+
+[Reference list to external resources that informed the context and decision sections.]
+
 ## Decision
 
 [State the decision clearly and unambiguously. Use imperative language: "We will use X", "The system shall Y". Include key implementation details.]
