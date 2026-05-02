@@ -50,7 +50,7 @@ Follow this precise format for all ADRs:
 
 ## References
 
-[Reference list to external resources that informed the context and decision sections.]
+- [Reference list to external resources that informed the context and decision sections as a list of titled links]
 
 ## Decision
 
@@ -83,6 +83,8 @@ Follow this precise format for all ADRs:
 
 [Description and why it was rejected]
 ```
+
+A brief title like the title of the page is all that is required for the link titles in the References section.
 
 ## Your Process
 
