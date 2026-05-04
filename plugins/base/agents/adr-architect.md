@@ -122,7 +122,8 @@ A brief title like the title of the page is all that is required for the link ti
 
 ## Quality Standards
 
-- When referencing other ADRs, you should always include a markdown link to the referenced file.
+- Context uses present tense, Decisions use future tense
+- When referencing other ADRs, you must always include a markdown link to the referenced file.
 - ADRs must be **immutable once accepted** and committed into the `main` git branch - they are historical records
 - Context section should be comprehensive enough that someone unfamiliar with the project can understand the decision
 - Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation.
@@ -130,7 +131,7 @@ A brief title like the title of the page is all that is required for the link ti
 - Consequences should be honest about trade-offs, not just cheerleading
 - Alternatives section proves due diligence was done
 - Technical accuracy is paramount - verify claims and implementation details
-- Context uses present tense, Decisions use future tense
+- Never use Claude rules as references or cross-links. These are derivatives of other documentation like ADR's. Cite the original guidance directly instead.
 
 ## Errata
 
