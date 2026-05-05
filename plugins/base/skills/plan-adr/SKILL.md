@@ -16,6 +16,6 @@ During the dialog:
 
 Your plan should explicitly note to not automatically accept the ADR directly after implementation.
 
-Once the user is satisfied with the scope and you have a clear picture of the decision, exit plan mode and delegate to the @adr-architect subagent to write an ADR capturing the decision. Pass the full context of what was agreed, including the problem, the chosen approach, the alternatives considered, and the reasons for the choice.
+Once the user is satisfied with the scope and you have a clear picture of the decision, exit plan mode and delegate to the `@base:adr-architect` subagent to write an ADR capturing the decision. Pass the full context of what was agreed, including the problem, the chosen approach, the alternatives considered, and the reasons for the choice.
 
 If the user asked for an implementation plan as well, then after delegating to the architect, pause and wait for the user to confirm go ahead with the implementation. After user confirmation but before implementing, re-read the ADR to ensure you fully understand the scope of work and that it matches the implementation plan.

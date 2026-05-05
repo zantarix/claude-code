@@ -2,7 +2,7 @@
 
 Big decisions are documented in ADR format in the `docs/adr/` folder. To see what ADRs exist, their titles, statuses, and summaries, consult `docs/adr/README.md`.
 
-Any changes to the `docs/adr/` folder should be handled by delegating to the `@adr-architect` agent.
+Any changes to the `docs/adr/` folder should be handled by delegating to the `@base:adr-architect` agent.
 
 When reading an ADR file, always read the whole file. Errata appear at the end of the file which may change the context of the content.
 
