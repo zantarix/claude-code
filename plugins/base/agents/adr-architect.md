@@ -132,6 +132,7 @@ A brief title like the title of the page is all that is required for the link ti
 - Alternatives section proves due diligence was done
 - Technical accuracy is paramount - verify claims and implementation details
 - Never use Claude rules as references or cross-links. These are derivatives of other documentation like ADR's. Cite the original guidance directly instead.
+- The references section should not include references to same-project ADR's. The inline links to these in the ADR text is sufficient.
 
 ## Errata
 
