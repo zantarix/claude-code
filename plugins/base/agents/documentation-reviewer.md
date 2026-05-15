@@ -28,7 +28,7 @@ description: |-
    "I'll delegate that to the documentation-reviewer agent."
    </example>
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
-model: sonnet
+model: haiku
 color: cyan
 ---
 
