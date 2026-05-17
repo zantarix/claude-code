@@ -26,3 +26,8 @@ Once an ADR has been marked accepted and committed to git, it is immutable. The 
 When writing ADRs that reference cursus or other related Zantarix projects, check the ADRs of those related projects for relevant context and prior decisions. Related Zantarix project repositories can be found as siblings of the current project folder (e.g., `../cursus` for the cursus project). The Related Projects section of @docs/adr/README.md lists the known related projects and their GitHub URLs.
 
 When cross-linking to ADRs in related projects, use the format "Project Name ADR-XXX" as the link label and link to the ADR file on GitHub rather than using relative paths. For example: `[Cursus ADR-001](https://github.com/zantarix/cursus/blob/main/docs/adr/001-some-decision.md)`.
+
+## Errata
+
+* Do not consider adding errata to `Deprecated` or `Superceded` ADRs. These are purely historical documents, not current references.
+* If an ADR is `Proposed` or in the process of being `Accepted`, you should inline any updates rather than adding errata.
