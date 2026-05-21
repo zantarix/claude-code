@@ -29,5 +29,11 @@ When cross-linking to ADRs in related projects, use the format "Project Name ADR
 
 ## Errata
 
+Errata are the sole responsibility of the `@base:adr-architect` agent. No other agent or skill should add or suggest errata.
+
 * Do not consider adding errata to `Deprecated` or `Superceded` ADRs. These are purely historical documents, not current references.
 * If an ADR is `Proposed` or in the process of being `Accepted`, you should inline any updates rather than adding errata.
+* Errata describe specific errors that have crept into the ADR, not general updates. The bar is "this part of the ADR is now functionally incorrect, because...", not "this is now used somewhere else instead."
+* Each erratum is at most one paragraph and is introduced with a markdown title in the form `### YYYY-MM-DD: <title>`.
+
+Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. If a code change contradicts an accepted ADR, flag it as an architectural concern that may need a new ADR. Reviewers may, however, flag implementation discrepancies against a `Proposed` ADR — those are inlined into the ADR before acceptance.

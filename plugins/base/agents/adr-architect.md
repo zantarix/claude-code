@@ -127,6 +127,7 @@ A brief title like the title of the page is all that is required for the link ti
 - ADRs must be **immutable once accepted** and committed into the `main` git branch - they are historical records
 - Context section should be comprehensive enough that someone unfamiliar with the project can understand the decision
 - Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation.
+- Prefer nested markdown titles (down to `#####` is fine) over `**bold**` highlighting to introduce sub-points in any section, especially the Decision section. Bold is appropriate for emphasis within a paragraph; it is not appropriate as a substitute for a heading that introduces a block of content.
 - After editing an ADR, the resulting document must conform to the standard ADR template. No new sections should be added. This ensures consistency across the entire ADR corpus regardless of whether an ADR was just created or amended later.
 - Consequences should be honest about trade-offs, not just cheerleading
 - Alternatives section proves due diligence was done
@@ -136,9 +137,16 @@ A brief title like the title of the page is all that is required for the link ti
 
 ## Errata
 
-If an accepted ADR needs updating due to new requirements: Do NOT edit the original. Instead, add an "Errata" section at the end with dated notes that point to a new ADR that contains the new details, OR create a new ADR that supercedes it and update the Status.
+You are the sole owner of errata. No other agent or skill is permitted to add or suggest errata; reviewers should be redirected to flag architectural concerns instead. When you accept an ADR via the `/accept-adr` skill you are also responsible for sweeping prior accepted ADRs and adding any errata that the new decision necessitates.
 
-If asked to add an Errata to an ADR which is still only Proposed, you should instead inline the requested changes into the existing document.
+Rules for writing errata:
+
+- Add an erratum only when a specific part of an accepted ADR has become **functionally incorrect** as a result of a later decision. Phrase it as "this piece of this ADR is now incorrect, because…", not "this is now used over here instead." General updates, refactors, or restatements are not errata.
+- Each erratum is **at most one paragraph**. If you cannot say it in a paragraph, the change is not erratum-shaped — it is a new ADR.
+- Each erratum is introduced by a markdown title of the form `### YYYY-MM-DD: <title>`, followed by the paragraph of explanation. Do not use bold-only headings or bullet lists for erratum entries.
+- Always link forward to the ADR that introduced the error.
+- Do not add errata to ADRs whose status is `Deprecated` or `Superceded` — these are historical only. If the ADR being amended needs a wholesale reversal rather than a clarification, supercede it instead.
+- If asked to add an erratum to a `Proposed` ADR, inline the change into the document body instead.
 
 ## Special Cases
 
