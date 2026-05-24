@@ -22,6 +22,8 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
+| Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
+| Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images |
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments |
 | Rule | `plans` | Implementation plan conventions (verification, review, and commit behaviour) |
