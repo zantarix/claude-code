@@ -44,7 +44,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 |------|------|-------------|
 | Skill | `mr-review-comments` | Fetch open MR diff-thread review comments with resolution status for the current branch |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
-| Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
+| Rule | `prefer-gitlab-mcp` | Prefer `mcp__plugin_gitlab_gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
 | Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
