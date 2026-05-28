@@ -2,20 +2,23 @@
 name: review
 description: |-
   Run all *-reviewer agents concurrently, fix critical/major issues, and report results.
-  Loops until no triagable findings remain. Stores all output under .reviews/.
+  Loops until no triageable findings remain. Stores all output under .reviews/.
 
   Proactively use this skill to review code you've created if you have added or modified more than two functions, or
   whenever you complete an implementation plan.
 ---
 
-Review the current changes by running all available reviewer agents concurrently, fixing critical/major issues, and looping until no triagable findings remain.
+Review the current changes by running all available reviewer agents concurrently, fixing critical/major issues, and looping until no triageable findings remain.
 
 ## Step 1: Create review session
 
 Create a timestamped session folder:
+
 ```
 .reviews/<YYYY-MM-DD-HHMMSS>/
 ```
+
+> **Note**: `.reviews/` is expected to be in `.gitignore`. If it is not present, add it before proceeding.
 
 Use `date +%Y-%m-%d-%H%M%S` to generate the timestamp.
 
@@ -28,6 +31,7 @@ Find all available, pre-defined agents — using only system context — with a 
 ## Step 3: Launch reviewers and collect output
 
 Create the run directory:
+
 ```
 .reviews/<session>/run-<N>/
 ```
@@ -57,41 +61,40 @@ Launch every discovered reviewer agent **in parallel** using the Agent tool. Pas
 > Use `- [ ]` for each unchecked finding. Do NOT use HTML comments or other markers.
 
 After all agents return, write each result to a file:
+
 ```
 .reviews/<session>/run-<N>/<agent-name>.md
 ```
 
 ## Step 4: Triage findings
 
-Read all report files from `run-<N>/`. Classify each finding by urgency:
-
-| Agent | Triagable Items |
-|-------|----------|
-| `code-reviewer` | 🔴 Critical + 🟠 Major sections |
-| `security-reviewer` | 🔴 Critical + 🟠 Major sections |
-| `documentation-reviewer` | All findings (all severity levels are actionable) |
-| Any other `*-reviewer` | 🔴 Critical + 🟠 Major sections, or any findings with "Critical", "Error", "Must fix", "Required" keywords |
+Read all report files from `run-<N>/`. Triageable items are all findings in the **Critical** and **Major** sections.
 
 **Important**: Minor/Suggestions never trigger loop iterations — they are recorded for the user to review in the final report.
 
-## Step 5: Fix triagable items
+## Step 5: Fix triageable items
 
-For each unchecked `- [ ]` triagable item:
+For each unchecked `- [ ]` triageable item:
+
 - Apply the fix directly in code or documentation.
 - After fixing, update the checkbox in the report file from `- [ ]` to `- [x]`.
-- If a fix is ambiguous, risky, or requires user input (e.g., architectural decision), **leave the checkbox as `- [ ]`** and append ` *(needs human input)*` to that line.
+- If a fix is ambiguous, risky, or requires user input (e.g., architectural decision), **leave the checkbox as `- [ ]`** and append `*(needs human input)*` to that line.
 
 Do NOT fix minor/suggestions items.
 
 ## Step 6: Check loop condition
 
-Read all report files from `run-<N>/`. Count the triagable items that were found in this run (items in Critical and Major sections).
+Read all report files from `run-<N>/`. Count the triageable items that were found in this run (items in Critical and Major sections).
 
-If any triagable items were found (excluding those marked "needs human input") in the latest run **AND** `run < max_runs`:
+If any triageable items were found (excluding those marked "needs human input") in the latest run **AND** `run < max_runs`:
+
 - Increment `run` by 1.
 - Return to Step 3.
 
-Do not exit the loop if you fixed all the triagable items. Otherwise (no triagable items found, or max runs reached), proceed to Step 7.
+Proceed to Step 7 when either:
+
+- No triageable items were found in the latest run (all clean or all fixed), **or**
+- `run == max_runs` — in this case, annotate any remaining unchecked `- [ ]` triageable items across all run reports with `*(needs human input)*`.
 
 ## Step 7: Final collation
 
