@@ -26,6 +26,18 @@
 			"source": "./plugins/rust",
 			"description": "Helpful skills for working with Rust projects",
 			"homepage": "https://github.com/zantarix/claude-code"
+		},
+		{
+			"name": "github",
+			"source": "./plugins/github",
+			"description": "Helpful skills for working with GitHub projects",
+			"homepage": "https://github.com/zantarix/claude-code"
+		},
+		{
+			"name": "gitlab",
+			"source": "./plugins/gitlab",
+			"description": "Helpful skills for working with GitLab projects",
+			"homepage": "https://github.com/zantarix/claude-code"
 		}
 	]
 }

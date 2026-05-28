@@ -22,11 +22,30 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
-| Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
-| Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images |
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments |
 | Rule | `plans` | Implementation plan conventions (verification, review, and commit behaviour) |
+
+### `github`
+
+Skills, agents, and rules for GitHub projects.
+
+| Type | Name | Description |
+|------|------|-------------|
+| Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
+| Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
+
+### `gitlab`
+
+Skills, agents, and rules for GitLab projects. Includes an MCP server config for the GitLab MCP at `https://gitlab.com/api/v4/mcp`.
+
+| Type | Name | Description |
+|------|------|-------------|
+| Skill | `mr-review-comments` | Fetch open MR diff-thread review comments with resolution status for the current branch |
+| Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
+| Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
+| Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
+| Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
 
 ### `rescript`
 
