@@ -25,6 +25,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments |
 | Rule | `plans` | Implementation plan conventions (verification, review, and commit behaviour) |
+| Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
 
 ### `github`
 
@@ -45,6 +46,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
+| Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
 
 ### `rescript`
