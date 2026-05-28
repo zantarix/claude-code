@@ -2,132 +2,61 @@
 name: review
 description: |-
   Run all *-reviewer agents concurrently, fix critical/major issues, and report results.
-  Loops until no triagable findings remain. Stores all output under .reviews/.
 
   Proactively use this skill to review code you've created if you have added or modified more than two functions, or
   whenever you complete an implementation plan.
 ---
 
-Review the current changes by running all available reviewer agents concurrently, fixing critical/major issues, and looping until no triagable findings remain.
+Review the current changes by running all available reviewer agents concurrently, then address any critical or major issues they find.
 
-## Step 1: Create review session
+## Step 1: Discover reviewers
 
-Create a timestamped session folder:
-```
-.reviews/<YYYY-MM-DD-HHMMSS>/
-```
+Find all available agents, using only system context, with a name that matches ends with `-reviewer`. Do not try to search the file system for reviewers. Each matching agent is a reviewer agent to launch.
 
-Use `date +%Y-%m-%d-%H%M%S` to generate the timestamp.
+## Step 2: Launch all reviewers concurrently
 
-Initialize a loop counter: `run = 1`, `max_runs = 5`.
+Launch every discovered reviewer agent **in parallel** using the Agent tool. Pass each agent a prompt describing the scope of the review (e.g., uncommitted changes, recent commits on the branch, or a user-specified scope).
 
-## Step 2: Discover reviewers
+## Step 3: Triage findings
 
-Find all available, pre-defined agents — using only system context — with a name that ends with `-reviewer`. Do not try to search the file system for reviewers. Each matching agent is a reviewer to launch.
+Collect the results from all agents. Classify each finding by urgency:
 
-## Step 3: Launch reviewers and collect output
+| Agent | Critical | Major |
+|-------|----------|-------|
+| `code-reviewer` | 🔴 Critical Issues | 🟠 Major Issues |
+| `security-reviewer` | 🔴 Critical Issues | 🟠 Major Issues |
+| `documentation-reviewer` | All "Documentation Updates Needed" items | — |
 
-Create the run directory:
-```
-.reviews/<session>/run-<N>/
-```
+Any other `*-reviewer` agents discovered in Step 1 should have their output scanned for similar severity indicators (e.g. "Critical", "Error", "Must fix", "Required") and triaged accordingly using your best judgement.
 
-Launch every discovered reviewer agent **in parallel** using the Agent tool. Pass each agent a prompt describing the scope of the review (e.g., uncommitted changes, recent commits on the branch) and the required output format:
+## Step 4: Fix critical and major issues
 
-> Please provide your findings in this exact format (return as text):
->
-> ```
-> # <Your Agent Name> Report
-> **Run**: <N>
->
-> ## Critical
-> - [ ] <finding description> — <file/location>
-> - [ ] <finding description> — <file/location>
->
-> ## Major
-> - [ ] <finding description> — <file/location>
->
-> ## Minor / Suggestions
-> - [ ] <finding description>
->
-> ## No Issues
-> <items confirmed clean, or "None">
-> ```
->
-> Use `- [ ]` for each unchecked finding. Do NOT use HTML comments or other markers.
+Automatically fix all critical and major issues identified in Step 3. For each fix:
 
-After all agents return, write each result to a file:
-```
-.reviews/<session>/run-<N>/<agent-name>.md
-```
+- Make the code or documentation change directly.
+- If a fix is ambiguous or risky (e.g., an architectural concern, a decision that needs user input), **skip it** and flag it in the report instead.
 
-## Step 4: Triage findings
+Do NOT fix minor issues, suggestions, or cosmetic nits — leave those for the user to decide on.
 
-Read all report files from `run-<N>/`. Classify each finding by urgency:
+## Step 5: Report to the user
 
-| Agent | Triagable Items |
-|-------|----------|
-| `code-reviewer` | 🔴 Critical + 🟠 Major sections |
-| `security-reviewer` | 🔴 Critical + 🟠 Major sections |
-| `documentation-reviewer` | All findings (all severity levels are actionable) |
-| Any other `*-reviewer` | 🔴 Critical + 🟠 Major sections, or any findings with "Critical", "Error", "Must fix", "Required" keywords |
-
-**Important**: Minor/Suggestions never trigger loop iterations — they are recorded for the user to review in the final report.
-
-## Step 5: Fix triagable items
-
-For each unchecked `- [ ]` triagable item:
-- Apply the fix directly in code or documentation.
-- After fixing, update the checkbox in the report file from `- [ ]` to `- [x]`.
-- If a fix is ambiguous, risky, or requires user input (e.g., architectural decision), **leave the checkbox as `- [ ]`** and append ` *(needs human input)*` to that line.
-
-Do NOT fix minor/suggestions items.
-
-## Step 6: Check loop condition
-
-Read all report files from `run-<N>/`. Count the triagable items that were found in this run (items in Critical and Major sections).
-
-If any triagable items were found (excluding those marked "needs human input") in the latest run **AND** `run < max_runs`:
-- Increment `run` by 1.
-- Return to Step 3.
-
-Do not exit the loop if you fixed all the triagable items. Otherwise (no triagable items found, or max runs reached), proceed to Step 7.
-
-## Step 7: Final collation
-
-Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt:
-
-> Read all reviewer report files under `.reviews/<session>/`. Create a consolidated review at `.reviews/<session>/review.md` with:
->
-> 1. **Summary table**: rows = reviewer agents, columns = run number and finding count per run. Show how many critical, major, and minor findings each reviewer reported in each run.
-> 2. **Findings by Severity**: Group all findings (across all runs and reviewers) by severity (Critical, Major, Minor). For each, show the `[ ]` or `[x]` status and which run it appeared in.
-> 3. **Auto-Fixed Items**: List all findings marked `[x]`.
-> 4. **Needs Human Input**: List findings marked "needs human input" — these were not auto-fixed.
-> 5. **Minor / Suggestions Not Actioned**: Summary of all minor/suggestions that were never looped on.
->
-> Format as clean markdown. Include counts and cross-references to the original reports in `run-N/` folders.
-
-## Step 8: Report to user
-
-Present a concise inline summary:
+Present a consolidated report:
 
 ```
-## Review Complete
+## Review Results
 
-**Session**: `.reviews/<session>/`
-**Runs**: <N> / <max_runs>
-**Reviewers run**: <comma-separated agent names>
+### Reviewers Run
+- <agent name>: <one-line verdict or summary>
+- ...
 
 ### Issues Fixed
-<numbered list of fixes applied, with file paths>
+<numbered list of fixes applied, with file paths and brief descriptions>
 
-### Needs Human Attention
-<numbered list of items marked "needs human input" with reason>
+### Issues Requiring Attention
+<numbered list of issues that were not auto-fixed, with the agent that raised them and why they need human input>
 
 ### Minor / Suggestions (not actioned)
-<brief list or count per agent>
-
-**Full report**: `.reviews/<session>/review.md`
+<brief list or count of lower-priority items from each agent, so the user knows they exist>
 ```
 
-All findings and iterations are logged in the session folder for audit and transparency.
+Keep the report concise but complete. All findings should have an entry in one of the three sections above. The user can re-run individual reviewer agents if they want full details.
