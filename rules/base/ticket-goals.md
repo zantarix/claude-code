@@ -16,6 +16,8 @@ Fetch the referenced issue along with its comments and any attachments, then rea
 
 On GitLab only, also fetch the title and description of any related/linked issues for additional context, and set the work item's status to `In progress` per the `status` rule before moving on to planning. GitHub has no equivalent for either, so skip both there.
 
+## 2.5. Do not explore the codebase yet
+
 **Do not explore the local codebase** — no Bash, Read, or file-search calls against the working tree — until you are inside planning mode. Gathering remote ticket context (steps 1–2, including `git remote -v` and the platform CLI/MCP) is permitted.
 
 ## 3. Choose a planning path by size
