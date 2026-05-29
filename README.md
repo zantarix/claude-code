@@ -26,6 +26,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `nix` | Nix flakes and direnv guidance for development environments |
 | Rule | `plans` | Implementation plan conventions (verification, review, and commit behaviour) |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
+| Rule | `ticket-goals` | Workflow for ticket-referencing goals: fetch and review the issue, then plan via plan mode or `/plan-adr` |
 
 ### `github`
 
