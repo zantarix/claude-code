@@ -1,6 +1,10 @@
 # Ticket-driven goals
 
-When the user initiates a goal that references a ticket — issue notation like `#14`, `org/repo#14`, or a full issue URL — follow this workflow before doing any planning or implementation. When following this workflow, explicitly state that you are and follow all instructions as written.
+This workflow is triggered **exclusively** by the `/goal` harness command. Do **not** follow it for ordinary messages that happen to mention a ticket number.
+
+A `/goal` invocation is identifiable by the presence of `<command-name>/goal</command-name>` in the message context and a `<local-command-stdout>Goal set: …</local-command-stdout>` confirmation. These tags are never present in plain user messages.
+
+When `/goal` is invoked and the goal text contains a ticket reference — issue notation like `#14`, `org/repo#14`, or a full issue URL — follow this workflow before doing any planning or implementation. When following this workflow, explicitly state that you are and follow all instructions as written.
 
 ## 1. Disambiguate the platform
 

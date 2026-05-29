@@ -75,3 +75,4 @@ Skills, agents, and rules for Rust projects.
 | Rule | `dependencies` | Dependency management conventions |
 | Rule | `style` | Code style conventions |
 | Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
+| Rule | `coverage` | Coverage tooling (`cargo llvm-cov`), cfg registration, and `coverage(off)` attribute usage |
