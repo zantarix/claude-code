@@ -72,7 +72,7 @@ Skills, agents, and rules for Rust projects.
 | Skill | `analyse-mutations` | Analyse `cargo mutants` output and orchestrate parallel subagent fixes for under-tested code paths |
 | Skill | `verify-code` | Lint (`cargo clippy`), test with coverage (`cargo make coverage`), and format (`cargo fmt`) |
 | Agent | `code-reviewer` | Thorough code review covering correctness, safety, style, coverage, and architecture |
-| Rule | `clippy` | Documents the only valid reasons to suppress Clippy lints |
+| Rule | `clippy` | Valid reasons to suppress Clippy lints and how to read clippy output |
 | Rule | `coverage` | Coverage tooling (`cargo llvm-cov`), cfg registration, and `coverage(off)` attribute usage |
 | Rule | `dependencies` | Dependency management conventions |
 | Rule | `modules` | Module organisation conventions |

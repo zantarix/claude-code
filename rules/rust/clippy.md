@@ -20,3 +20,9 @@ Documented here are the baseline rule for handling Clippy for the Zantarix organ
 * `clippy::too_many_lines` may be allowed for functions that are pure dispatch functions, that is they are match statements (potentially nested) where each final match arm is a log, simple function call, or object creation with no additional logic.
 
 Other clippy lint failures, including from other rules, must be fixed.
+
+# Reading clippy output
+
+When clippy flags an issue, read the full output including the `help:` section before attempting a manual fix. Clippy frequently shows the exact code transformation needed (e.g. collapsing nested `if` into `&& let`). Apply the suggested fix first; only restructure manually if there is no suggestion or it does not apply cleanly.
+
+**Why:** Multiple rounds of failed manual workarounds for a `collapsible_if` lint were wasted when the `help:` output was showing the exact `&& let` chain fix verbatim. Reading the hint first would have resolved it immediately.
