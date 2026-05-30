@@ -57,6 +57,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__plugin_gitlab_gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
 | Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
+| Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
 
 ### `rescript`
