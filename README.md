@@ -64,6 +64,7 @@ Skills, agents, and rules for ReScript frontend projects.
 | Rule | `rescript` | ReScript language and project conventions |
 | Rule | `ffi-bindings` | FFI binding organisation, interface file requirements, and colocating reusable domain helpers |
 | Rule | `named-type-aliases` | Prefer named `type t` aliases over inlined primitives for domain-semantic collections |
+| Rule | `react-optional-props` | Required annotation asymmetry for optional props with no default: `T=?` in `.resi`, `option<T>=?` in `.res` |
 
 ### `rust`
 
