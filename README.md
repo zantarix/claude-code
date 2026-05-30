@@ -17,6 +17,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement |
+| Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents concurrently, auto-fix critical/major issues, and report results |
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
