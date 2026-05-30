@@ -91,7 +91,7 @@ Process each row in order:
      - Proposes which plugin's `rules/` directory it belongs under.
      - Suggests a filename and a short description.
      - Ends with `:robot: Submitted by Claude Code on behalf of this user.`
-   - Show the drafted body and the proposed `gh issue create --repo zantarix/claude-code ...` command, then wait for the user to approve before running it. If the user prefers to post manually, hand them the body and skip the command.
+   - Show the drafted body and the proposed `gh issue create --repo zantarix/claude-code --label new-memory ...` command, then wait for the user to approve before running it. The `new-memory` label is mandatory so these proposals can be triaged together. If the user prefers to post manually, hand them the body and remind them to apply the `new-memory` label.
    - After the issue is created, delete the source memory, update `MEMORY.md`, and record the issue URL in the final report.
 
 ## Step 6: Finalise documentation
