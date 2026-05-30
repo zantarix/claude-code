@@ -37,3 +37,9 @@ Errata are the sole responsibility of the `@base:adr-architect` agent. No other 
 * Each erratum is at most one paragraph and is introduced with a markdown title in the form `### YYYY-MM-DD: <title>`.
 
 Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. If a code change contradicts an accepted ADR, flag it as an architectural concern that may need a new ADR. Reviewers may, however, flag implementation discrepancies against a `Proposed` ADR — those are inlined into the ADR before acceptance.
+
+## When to skip an ADR
+
+Do not assume a trait-signature change automatically requires an ADR. If the fix is a straightforward bug repair — no new architectural surface, no alternative designs with meaningfully different trade-offs, just restoring intended behaviour — skip the ADR and go straight to an implementation plan.
+
+Before invoking `/base:plan-adr`, ask: does this decision introduce a new pattern, reject a plausible alternative, or affect contracts beyond the immediate fix? If the answer is "no, it just restores intended behaviour by mirroring an existing pattern," propose a direct implementation plan instead.
