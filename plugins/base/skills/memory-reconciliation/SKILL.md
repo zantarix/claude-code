@@ -61,12 +61,12 @@ Distinguishing C from D is the hardest call. If unclear, ask the user directly: 
 
 Render a table to the user, one row per memory:
 
-| Memory | Type | Outcome | Reason / notes |
-|--------|------|---------|----------------|
-| `feedback-testing` | feedback | C — project rule | propose `.claude/rules/testing.md` |
-| `user-role` | user | B — keep | — |
-| `feedback-old-flag` | feedback | A — discard | references removed `--legacy` flag |
-| `feedback-pin-shas` | feedback | D — org rule | propose under `plugins/github/`; user confirmed scope |
+| Memory              | Type     | Outcome          | Reason / notes |
+|---------------------|----------|------------------|----------------|
+| `feedback-testing`  | feedback | C — project rule | propose `.claude/rules/testing.md` |
+| `user-role`         | user     | B — keep         | — |
+| `feedback-old-flag` | feedback | A — discard      | references removed `--legacy` flag |
+| `feedback-pin-shas` | feedback | D — org rule     | propose under `plugins/github/`; user confirmed scope |
 
 Below the table, list:
 
@@ -90,7 +90,7 @@ Process each row in order:
      - Quotes the memory verbatim.
      - Proposes which plugin's `rules/` directory it belongs under.
      - Suggests a filename and a short description.
-     - Ends with `:robot: Submitted by Claude Code on behalf of this user.`
+     - Ends with your required sign off.
    - Show the drafted body and the proposed `gh issue create --repo zantarix/claude-code --label new-memory ...` command, then wait for the user to approve before running it. The `new-memory` label is mandatory so these proposals can be triaged together. If the user prefers to post manually, hand them the body and remind them to apply the `new-memory` label.
    - After the issue is created, delete the source memory, update `MEMORY.md`, and record the issue URL in the final report.
 
