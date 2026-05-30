@@ -79,7 +79,10 @@ Skills, agents, and rules for Rust projects.
 | Rule | `clippy` | Valid reasons to suppress Clippy lints and how to read clippy output |
 | Rule | `mutants` | No mutation-test exclusions — prefer adding tests or simplifying code over suppressing results |
 | Rule | `coverage` | Coverage tooling (`cargo llvm-cov`), cfg registration, and `coverage(off)` attribute usage |
-| Rule | `dependencies` | Dependency management conventions |
+| Rule | `dependencies` | Dependency management: ask before adding, run `cargo deny check`, and `cargo clean` on proc-macro cache errors |
+| Rule | `docs` | Use `docs.rs/<crate>/latest/` URLs rather than version-pinned links |
+| Rule | `error-handling` | Prefer `anyhow::Result<Outcome>` over enums with a `Failure` variant |
 | Rule | `modules` | Module organisation conventions |
 | Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
 | Rule | `style` | Code style conventions |
+| Rule | `workflow` | Prefer `cargo make` tasks over README runbooks for repeatable maintenance steps |
