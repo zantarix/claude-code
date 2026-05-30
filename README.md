@@ -25,6 +25,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
+| Rule | `investigation` | Never claim "known issue" without evidence — bisect first to rule out self-introduced regressions |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments |
 | Rule | `plans` | Implementation plan conventions (verification, review, and commit behaviour) |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
