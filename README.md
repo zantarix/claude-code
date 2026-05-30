@@ -20,6 +20,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents concurrently, auto-fix critical/major issues, and report results |
+| Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
@@ -39,8 +40,10 @@ Skills, agents, and rules for GitHub projects.
 
 | Type | Name | Description |
 |------|------|-------------|
+| Skill | `create-pull-request` | Create a GitHub PR for the current branch; posts the session's `/review` summary as a comment if the session folder is known |
 | Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
 | Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
+| Rule | `pr` | Always invoke the `github:create-pull-request` skill rather than calling `gh pr create` directly |
 
 ### `gitlab`
 
