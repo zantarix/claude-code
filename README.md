@@ -23,6 +23,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
 | Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
+| Rule | `adr-workflow` | ADR process conventions: when to write, scanning Proposed ADRs, pausing before acceptance, verifying existing implementation |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `investigation` | Never claim "known issue" without evidence — bisect first to rule out self-introduced regressions |
