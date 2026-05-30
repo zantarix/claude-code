@@ -32,7 +32,7 @@ Keep questions focused; don't ask about things you can resolve by reading the ti
 ## Step 4: Choose a planning path
 
 - **Architectural decision**: run the `/plan-adr` skill. Pass the ticket context as the starting point for the scoping dialog.
-- **Implementation work**: enter planning mode. Explore the codebase now to scope the work. Ask clarifying questions within plan mode as needed.
+- **Implementation work**: enter planning mode **immediately** — do not explore the codebase first. Codebase exploration happens inside plan mode to scope the work. Ask clarifying questions within plan mode as needed.
 
 ## Step 5: Follow through
 
