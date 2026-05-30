@@ -63,6 +63,7 @@ Skills, agents, and rules for ReScript frontend projects.
 | Agent | `code-reviewer` | Thorough frontend code review covering ReScript, React, TailwindCSS, rescript-relay, and FFI bindings |
 | Rule | `rescript` | ReScript language and project conventions |
 | Rule | `ffi-bindings` | FFI binding organisation and interface file requirements |
+| Rule | `named-type-aliases` | Prefer named `type t` aliases over inlined primitives for domain-semantic collections |
 
 ### `rust`
 
