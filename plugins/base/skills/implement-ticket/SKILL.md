@@ -14,7 +14,7 @@ GitHub and GitLab share the `#N` notation. Infer the platform from project conte
 Fetch the referenced issue with its comments and any linked/related items. Read everything before forming a plan — the ticket content shapes all subsequent decisions.
 
 On GitLab:
-- Also fetch the title and description of any related/linked issues for additional context.
+- Also fetch the title and description of any related/linked/child/parent issues for additional context.
 - Set the work item's status to `In progress` per the `status` rule.
 
 Do not explore the local codebase until after this step. Remote ticket context (including `git remote -v` and platform CLI/MCP calls) is permitted here.
