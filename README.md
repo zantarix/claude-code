@@ -53,6 +53,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 |------|------|-------------|
 | Skill | `create-merge-request` | Create a GitLab MR for the current branch; posts the session's `/review` summary as a comment if the session folder is known |
 | Skill | `mr-review-comments` | Fetch open MR diff-thread review comments with resolution status for the current branch |
+| Rule | `child-task-work-items` | Create pre-work as child `Task` work items rather than bullet points in the description |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__plugin_gitlab_gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
