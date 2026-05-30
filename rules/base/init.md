@@ -14,6 +14,14 @@ When initialising or updating `CLAUDE.md`, consider the full scope of project ru
 
 Long lists of individual items are not relevant. Exploration can provide detail when needed. `CLAUDE.md` should be used to provide enough context to know where to look to find things, not to fully explain everything in the project.
 
+## Rule length
+
+Rules must not exceed 50 lines. If a rule grows beyond this, split it into multiple focused rules, each covering a distinct concern.
+
+## Rule scope
+
+Rules must be scoped to specific files or directories where possible using the `paths` frontmatter field (accepts glob patterns). Only rules that genuinely apply everywhere — style guides, logging conventions, security requirements — should be left unscoped (repo-wide).
+
 ## Duplication
 
 Do not duplicate content between `.claude/rules/` files and `.claude/CLAUDE.md`.
