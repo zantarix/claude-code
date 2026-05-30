@@ -14,8 +14,8 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
+| Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement |
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents concurrently, auto-fix critical/major issues, and report results |
@@ -68,12 +68,12 @@ Skills, agents, and rules for Rust projects.
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `verify-code` | Lint (`cargo clippy`), test with coverage (`cargo make coverage`), and format (`cargo fmt`) |
 | Skill | `analyse-mutations` | Analyse `cargo mutants` output and orchestrate parallel subagent fixes for under-tested code paths |
+| Skill | `verify-code` | Lint (`cargo clippy`), test with coverage (`cargo make coverage`), and format (`cargo fmt`) |
 | Agent | `code-reviewer` | Thorough code review covering correctness, safety, style, coverage, and architecture |
 | Rule | `clippy` | Documents the only valid reasons to suppress Clippy lints |
-| Rule | `modules` | Module organisation conventions |
-| Rule | `dependencies` | Dependency management conventions |
-| Rule | `style` | Code style conventions |
-| Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
 | Rule | `coverage` | Coverage tooling (`cargo llvm-cov`), cfg registration, and `coverage(off)` attribute usage |
+| Rule | `dependencies` | Dependency management conventions |
+| Rule | `modules` | Module organisation conventions |
+| Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
+| Rule | `style` | Code style conventions |
