@@ -59,6 +59,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 | Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
+| Rule | `work-item-links` | Link related work items via API rather than naming them in prose |
 
 ### `rescript`
 
