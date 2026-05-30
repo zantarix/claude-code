@@ -6,4 +6,9 @@ Proactively look up and reference documentation to support your viewpoints.
 
 # Attribution
 
-Whenever you post a PR/MR, issue, comment or any other post outside the local system, you must always sign off the bottom of the message with ":robot: Submitted by Claude Code on behalf of this user." or a similar message identifying yourself.
+Whenever you post a PR/MR, issue, comment or any other post outside the local system, you must always sign off the bottom of the message with the following disclaimer or a similar message identifying yourself.
+
+```markdown
+---
+:robot: Submitted by Claude Code on behalf of this user.
+```
