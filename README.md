@@ -30,6 +30,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `git-workflow` | Prefer cherry-pick over merge commit when integrating a finished branch into `main` |
 | Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `investigation` | Never claim "known issue" without evidence — bisect first to rule out self-introduced regressions |
+| Rule | `memory-feedback` | Write feedback memories as generalized rules, not session-specific notes; reframe narrow entries rather than discarding them |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments, including dev shell lifecycle |
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, and surfacing real alternatives) |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
