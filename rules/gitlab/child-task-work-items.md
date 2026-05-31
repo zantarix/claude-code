@@ -40,5 +40,6 @@ glab api graphql -f query="mutation { workItemCreate(input: {
 - Task titles should name a deliverable ("Draft ADR for X", "Decide between A and B"), not a question.
 - In the GraphQL fallback, embedded double quotes in the description break parsing of the `-f query=...` form. Pass input via `-F variables=@vars.json` with a parameterised mutation.
 - `Task` is a project-scoped work item type. `Epic` and `Objective` have their own creation flows.
+- Do not mention the parent iid in the description — the `hierarchyWidget` already records the relationship and surfaces it in the UI.
 
 See also: `work-item-links` for the iid→GID lookup pattern.
