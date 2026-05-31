@@ -8,7 +8,7 @@ The project uses these native work item status values: `Triage` → `To do` → 
 
 - Before planning or implementing a ticket: set status to `In progress` (unless it's already there).
 - Do not move a ticket backwards — if it's already at a later stage, leave it.
-- Status is a native GitLab work item field, not a label. The GitLab MCP has no update capability, so use `glab api graphql`. Resolve the global ID from the project path and iid, then mutate:
+- Status is a native GitLab work item field, not a label. The GitLab MCP (`mcp__gitlab__manage_work_item`) cannot update the `statusWidget` field, so use `glab api graphql`. Resolve the global ID from the project path and iid, then mutate:
 
 ```sh
 # 1. Look up status IDs (do this once per session)

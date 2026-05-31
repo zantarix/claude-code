@@ -4,14 +4,26 @@ When a GitLab work item (see `terminology`) lists "work that needs to happen bef
 
 **How to apply:**
 
-The GitLab MCP has `create_issue` but no `create_workitem` (cannot pick the `Task` type), so this requires `glab api graphql` with `workItemCreate`.
+Use `mcp__gitlab__manage_work_item` with `action: create`. First look up the parent's numeric ID via `mcp__gitlab__browse_work_items` (action: get), then:
+
+```
+mcp__gitlab__manage_work_item
+  action: create
+  namespace: group/project   # PROJECT path (not group) for Tasks
+  workItemType: TASK
+  title: "Draft ADR for X"
+  description: "Short body."
+  parentId: "<numeric-id-of-parent>"
+```
+
+**Fallback (MCP not available):** `glab api graphql` with `workItemCreate`.
 
 ```sh
-# Task type GID on gitlab.com (verify per-project if uncertain):
+# Resolve Task type GID (verify per-project if uncertain):
 #   glab api graphql -f query='query { project(fullPath: "PROJECT") { workItemTypes { nodes { id name } } } }'
 TASK_TYPE="gid://gitlab/WorkItems::Type/5"
 
-# Parent GID (resolve from iid — see work-item-links rule):
+# Resolve parent GID from iid (see work-item-links rule for the iid→GID pattern)
 PARENT="gid://gitlab/WorkItem/<parent-id>"
 
 glab api graphql -f query="mutation { workItemCreate(input: {
@@ -26,7 +38,7 @@ glab api graphql -f query="mutation { workItemCreate(input: {
 **Gotchas:**
 
 - Task titles should name a deliverable ("Draft ADR for X", "Decide between A and B"), not a question.
-- Embedded double quotes in the description string break GraphQL parsing of the `-f query=...` form. Pass the input as a variable via `-F variables=@vars.json` with a parameterised mutation.
+- In the GraphQL fallback, embedded double quotes in the description break parsing of the `-f query=...` form. Pass input via `-F variables=@vars.json` with a parameterised mutation.
 - `Task` is a project-scoped work item type. `Epic` and `Objective` have their own creation flows.
 
 See also: `work-item-links` for the iid→GID lookup pattern.

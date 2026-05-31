@@ -88,7 +88,7 @@ glab mr list --source-branch <branch> -F json | jq '.[0].iid'
 
 If a `review.md` was found in Step 4, post it as a note on the MR.
 
-Try the MCP tool `mcp__plugin_gitlab_gitlab__create_merge_request_note` first (if available). Otherwise fall back to:
+Try the MCP tool `mcp__gitlab__manage_mr_discussion` with `action: comment`, `noteable_type: merge_request` first (if available). Otherwise fall back to:
 
 ```bash
 glab mr note create <iid> --message "$(cat <<'EOF'

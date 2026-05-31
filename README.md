@@ -47,7 +47,7 @@ Skills, agents, and rules for GitHub projects.
 
 ### `gitlab`
 
-Skills, agents, and rules for GitLab projects. Includes an MCP server config for the GitLab MCP at `https://gitlab.com/api/v4/mcp`.
+Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](https://gitlab-mcp.sw.foundation/guide/quick-start) — a local MCP that exposes browse/manage tool pairs (`mcp__gitlab__browse_*` / `mcp__gitlab__manage_*`) for work items, merge requests, pipelines, and more.
 
 | Type | Name | Description |
 |------|------|-------------|
@@ -56,7 +56,7 @@ Skills, agents, and rules for GitLab projects. Includes an MCP server config for
 | Rule | `child-task-work-items` | Create pre-work as child `Task` work items rather than bullet points in the description |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
-| Rule | `prefer-gitlab-mcp` | Prefer `mcp__plugin_gitlab_gitlab__*` tools over the `glab` CLI for GitLab operations |
+| Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
 | Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |

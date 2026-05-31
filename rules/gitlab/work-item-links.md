@@ -6,8 +6,8 @@ Link related GitLab work items rather than describing relationships in prose (se
 
 Whenever a description would say "blocks #N", "blocked by #N", "related to #N", or "see #N", create the link via the API. Keep prose explanation if it adds context, but the formal link is the source of truth.
 
-- **Preferred:** GitLab MCP `mcp__plugin_gitlab_gitlab__link_work_items` — `link_type` is lowercase: `relates_to | blocks | blocked_by`. Requires MCP auth via `/mcp`.
-- **Fallback (MCP not available):** `glab api graphql` with `workItemAddLinkedItems`. **Enum casing differs from the MCP** — GraphQL uses `RELATED | BLOCKS | BLOCKED_BY`. Direction is from the source: `linkType: BLOCKED_BY` on source #16 means "#16 is blocked by target".
+- **Preferred:** GitLab MCP `mcp__gitlab__manage_work_item` with `action: add_link` — `linkType` is uppercase: `RELATED | BLOCKS | BLOCKED_BY`. Use `remove_link` to delete a link. `targetId` and `id` both take the numeric work item ID from `browse_work_items` results.
+- **Fallback (MCP not available):** `glab api graphql` with `workItemAddLinkedItems`. GraphQL also uses `RELATED | BLOCKS | BLOCKED_BY`. Direction is from the source: `linkType: BLOCKED_BY` on source #16 means "#16 is blocked by target".
 
 ```sh
 # 1. Resolve iid → global ID (linked-items API takes GIDs, not iids)
@@ -23,8 +23,7 @@ glab api graphql -f query="mutation { workItemRemoveLinkedItems(input: { id: \"$
 
 **Gotchas:**
 
-- Mentioning `#N` in a description sometimes auto-creates a `relates_to` link but does **not** infer direction. A description saying "blocked by #9" can produce a `blocks → #9` link (backwards). Always verify with a query after a mention.
-- `workItemsIds` is plural (max 10 per call).
-- The MCP cannot update an existing link type. To change direction, remove and re-add.
+- `workItemsIds` is plural (max 10 per call) in the GraphQL fallback.
+- Neither the MCP nor the GraphQL API can update an existing link type. To change direction, remove and re-add.
 
 See also: `prefer-gitlab-mcp`, `status` (uses the same iid→GID pattern).
