@@ -17,7 +17,7 @@ This repo also uses its own plugins: `base`, `github`, and `gitlab` are enabled 
   - `agents/` — agent prompt files
   - `scripts/` — shell scripts invoked by hooks
 - **`/rules/<name>/`** — rule markdown files for each plugin; kept separate from `plugins/` and distributed alongside skills and agents
-- **`/.claude/skills/`** — project-local skills not part of any plugin (e.g. `triage-new-memory`)
+- **`/.claude/skills/`** — project-local skills, not distributed via the plugin system (e.g. `triage-new-memory`)
 - **`/.claude/rules/`** — symlinks to `rules/<plugin>/` for org-level rules; direct `.md` files for project-specific overrides
 
 ## Adding or changing content
@@ -26,8 +26,14 @@ Each plugin component has a specific format:
 
 - **Skills** — `plugins/<name>/skills/<skill-name>/SKILL.md`; required frontmatter: `name`, `description`; add `disable-model-invocation: true` for harness-driven skills that must not be invoked by the model itself
 - **Agents** — `plugins/<name>/agents/<agent-name>.md` defining the agent system prompt
-- **Rules** — `rules/<plugin-name>/<rule-name>.md`; use `paths:` frontmatter to scope to specific file globs
-- **Hooks** — registered in `plugins/<name>/.claude-plugin/plugin.json` under `PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/`
+- **Rules** — `rules/<plugin-name>/<rule-name>.md`; use a `paths:` YAML list to scope to specific globs (omit for repo-wide rules):
+  ```yaml
+  ---
+  paths:
+    - "**/*.rs"
+  ---
+  ```
+- **Hooks** — registered in `plugins/<name>/.claude-plugin/plugin.json` under `PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/` and receive the hook payload as JSON on stdin
 
 After adding a new plugin component, update the README table for that plugin.
 
