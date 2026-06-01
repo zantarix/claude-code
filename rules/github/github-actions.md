@@ -1,3 +1,13 @@
+---
+paths:
+  - ".github/workflows/**"
+---
 # GitHub Actions
 
-GitHub Actions has the option to enforce pinned SHAs enabled. Any changes made to workflow actions will need to pin the SHA of the action. The tags used for the SHA should use the `vX.Y.Z` format if one is available as they tend to not have the SHA move.
+Pin all workflow action `uses:` entries to a full commit SHA. Include the version tag as a comment for readability:
+
+```yaml
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+```
+
+Use the `vX.Y.Z` tag format in the comment if one is available.
