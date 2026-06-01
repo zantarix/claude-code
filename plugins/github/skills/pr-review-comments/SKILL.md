@@ -30,6 +30,7 @@ Fetch all review thread comments for the current branch's PR, including which th
        pullRequest(number: PR_NUMBER) {
          reviewThreads(first: 50) {
            nodes {
+             id   
              isResolved
              comments(first: 1) {
                nodes {
@@ -47,6 +48,7 @@ Fetch all review thread comments for the current branch's PR, including which th
    ```
 
 4. Parse and display, grouping by resolved/unresolved. Each `node` in `reviewThreads.nodes` has:
+   - `id`: the thread ID — use this to resolve threads via `resolveReviewThread` if needed
    - `isResolved`: boolean — true if the thread was resolved in the GitHub UI
    - `comments.nodes[0]`: the first (usually only) comment in the thread, with `path`, `originalLine`, `body`, `author.login`
 
