@@ -30,7 +30,7 @@ Fetch all review thread comments for the current branch's PR, including which th
        pullRequest(number: PR_NUMBER) {
          reviewThreads(first: 50) {
            nodes {
-             id   
+             id
              isResolved
              comments(first: 1) {
                nodes {
