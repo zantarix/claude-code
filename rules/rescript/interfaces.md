@@ -1,3 +1,9 @@
+---
+paths:
+  - "**/*.res"
+  - "**/*.resi"
+---
+
 # Interfaces
 
 Interfaces (`.resi` files) define just the public interface of a module. This shouldn't include internal details like whether a function is externally defined or not, it should simply declare the type of the things which other modules can interact with.

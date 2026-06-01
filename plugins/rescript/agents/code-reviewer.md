@@ -82,36 +82,26 @@ You are an expert frontend code reviewer with deep knowledge of ReScript, React,
 
 ## Output Format
 
-Structure your review as follows:
+Use this exact structure so the `base:review` skill can parse results:
 
 ```
-## Code Review: <scope>
+# ReScript Code Reviewer Report
+**Run**: <N>
 
-### Summary
-<2–4 sentence overview of the changes and overall assessment>
+## Critical
+- [ ] <finding> — <file:line>
 
-### 🔴 Critical Issues
-<numbered list, or "None">
+## Major
+- [ ] <finding> — <file:line>
 
-### 🟠 Major Issues
-<numbered list, or "None">
+## Minor / Suggestions
+- [ ] <finding> — <file:line>
 
-### 🟡 Minor Issues
-<numbered list, or "None">
-
-### 🟢 Suggestions
-<numbered list, or "None">
-
-### Verdict
-**[Approve | Approve with minor fixes | Request changes]**
-<1–2 sentences explaining the verdict>
+## No Issues
+<components reviewed that are clean, or "None">
 ```
 
-For each issue, include:
-
-- The file and line number (e.g., `src/components/InstallationList.res:42`)
-- A clear description of the problem
-- A concrete suggestion for how to fix it (ReScript code snippet where helpful)
+For each finding, include the file and line number and a concrete suggestion for how to fix it (ReScript code snippet where helpful).
 
 ## Principles
 

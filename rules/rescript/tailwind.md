@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.res"
+  - "**/*.resi"
+  - "**/*.css"
+---
+
 # TailwindCSS
 
 Tailwind class names must be included in full and never constructed from parts. This rule applies only to individual class names, not the full `className` attribute. The code scanner requires being able to see the full class names in the raw source to know which classes to include in the final CSS bundle.

@@ -5,7 +5,7 @@ description: Use to verify and commit staged or unstaged changes with a well-cra
 
 Commit the current changes following this project's standards. Perform the steps below in order, stopping and reporting any failures.
 
-1. **Verify** the code quality using the `/verify-code` skill, if any relevant source code or test files have changed. Fix any failures before proceeding.
+1. **Verify** the code quality using the appropriate verify-code skill for this project's language (`/rescript:verify-code` for ReScript/pnpm projects, `/rust:verify-code` for Rust/cargo projects), if any relevant source code or test files have changed. Fix any failures before proceeding.
 
 2. **Accept** the ADR that triggered this change using the `/accept-adr` skill, if the change was an implementation for an ADR.
 

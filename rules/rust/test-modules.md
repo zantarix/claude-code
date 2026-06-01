@@ -39,6 +39,6 @@ mod tests;
 
 with the test bodies in `src/foo/tests.rs` (or in `src/foo/tests/<topic>.rs` if the suite is split across topics).
 
-**Why:** Production files stay focused on production logic; module sizes stop ballooning under the org's 1000-line limit (`.claude/shared/rules/rust/modules.md`); and large test suites can be split into topical submodules under `tests/` without disrupting production code layout. Inline `mod tests { ... }` blocks defeat all of these.
+**Why:** Production files stay focused on production logic; module sizes stop ballooning under the org's 1000-line limit; and large test suites can be split into topical submodules under `tests/` without disrupting production code layout. Inline `mod tests { ... }` blocks defeat all of these.
 
 **Out of scope.** This rule applies only to test cases. Non-test `#[cfg(test)]` items — crate-wide test helpers, fixture builders, or types that must be `pub(crate)`-visible to multiple test files — may remain in production files when no sensible test-module home exists. Crate-level integration tests under `tests/` follow Cargo's own layout, not this rule.

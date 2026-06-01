@@ -1,6 +1,6 @@
 ---
 name: verify-code
-description: Use to fully verify changes made to code.
+description: Use to fully verify changes made to ReScript code using pnpm (format, build, test).
 ---
 
 Verify the current changes pass all quality checks. Run these steps in order, attempting to fix any failures or stop if
