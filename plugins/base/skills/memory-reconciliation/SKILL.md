@@ -22,6 +22,12 @@ If `MEMORY.md` does not exist there, stop and report "No memories recorded for t
 
 Read `MEMORY.md` and every memory file it references. Note any files in the directory that are not linked from the index — surface those as orphans in the final report rather than triaging them.
 
+For each memory file, check the frontmatter for a `triaged` field. Skip the file **if and only if** the field is present and its value is the boolean `true` — any other value (absent, `false`, a string) means the file is included. Files without a frontmatter block at all are always included. Skipped files were already kept by a previous triage run.
+
+If the user invokes this skill with the phrase "review all" or "include triaged", ignore the `triaged` field entirely and include every file.
+
+Report the count of skipped memories at the top of the triage table so the user knows they exist.
+
 ## Step 3: Categorise each memory by outcome
 
 For each memory, choose **one** of the four outcomes below. Outcomes describe *what happens next*; the bullets under each describe the different situations that lead to the same action.
@@ -80,7 +86,7 @@ Below the table, list:
 Process each row in order:
 
 1. **Outcome A (Discard)** — delete the memory file and remove its line from `MEMORY.md`.
-2. **Outcome B (Keep)** — no action.
+2. **Outcome B (Keep)** — add `triaged: true` to the memory file's frontmatter. If no frontmatter block exists, create one at the top of the file (`---\ntriaged: true\n---`). If one already exists, insert `triaged: true` into it. This marks it as reviewed so future triage runs skip it automatically. To re-queue a kept memory, remove the `triaged` key from its frontmatter entirely (do not set it to `false`).
 3. **Outcome C (Project rule)**:
    - Before writing, grep `.claude/rules/`, `rules/`, and `CLAUDE.md` for the topic to confirm no existing rule covers it. If one does, reclassify as Outcome A and tell the user.
    - Write `.claude/rules/<name>.md`. Use the memory's **Why** and **How to apply** structure as the body. Add `paths:` frontmatter if the rule is scoped to specific files; leave unscoped only if it applies repo-wide.
