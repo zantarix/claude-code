@@ -2,7 +2,8 @@
 name: review
 description: |-
   Run all *-reviewer agents concurrently, fix critical/major issues, and report results.
-  Loops until no triageable findings remain. Stores all output under .reviews/.
+  Re-runs the reviewers after each fix round, stopping only when a run surfaces no new
+  critical/major findings to fix. Stores all output under .reviews/.
 
   Proactively use this skill to review code you've created if you have added or modified more than two functions, or
   whenever you complete an implementation plan.
@@ -70,6 +71,8 @@ After all agents return, write each result to a file:
 
 Read all report files from `run-<N>/`. Triageable items are all findings in the **Critical** and **Major** sections.
 
+Note the triage count for this run **before fixing anything**: the number of Critical + Major findings across this run's reports. This feeds the per-run summary table in Step 7. The loop decision itself is driven by how many of these you actually fix (`fixed_this_run`, recorded in Step 5) — not by re-counting checkboxes after the fact.
+
 **Important**: Minor/Suggestions never trigger loop iterations — they are recorded for the user to review in the final report.
 
 ## Step 5: Fix triageable items
@@ -82,18 +85,22 @@ For each unchecked `- [ ]` triageable item:
 
 Do NOT fix minor/suggestions items.
 
+Record `fixed_this_run` = the number of items you marked `- [x]` in this step. This is the signal that decides whether to loop (Step 6).
+
 ## Step 6: Check loop condition
 
-Read all report files from `run-<N>/`. Count the triageable items that were found in this run (items in Critical and Major sections).
+Fixing code in Step 5 can introduce regressions or reveal findings that were hidden behind the issues you just fixed, so **every fix round must be verified by re-running the reviewers against the updated code.** Do NOT treat "I fixed everything in this run" as a reason to stop — that is the most common failure of this skill. You may only finish from a run in which you fixed nothing.
 
-If any triageable items were found (excluding those marked "needs human input") in the latest run **AND** `run < max_runs`:
+Decide using the values you recorded, not by re-reading and re-counting the (now mutated) checkboxes:
+
+If `fixed_this_run > 0` **AND** `run < max_runs`:
 
 - Increment `run` by 1.
-- Return to Step 3.
+- Return to Step 3. This re-launches all reviewers against the code as it now stands, including your fixes.
 
-Proceed to Step 7 when either:
+Proceed to Step 7 only when either:
 
-- No triageable items were found in the latest run (all clean or all fixed), **or**
+- `fixed_this_run == 0` — this run made no fixes, meaning it was clean or its only remaining items are marked `*(needs human input)*`. This is the verifying run that confirms the previous round's fixes hold. (Note: a run whose findings are *all* needs-human-input also stops here — re-running would surface the identical findings on unchanged code.) **Or**
 - `run == max_runs` — in this case, annotate any remaining unchecked `- [ ]` triageable items across all run reports with `*(needs human input)*`.
 
 ## Step 7: Final collation
