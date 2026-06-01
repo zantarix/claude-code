@@ -107,7 +107,7 @@ Skip this step if no Outcome C rows ran (no new project rules were written).
 Otherwise:
 
 1. Invoke the `/init` skill to refresh `CLAUDE.md` against the new rule set. This catches any high-level project description that should now defer to a freshly written rule.
-2. After `/init` completes, run a single pass of the `@base:documentation-reviewer` agent over the changes. Pass it the list of rule files written in Step 5 plus any `CLAUDE.md` edits from `/init`, and ask it to flag any other documentation (docs site, ADRs, `CONTRIBUTING.md`) that should be updated to match. Do not loop — one pass is enough; surface its findings in the final report for the user to action.
+2. Run the `/review` skill over all changed files. This runs all reviewer agents concurrently, auto-fixes critical/major findings, and loops until clean — follow its full workflow rather than surfacing findings for manual action.
 
 ## Step 7: Report
 
@@ -116,5 +116,5 @@ Summarise:
 - Total memories reviewed.
 - Counts per outcome (A/B/C/D).
 - Files written, files deleted, and links to any issues filed.
-- `/init` and documentation-reviewer findings, if Step 6 ran.
+- `/init` and `/review` findings, if Step 6 ran.
 - Any rows the user deferred for a future run.

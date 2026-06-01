@@ -173,8 +173,8 @@ Skip this step if no A, B, or C row ran (no rule files changed).
 Otherwise:
 
 1. Invoke the `/init` skill to refresh `CLAUDE.md` against the new rule set.
-2. Run a single pass of the `@base:documentation-reviewer` agent over the changed files. Surface its findings — do not loop.
-3. If `/init` made any edits, commit them as a single trailing `chore: refresh CLAUDE.md after rule additions` commit. Do not bundle these changes into a per-issue commit — they reflect the whole batch, not any one issue. Documentation-reviewer findings are reported, not auto-applied.
+2. Run the `/review` skill over all changed files. This runs all reviewer agents concurrently, auto-fixes critical/major findings, and loops until clean — follow its full workflow rather than surfacing findings for manual action.
+3. If `/init` made any edits, commit them as a single trailing `chore: refresh CLAUDE.md after rule additions` commit. Do not bundle these changes into a per-issue commit — they reflect the whole batch, not any one issue.
 
 ## Step 8: Report
 
@@ -183,7 +183,7 @@ Summarise:
 - Total issues triaged, counts per outcome (A/B/C/D/E).
 - Per-row commit hashes and subjects (A/B/C), with the linked issue number.
 - Issues closed via the CLI (D) and issues left open (E), with links.
-- `/init` and documentation-reviewer findings, if Step 7 ran.
+- `/init` and `/review` findings, if Step 7 ran.
 - Any rows the user deferred for a future run.
 
 The issues closed via `Closes #<n>` trailers remain *open* on GitHub until the commit reaches the default branch — flag this in the report so the user knows the final close happens at merge time.

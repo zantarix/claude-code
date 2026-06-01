@@ -16,7 +16,7 @@ This repo also uses its own plugins: `base`, `github`, and `gitlab` are enabled 
   - `skills/` — skill `.md` files with YAML frontmatter
   - `agents/` — agent prompt files
   - `scripts/` — shell scripts invoked by hooks
-- **`/rules/<name>/`** — rule markdown files for each plugin; kept separate from `plugins/` and distributed alongside skills and agents
+- **`/rules/<name>/`** — rule markdown files for each plugin; kept separate from `plugins/` because the plugin harness does not distribute them automatically (tracked: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Consumer projects must add this repo as a git submodule and symlink the relevant `rules/<plugin>/` directories into their own `.claude/rules/`.
 - **`/.claude/skills/`** — project-local skills, not distributed via the plugin system (e.g. `triage-new-memory`)
 - **`/.claude/rules/`** — symlinks to `rules/<plugin>/` for org-level rules; direct `.md` files for project-specific overrides
 

@@ -38,3 +38,5 @@ glab api graphql -f query='mutation { workItemConvert(input: {
   workItemTypeId: "gid://gitlab/WorkItems::Type/1114"
 }) { errors workItem { workItemType { name } } } }'
 ```
+
+See also: `prefer-gitlab-mcp` (explains the MCP enum limitation that makes GraphQL necessary here); `child-task-work-items` (uses `workItemTypeId` for the Task type).
