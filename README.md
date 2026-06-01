@@ -56,6 +56,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Skill | `create-merge-request` | Create a GitLab MR for the current branch; posts the session's `/review` summary as a comment if the session folder is known |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
 | Rule | `child-task-work-items` | Create pre-work as child `Task` work items rather than bullet points in the description |
+| Rule | `custom-work-item-types` | Use `glab api graphql` for custom GitLab work item types; includes known GIDs for this organisation |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
