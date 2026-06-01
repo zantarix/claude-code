@@ -33,6 +33,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `memory-feedback` | Write feedback memories as generalized rules, not session-specific notes; reframe narrow entries rather than discarding them |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments, including dev shell lifecycle |
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, and surfacing real alternatives) |
+| Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
 
 ### `github`
