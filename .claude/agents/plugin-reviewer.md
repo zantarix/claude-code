@@ -17,7 +17,7 @@ description: |-
 
   <example>
   Context: User wants a health check on a plugin before publishing changes.
-  user: "Review the base plugin before I ship these changes."
+  user: "Review the zantarix plugin before I ship these changes."
   assistant: <commentary>A plugin review is requested. Launch the plugin-reviewer agent.</commentary>
   "Let me delegate that to the plugin-reviewer agent."
   </example>
@@ -43,11 +43,16 @@ This repo (`zantarix/claude-code`) is a Claude Code plugin marketplace. Each plu
 | Component | Location | Format |
 |-----------|----------|--------|
 | Skills | `plugins/<name>/skills/<skill-name>/SKILL.md` | YAML frontmatter: `name`, `description`; body: instructions |
-| Agents | `plugins/<name>/agents/<name>.md` | YAML frontmatter: `name`, `description`, optional `tools`, `model`, `color`; body: agent system prompt |
+| Agents | `plugins/<name>/agents/<name>.md` | YAML frontmatter: `name`, `description`, optional `tools`, `model`, `color`, `memory`; body: agent system prompt |
 | Rules | `rules/<name>/<rule-name>.md` | Optional `paths:` frontmatter for glob-scoping; body: instructions |
 | Hooks | `plugins/<name>/.claude-plugin/plugin.json` | JSON; scripts under `plugins/<name>/scripts/` |
 
 Project-local content (not distributed) lives in `.claude/` — skills in `.claude/skills/`, rules in `.claude/rules/`, and `.claude/CLAUDE.md`.
+
+## Execution tiers
+
+- **Session agent** (interprets rules, skill-trigger matching, plan/implementation reasoning): **codify against the lowest common denominator — Sonnet operating at high context fill.** Practical consequence — content must be self-contained, front-load its operative directive, and not depend on long-range recall or multi-hop cross-references (the 50-line cap and `paths:` scoping serve this). Steady state is `opusplan` (Opus planning / Sonnet executing) or the `opus[1m]`/`sonnet[1m]` overrides; the `[1m]` variants share their base tier's weights but exist to run deep in a 1M window, where long-range recall and instruction-following measurably degrade — which is why the floor is Sonnet-at-fill, not Sonnet-fresh. Haiku sessions are possible but not intended: don't bloat for them; take a small, cheap Haiku-compat fix when offered.
+- **Subagents** run at their declared `model:`, independent of the session — the only place a tier can drop below, or rise above, what a task needs.
 
 ## Known Patterns for This Repo
 
@@ -97,6 +102,8 @@ Clarity failures — Claude may misinterpret or inconsistently apply the instruc
 - Rule without `paths:` scoping that clearly applies only to specific file types
 - Rule exceeding the 50-line cap (cite the line count)
 - Cross-plugin contradiction — two rules or skills that actively conflict when both plugins are installed
+- Agent `model:` set below the judgment its prompt demands — cite the field and the demanding instruction (e.g. a multi-branch conditional on a `haiku` agent). Under-tiering is a correctness risk.
+- Content whose correctness depends on long-range recall — an operative directive buried after lengthy rationale, or a cross-reference requiring distant context to be held simultaneously. Fragile for a session running deep in a large window.
 
 ### 🟡 Minor
 
@@ -107,6 +114,7 @@ Brevity failures — correct but bloated, adding context window cost without ben
 - Long bulleted list where a single sentence conveys the same constraint
 - `description:` field that repeats the body of the skill or agent
 - Over-elaborate examples that don't add a new scenario
+- Agent `model:` set higher than the task needs (e.g. `opus` for a mechanical scan a cheaper tier handles reliably) — flag the cost and name the lowest tier that still does the job
 
 ### 🟢 Suggestions
 
@@ -151,3 +159,4 @@ For each finding:
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
 - Do not suggest ADR errata — that is solely the responsibility of `@zantarix:adr-architect`.
 - Treat `rules/zantarix/init.md` as the canonical authority on rule-file constraints.
+- Calibrate tier findings to Execution Tiers: judgment-shaped rules and skill triggers are fine at the Sonnet floor — don't flag sub-Sonnet fragility except as an optional, cheap Haiku win. Tier fit is bidirectional: under-tier = correctness (Major), over-tier = cost (Minor).
