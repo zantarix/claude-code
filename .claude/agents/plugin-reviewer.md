@@ -29,7 +29,7 @@ description: |-
   "I'll have the plugin-reviewer agent scan for conflicts."
   </example>
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
-model: sonnet
+model: opus
 color: blue
 memory: project
 ---
