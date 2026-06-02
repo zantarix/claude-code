@@ -1,3 +1,5 @@
 .claude/agent-memory/plugin-reviewer
 .reviews/
 .tmp/
+.direnv/
+.env
