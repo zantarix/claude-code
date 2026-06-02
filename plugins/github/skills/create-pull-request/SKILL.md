@@ -2,6 +2,7 @@
 name: create-pull-request
 description: |-
   Create a GitHub pull request for the current branch, describing the changes made.
+  Adds a `Closes #N` line when the work implements a ticket.
   If /review was run in this session and the session folder is known, posts the review summary as a comment.
   Use proactively whenever the user asks to create a PR or pull request.
 ---
@@ -46,6 +47,7 @@ Use this to draft the PR title and body:
 - **Title**: Use the single commit's subject if there is only one; otherwise write a short summary that captures the overall theme.
 - **Summary**: 2–4 bullet points describing what changed and why.
 - **Test plan**: A brief markdown checklist of what was tested or verified (e.g. ran verify, reviewed output).
+- **Closes**: If this PR implements a specific issue or ticket, include a `Closes #N` line in the body so GitHub auto-closes the issue on merge. Infer the issue number from the plan or context — the user's request, the branch name, or earlier conversation. Omit if no ticket is clearly associated.
 
 ## Step 4: Check for a session review summary
 
@@ -70,6 +72,8 @@ gh pr create \
 ## Test plan
 
 - [ ] <item>
+
+Closes #<number>  ← replace with actual issue number; omit this line entirely if no ticket is associated
 
 ---
 :robot: Submitted by Claude Code on behalf of this user.
