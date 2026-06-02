@@ -4,7 +4,41 @@ Claude Code plugins for Zantarix projects.
 
 ## Usage
 
-Add this marketplace to your project's Claude Code configuration to pull in the plugins you need.
+### Installing the plugins
+
+Register this marketplace and enable the plugins you need in your project's `.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "zantarix": {
+      "source": { "source": "github", "repo": "zantarix/claude-code" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "zantarix@zantarix": true,
+    "github@zantarix": true,
+    "gitlab@zantarix": true
+  }
+}
+```
+
+Enable only the plugins relevant to the project — e.g. a Rust service adds `"rust@zantarix": true`; a ReScript app adds `"rescript@zantarix": true`. Pick **one** of `github`/`gitlab` to match where the project is hosted. Plugin keys are `<plugin>@zantarix` (the `@zantarix` suffix is the marketplace name).
+
+### Including the rules
+
+The Claude Code plugin harness does **not** yet distribute rule files (tracked upstream: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Until it does, consumer projects pull the rules in manually:
+
+1. Add this repo as a git submodule at `.claude/shared`.
+2. Symlink the `rules/<plugin>/` directories you need into your project's `.claude/rules/` — one symlink per enabled plugin (e.g. `.claude/rules/gitlab` → `../shared/rules/gitlab`).
+
+Rules pulled in this way are **organisation rules** and should be treated as immutable; project-specific overrides go in plain `.md` files directly under `.claude/rules/`.
+
+### Model recommendations
+
+- **Session model:** use `opusplan` — Opus does the planning, Sonnet executes. For work that runs deep in a 1M-token window, the `opus[1m]` / `sonnet[1m]` overrides keep the same tiers while accommodating the larger context. The plugin content is authored against a **Sonnet-at-high-context-fill** floor, so it stays reliable on the executing tier.
+- **Subagents:** each agent declares its own `model:` (and, where supported, `effort:`) — reviewers run on Sonnet/Haiku, while the `adr-architect` and reasoning-heavy agents run on Opus. You don't need to tune these per-session; the tier is baked into the agent for the judgment it requires.
 
 ## Plugins
 
@@ -55,16 +89,20 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 |------|------|-------------|
 | Skill | `create-merge-request` | Create a GitLab MR for the current branch; posts the session's `/review` summary as a comment if the session folder is known |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
-| Rule | `child-task-work-items` | Create pre-work as child `Task` work items rather than bullet points in the description |
-| Rule | `custom-work-item-types` | Use `glab api graphql` for custom GitLab work item types; includes known GIDs for this organisation |
+| Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a ticket |
+| Skill | `custom-work-item-types` | Create or convert work items to custom types (Bug/Incident/Ticket/Tracker) via `glab api graphql`; carries this org's type GIDs |
+| Skill | `link-work-items` | Link two work items (related / blocks / blocked-by) via the relationship API |
+| Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`) |
+| Rule | `child-task-work-items` | Track ticket pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
+| Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill; the MCP enum rejects them |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
-| Rule | `status` | Update the native work item status field (`Triage` → `To do` → `In progress` → `Done`) as work progresses |
+| Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`); change it via the `gitlab:set-work-item-status` skill |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
-| Rule | `work-item-links` | Link related work items via API rather than naming them in prose |
+| Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
 
 ### `rescript`
 

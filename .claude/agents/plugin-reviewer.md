@@ -30,6 +30,7 @@ description: |-
   </example>
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
 model: opus
+effort: high
 color: blue
 memory: project
 ---

@@ -28,6 +28,7 @@ description: |-
    </example>
 tools: Glob, Grep, Read, Bash, WebFetch, WebSearch, Bash(cargo test:*)
 model: sonnet
+effort: high
 color: cyan
 ---
 

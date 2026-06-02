@@ -27,6 +27,7 @@ description: |-
    </example>
 tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash
 model: opus
+effort: high
 color: purple
 memory: project
 ---

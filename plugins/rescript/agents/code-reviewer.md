@@ -22,6 +22,7 @@ description: |-
   </example>
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
 model: sonnet
+effort: medium
 color: cyan
 ---
 

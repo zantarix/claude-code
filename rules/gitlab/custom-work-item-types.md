@@ -1,42 +1,9 @@
-# Creating and converting GitLab work items with custom types
+# Custom GitLab work item types
 
-The `mcp__gitlab__manage_work_item` tool only accepts built-in GitLab work item types via its enum (`ISSUE`, `TASK`, `EPIC`, etc.). Custom types like `Bug`, `Incident`, `Ticket`, `Tracker` require `glab api graphql`.
+The `mcp__gitlab__manage_work_item` tool only accepts built-in work item types via its enum (`ISSUE`, `TASK`, `EPIC`, …). Custom types — `Bug`, `Incident`, `Ticket`, `Tracker` — cannot be created or converted through the MCP and require `glab api graphql`.
 
-### Look up type GIDs
+**How to apply:**
 
-```sh
-glab api graphql -f query='query { group(fullPath: "GROUP_PATH") { workItemTypes { nodes { id name } } } }'
-```
+When creating a work item of a custom type, or changing an existing item's type, invoke the `gitlab:custom-work-item-types` skill via the Skill tool — it carries the known type GIDs for this organisation and the `workItemCreate` / `workItemConvert` incantations. Don't reach for the MCP enum for these types; it will reject them.
 
-Known GIDs for this organisation (valid across all projects):
-
-- `Bug` → `gid://gitlab/WorkItems::Type/1114`
-- `Epic` → `gid://gitlab/WorkItems::Type/8`
-- `Incident` → `gid://gitlab/WorkItems::Type/2`
-- `Issue` → `gid://gitlab/WorkItems::Type/1`
-- `Task` → `gid://gitlab/WorkItems::Type/5`
-- `Ticket` → `gid://gitlab/WorkItems::Type/9`
-- `Tracker` → `gid://gitlab/WorkItems::Type/1100`
-
-### Create a custom-typed work item
-
-```sh
-glab api graphql -f query='mutation { workItemCreate(input: {
-  namespacePath: "NAMESPACE",
-  workItemTypeId: "gid://gitlab/WorkItems::Type/1114",
-  title: "Title here"
-}) { errors workItem { iid workItemType { name } } } }'
-```
-
-### Change an existing work item's type
-
-Use `workItemConvert`, not `workItemUpdate` — `workItemTypeId` is not accepted by `WorkItemUpdateInput`:
-
-```sh
-glab api graphql -f query='mutation { workItemConvert(input: {
-  id: "gid://gitlab/WorkItem/NUMERIC_ID",
-  workItemTypeId: "gid://gitlab/WorkItems::Type/1114"
-}) { errors workItem { workItemType { name } } } }'
-```
-
-See also: `prefer-gitlab-mcp` (explains the MCP enum limitation that makes GraphQL necessary here); `child-task-work-items` (uses `workItemTypeId` for the Task type).
+See also: `prefer-gitlab-mcp` (the MCP enum limitation), `child-task-work-items`.
