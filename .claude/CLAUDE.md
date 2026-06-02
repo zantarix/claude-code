@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project purpose
 
-This repo is a **Claude Code plugin marketplace** for Zantarix projects. It publishes five plugins (`base`, `github`, `gitlab`, `rescript`, `rust`) that other projects pull in via `extraKnownMarketplaces` in their `.claude/settings.json`. There is no build step, test suite, or compiled output — the repo is entirely configuration and markdown.
+This repo is a **Claude Code plugin marketplace** for Zantarix projects. It publishes five plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`) that other projects pull in via `extraKnownMarketplaces` in their `.claude/settings.json`. There is no build step, test suite, or compiled output — the repo is entirely configuration and markdown.
 
-This repo also uses its own plugins: `base`, `github`, and `gitlab` are enabled in `.claude/settings.json`.
+This repo also uses its own plugins: `zantarix`, `github`, and `gitlab` are enabled in `.claude/settings.json`.
 
 ## Repository layout
 
@@ -39,9 +39,9 @@ After adding a new plugin component, update the README table for that plugin.
 
 ## Active hooks
 
-The `base` plugin installs two hooks active in this repo:
+The `zantarix` plugin installs two hooks active in this repo:
 
-- **`guard-adr.sh`** (PreToolUse, Edit/Write/MultiEdit) — blocks any agent except `base:adr-architect` from writing under `docs/adr/`. Delegate ADR edits via the `@base:adr-architect` agent.
+- **`guard-adr.sh`** (PreToolUse, Edit/Write/MultiEdit) — blocks any agent except `zantarix:adr-architect` from writing under `docs/adr/`. Delegate ADR edits via the `@zantarix:adr-architect` agent.
 - **`format.sh`** (PostToolUse, Edit/Write) — runs `markdownlint --fix` on `.md` files after every edit automatically; no manual formatting step is needed.
 
 ## Commit conventions

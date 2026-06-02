@@ -23,7 +23,7 @@ Tell the user the name of the branch that was created before continuing.
 
 ## Step 2: Commit
 
-Run the `/base:commit` skill. If it fails, stop and report the failure before proceeding.
+Run the `/zantarix:commit` skill. If it fails, stop and report the failure before proceeding.
 
 ## Step 3: Push
 

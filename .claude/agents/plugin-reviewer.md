@@ -54,10 +54,10 @@ Project-local content (not distributed) lives in `.claude/` — skills in `.clau
 The following are intentional design choices — do not flag them as issues:
 
 - **`/init` skill invocations** in `memory-reconciliation` and `triage-new-memory` — `/init` is a harness built-in provided by all Claude Code installations; it is always available regardless of which plugins are installed.
-- **`plugin-reviewer` included in `/review` scope** — the `base:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
-- **`rules/base/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/base/init.md`.
+- **`plugin-reviewer` included in `/review` scope** — the `zantarix:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
+- **`rules/zantarix/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/zantarix/init.md`.
 
-Constraints from `rules/base/init.md` (authoritative):
+Constraints from `rules/zantarix/init.md` (authoritative):
 
 - Rules must not exceed **50 lines**
 - Rules must use `paths:` frontmatter to scope to relevant files unless the rule genuinely applies everywhere
@@ -70,7 +70,7 @@ Constraints from `rules/base/init.md` (authoritative):
 
 3. **Apply the rubric to each changed component** (see dimensions below).
 
-4. **Always run a cross-plugin scan** regardless of what changed: read the skill descriptions and rule bodies across all five plugins (`base`, `github`, `gitlab`, `rescript`, `rust`). Look for:
+4. **Always run a cross-plugin scan** regardless of what changed: read the skill descriptions and rule bodies across all five plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`). Look for:
    - Skill descriptions that overlap so much Claude would be ambiguous about which to invoke
    - Rules in different plugins that contradict each other when both are active
    - Hooks or scripts that would collide or double-fire
@@ -118,7 +118,7 @@ Opportunities to improve, **and** items the reviewer is unsure about:
 
 ## Output Format
 
-Use this exact structure so the `base:review` skill can parse results:
+Use this exact structure so the `zantarix:review` skill can parse results:
 
 ```
 # Plugin Reviewer Report
@@ -149,5 +149,5 @@ For each finding:
 - Tie every finding to a concrete consequence. Do not flag style in isolation.
 - Unchecked `- [ ]` items in Critical and Major will trigger the review loop's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
-- Do not suggest ADR errata — that is solely the responsibility of `@base:adr-architect`.
-- Treat `rules/base/init.md` as the canonical authority on rule-file constraints.
+- Do not suggest ADR errata — that is solely the responsibility of `@zantarix:adr-architect`.
+- Treat `rules/zantarix/init.md` as the canonical authority on rule-file constraints.

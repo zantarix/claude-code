@@ -8,7 +8,7 @@ Add this marketplace to your project's Claude Code configuration to pull in the 
 
 ## Plugins
 
-### `base`
+### `zantarix`
 
 General-purpose skills, agents, and rules for all Zantarix projects.
 

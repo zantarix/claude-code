@@ -82,7 +82,7 @@ You are an expert Rust code reviewer with deep knowledge of systems programming,
 
 ## Output Format
 
-Use this exact structure so the `base:review` skill can parse results:
+Use this exact structure so the `zantarix:review` skill can parse results:
 
 ```
 # Rust Code Reviewer Report

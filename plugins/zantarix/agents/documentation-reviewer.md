@@ -100,6 +100,6 @@ Structure your report as follows:
 - **Quote current text**: When docs are wrong, show what they say now so the user can see the discrepancy.
 - **Explain the connection**: Always link back to the specific code change that creates the documentation gap.
 - **Don't flag style or formatting**: Only flag content that is factually incorrect, missing, or misleading as a result of the code changes.
-- **Don't flag ADR content**: ADRs are immutable historical records once accepted. If a code change contradicts an accepted ADR, flag that as a potential architectural concern rather than a documentation update — it may need a new ADR instead. Never suggest adding errata; errata are the sole responsibility of `@base:adr-architect`. Implementation discrepancies against a `Proposed` ADR are fair game and should be flagged for inlining.
+- **Don't flag ADR content**: ADRs are immutable historical records once accepted. If a code change contradicts an accepted ADR, flag that as a potential architectural concern rather than a documentation update — it may need a new ADR instead. Never suggest adding errata; errata are the sole responsibility of `@zantarix:adr-architect`. Implementation discrepancies against a `Proposed` ADR are fair game and should be flagged for inlining.
 - **Check doc comments too**: If a public function's signature or behavior changed, its doc comment should match.
 - **Prioritise user-facing docs**: Changes to the docs site and CLI reference matter more than internal comments.

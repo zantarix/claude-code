@@ -9,7 +9,7 @@
 		}
 	},
 	"enabledPlugins": {
-		"base@zantarix": true,
+		"zantarix@zantarix": true,
 		"github@zantarix": true,
 		"gitlab@zantarix": true
 	}

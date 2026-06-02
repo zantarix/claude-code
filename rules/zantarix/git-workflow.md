@@ -2,7 +2,7 @@
 
 ## Committing changes
 
-When the user asks to commit changes, invoke the `base:commit` skill via the Skill tool before any other action — do not reach for `git commit` directly.
+When the user asks to commit changes, invoke the `zantarix:commit` skill via the Skill tool before any other action — do not reach for `git commit` directly.
 
 **Why:** The skill runs verify-code, accepts pending ADRs, creates the changeset, stages files safely, and enforces commit message conventions. Bypassing it skips those gates.
 

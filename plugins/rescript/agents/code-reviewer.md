@@ -82,7 +82,7 @@ You are an expert frontend code reviewer with deep knowledge of ReScript, React,
 
 ## Output Format
 
-Use this exact structure so the `base:review` skill can parse results:
+Use this exact structure so the `zantarix:review` skill can parse results:
 
 ```
 # ReScript Code Reviewer Report

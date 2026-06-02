@@ -26,7 +26,7 @@ case "$FILE_PATH" in
 esac
 
 # Allow the adr-architect agent whether invoked as a subagent or directly via --agent
-if [ "$AGENT_TYPE" = "base:adr-architect" ]; then
+if [ "$AGENT_TYPE" = "zantarix:adr-architect" ]; then
   exit 0
 fi
 
@@ -35,7 +35,7 @@ jq -n '{
   hookSpecificOutput: {
     hookEventName: "PreToolUse",
     permissionDecision: "deny",
-    permissionDecisionReason: "Files under docs/adr/ are owned by the base:adr-architect agent. Delegate this change via the Task tool with subagent_type=\"base:adr-architect\", or invoke directly with `claude --agent base:adr-architect` (see rules/base/adr.md)."
+    permissionDecisionReason: "Files under docs/adr/ are owned by the zantarix:adr-architect agent. Delegate this change via the Task tool with subagent_type=\"zantarix:adr-architect\", or invoke directly with `claude --agent zantarix:adr-architect` (see rules/zantarix/adr.md)."
   }
 }'
 exit 0

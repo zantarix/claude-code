@@ -10,8 +10,8 @@
 	},
 	"plugins": [
 		{
-			"name": "base",
-			"source": "./plugins/base",
+			"name": "zantarix",
+			"source": "./plugins/zantarix",
 			"description": "Basic skills for working with Zantarix projects",
 			"homepage": "https://github.com/zantarix/claude-code"
 		},

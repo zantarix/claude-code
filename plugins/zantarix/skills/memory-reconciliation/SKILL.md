@@ -57,7 +57,7 @@ Write the memory's content as a rule committed to the repo, then discard the mem
 
 ### Outcome D — Promote to an org rule
 
-File an issue against `zantarix/claude-code` proposing a new rule under the appropriate plugin (`base`, `github`, `gitlab`, `rescript`, or `rust`), then discard the memory. Situations that lead here:
+File an issue against `zantarix/claude-code` proposing a new rule under the appropriate plugin (`zantarix`, `github`, `gitlab`, `rescript`, or `rust`), then discard the memory. Situations that lead here:
 
 - The memory describes a practice that applies to *every* Zantarix project, not just this one.
 

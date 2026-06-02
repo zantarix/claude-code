@@ -2,7 +2,7 @@
 
 Big decisions are documented in ADR format in the `docs/adr/` folder. To see what ADRs exist, their titles, statuses, and summaries, consult `docs/adr/README.md`.
 
-Any changes to the `docs/adr/` folder should be handled by delegating to the `@base:adr-architect` agent.
+Any changes to the `docs/adr/` folder should be handled by delegating to the `@zantarix:adr-architect` agent.
 
 When reading an ADR file, always read the whole file. Errata appear at the end of the file which may change the context of the content.
 
@@ -29,7 +29,7 @@ When cross-linking to ADRs in related projects, use the format "Project Name ADR
 
 ## Errata
 
-Errata are the sole responsibility of the `@base:adr-architect` agent. No other agent or skill should add or suggest errata.
+Errata are the sole responsibility of the `@zantarix:adr-architect` agent. No other agent or skill should add or suggest errata.
 
 * Do not consider adding errata to `Deprecated` or `Superceded` ADRs. These are purely historical documents, not current references.
 * If an ADR is `Proposed` or in the process of being `Accepted`, you should inline any updates rather than adding errata.
@@ -42,4 +42,4 @@ Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. 
 
 Do not assume a trait-signature change automatically requires an ADR. If the fix is a straightforward bug repair — no new architectural surface, no alternative designs with meaningfully different trade-offs, just restoring intended behaviour — skip the ADR and go straight to an implementation plan.
 
-Before invoking `/base:plan-adr`, ask: does this decision introduce a new pattern, reject a plausible alternative, or affect contracts beyond the immediate fix? If the answer is "no, it just restores intended behaviour by mirroring an existing pattern," propose a direct implementation plan instead.
+Before invoking `/zantarix:plan-adr`, ask: does this decision introduce a new pattern, reject a plausible alternative, or affect contracts beyond the immediate fix? If the answer is "no, it just restores intended behaviour by mirroring an existing pattern," propose a direct implementation plan instead.

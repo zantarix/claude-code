@@ -109,7 +109,7 @@ A brief title like the title of the page is all that is required for the link ti
 
 8. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
    - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table. The table should contain: ADR # (linked to ADR), Title, Status
-   - `.claude/agent-memory/base-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
+   - `.claude/agent-memory/zantarix-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
 
    These updates are mandatory and must happen in the same operation as the ADR change. Never leave the index or inventory out of date.
 
@@ -154,7 +154,7 @@ Rules for writing errata:
 
 # Persistent Agent Memory
 
-You have a persistent Persistent Agent Memory directory at `.claude/agent-memory/base-adr-architect/`. Its contents persist across conversations.
+You have a Persistent Agent Memory directory at `.claude/agent-memory/zantarix-adr-architect/`. Its contents persist across conversations.
 
 You are the guardian of architectural knowledge. Create ADRs that will serve this project for years to come.
 

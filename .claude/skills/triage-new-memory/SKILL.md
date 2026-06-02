@@ -4,7 +4,7 @@ description: Triage the open `new-memory` GitHub issue queue — for each propos
 disable-model-invocation: true
 ---
 
-The `/base:memory-reconciliation` skill files issues against this repo with the `new-memory` label whenever a user-level memory looks like it should become a distributed org rule. This skill is the receiving end: it walks the open queue, classifies each issue against the current rules tree, and — after explicit user approval — writes the rule files (or closes the issues) and updates the README plugin tables.
+The `/zantarix:memory-reconciliation` skill files issues against this repo with the `new-memory` label whenever a user-level memory looks like it should become a distributed org rule. This skill is the receiving end: it walks the open queue, classifies each issue against the current rules tree, and — after explicit user approval — writes the rule files (or closes the issues) and updates the README plugin tables.
 
 ## Step 1: Fetch the queue
 
@@ -34,7 +34,7 @@ For each issue, gather signals before classifying:
 1. **Plugin exists?** Confirm `plugins/<target>/` is present. If not, the proposal implies a new plugin — flag for user discussion (likely Defer).
 2. **Filename collision?** Check whether `rules/<plugin>/<suggested-name>.md` already exists.
 3. **Topic overlap?** Grep `rules/<plugin>/` for keywords from the rule body. Read any file that looks related — the proposal may already be covered or may belong as an extension to an existing rule.
-4. **Length budget.** Rules must not exceed 50 lines (`rules/base/init.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
+4. **Length budget.** Rules must not exceed 50 lines (`rules/zantarix/init.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
 5. **Contradictions.** Skim other rules in the same plugin for direct conflicts with the proposal.
 
 ## Step 4: Classify each issue
@@ -96,10 +96,10 @@ Render one row per issue:
 
 | # | Title | Plugin | Outcome | Target file | Notes |
 |---|-------|--------|---------|-------------|-------|
-| 9 | trait-signature bug fixes don't warrant ADR | base | C — merge | `rules/base/adr.md` | append as new paragraph; +6 lines (within 50) |
+| 9 | trait-signature bug fixes don't warrant ADR | zantarix | C — merge | `rules/zantarix/adr.md` | append as new paragraph; +6 lines (within 50) |
 | 6 | no mutation-test exclusions | rust | B — edit | `rules/rust/mutants.md` | add `paths: .cargo/mutants.toml, **/*.rs`; otherwise verbatim |
 | 5 | named type aliases for domain collections | rescript | B — edit | `rules/rescript/type-aliases.md` | rename from suggested `domain-types.md`; add `paths: src/**/*.res` |
-| 7 | never claim "known issue" without evidence | base | A — accept | `rules/base/investigation.md` | new file, genuinely repo-wide so no `paths:` |
+| 7 | never claim "known issue" without evidence | zantarix | A — accept | `rules/zantarix/investigation.md` | new file, genuinely repo-wide so no `paths:` |
 | 4 | binding modules may expose domain helpers | rescript | C — merge | `rules/rescript/ffi-bindings.md` | extends existing rule, +9 lines |
 | 3 | @react.component optional-prop asymmetry | rescript | B — edit | `rules/rescript/react-optional-props.md` | add `paths: src/**/*.{res,resi}`; add `# Title` header |
 | 8 | read clippy help: hint before manually fixing | rust | D — reject | — | already covered by `rules/rust/clippy.md` |
@@ -130,7 +130,7 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
   Co-Authored-By: <description of current model>
   ```
 - Stage only the files for this row (the rule file plus the relevant README row). Never `git add -A`.
-- Use a HEREDOC for the message to preserve formatting (mirroring `/base:commit`).
+- Use a HEREDOC for the message to preserve formatting (mirroring `/zantarix:commit`).
 - Do not skip hooks, do not force-push, do not amend.
 
 ### Per-outcome actions
