@@ -3,7 +3,7 @@ name: create-pull-request
 description: |-
   Create a GitHub pull request for the current branch, describing the changes made.
   Adds a `Closes #N` line when the work implements a ticket.
-  If /review was run in this session and the session folder is known, posts the review summary as a comment.
+  If /review was run in this session and the session folder is known, posts the review.md file verbatim as a comment.
   Use proactively whenever the user asks to create a PR or pull request.
 ---
 
@@ -49,11 +49,11 @@ Use this to draft the PR title and body:
 - **Test plan**: A brief markdown checklist of what was tested or verified (e.g. ran verify, reviewed output).
 - **Closes**: If this PR implements a specific issue or ticket, include a `Closes #N` line in the body so GitHub auto-closes the issue on merge. Infer the issue number from the plan or context — the user's request, the branch name, or earlier conversation. Omit if no ticket is clearly associated.
 
-## Step 4: Check for a session review summary
+## Step 4: Check for a session review
 
 Check whether `/review` was run earlier in this conversation and the session folder path is already known from context (e.g. `.reviews/2026-05-29-200316/`). Do **not** scan the filesystem — `.reviews/` accumulates folders from many branches and sessions, so a filesystem search would pick up stale reviews.
 
-If the session folder is known, the review summary is at `<session>/review.md`. Read its full contents — it will be posted as a comment after PR creation.
+If the session folder is known, the review is at `<session>/review.md`. Read its full contents — it is already the finished review document and will be posted **verbatim** as a comment after PR creation. Do not summarise, paraphrase, or re-format it.
 
 If no session folder is known from this conversation, skip the comment step entirely.
 
@@ -87,15 +87,13 @@ After the command succeeds, capture the PR number from the command output or by 
 gh pr list --head $(git branch --show-current) --json number,url | jq '.[0]'
 ```
 
-## Step 6: Post the review summary as a comment (if found)
+## Step 6: Post the review as a comment (if found)
 
-If a `review.md` was found in Step 4, post it as a comment on the PR:
+If a `review.md` was found in Step 4, post its contents **verbatim** as a comment on the PR. The file already carries its own title and section headings — paste it exactly as written; do not add a wrapping header, summarise, paraphrase, truncate, re-classify findings, or restructure headings. The only permitted addition is the sign-off appended below it.
 
 ```bash
 gh pr comment <number> --body "$(cat <<'EOF'
-## Automated Review Summary
-
-<contents of review.md>
+<verbatim contents of review.md — pasted exactly, not summarised>
 
 ---
 :robot: Submitted by Claude Code on behalf of this user.

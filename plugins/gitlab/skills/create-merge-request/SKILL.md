@@ -3,7 +3,7 @@ name: create-merge-request
 description: |-
   Create a GitLab merge request for the current branch, describing the changes made.
   Adds a `Closes #N` line when the work implements a ticket.
-  If /review was run in this session and the session folder is known, posts the review summary as a comment.
+  If /review was run in this session and the session folder is known, posts the review.md file verbatim as a comment.
   Use proactively whenever the user asks to create an MR or merge request.
 ---
 
@@ -49,11 +49,11 @@ Use this to draft the MR title and body:
 - **Test plan**: A brief markdown checklist of what was tested or verified (e.g. ran verify, reviewed output).
 - **Closes**: If this MR implements a specific work item, include a `Closes #N` line in the body so GitLab auto-closes the work item on merge. Infer the work item number from the plan or context — the user's request, the branch name, or earlier conversation. Omit if no ticket is clearly associated.
 
-## Step 4: Check for a session review summary
+## Step 4: Check for a session review
 
 Check whether `/review` was run earlier in this conversation and the session folder path is already known from context (e.g. `.reviews/2026-05-29-200316/`). Do **not** scan the filesystem — `.reviews/` accumulates folders from many branches and sessions, so a filesystem search would pick up stale reviews.
 
-If the session folder is known, the review summary is at `<session>/review.md`. Read its full contents — it will be posted as a comment after MR creation.
+If the session folder is known, the review is at `<session>/review.md`. Read its full contents — it is already the finished review document and will be posted **verbatim** as a comment after MR creation. Do not summarise, paraphrase, or re-format it.
 
 If no session folder is known from this conversation, skip the comment step entirely.
 
@@ -88,17 +88,15 @@ After the command succeeds, capture the MR IID from the command output or by que
 glab mr list --source-branch <branch> -F json | jq '.[0].iid'
 ```
 
-## Step 6: Post the review summary as a comment (if found)
+## Step 6: Post the review as a comment (if found)
 
-If a `review.md` was found in Step 4, post it as a note on the MR.
+If a `review.md` was found in Step 4, post its contents **verbatim** as a note on the MR. The file already carries its own title and section headings — paste it exactly as written; do not add a wrapping header, summarise, paraphrase, truncate, re-classify findings, or restructure headings. The only permitted addition is the sign-off appended below it.
 
 Try the MCP tool `mcp__gitlab__manage_mr_discussion` with `action: comment`, `noteable_type: merge_request` first (if available). Otherwise fall back to:
 
 ```bash
 glab mr note create <iid> --message "$(cat <<'EOF'
-## Automated Review Summary
-
-<contents of review.md>
+<verbatim contents of review.md — pasted exactly, not summarised>
 
 ---
 :robot: Submitted by Claude Code on behalf of this user.

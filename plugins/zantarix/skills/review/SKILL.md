@@ -107,25 +107,66 @@ Proceed to Step 7 only when either:
 
 ## Step 7: Final collation
 
-First, mechanically extract the authoritative needs-human-input set. Do not eyeball it — run:
+First, mechanically extract the authoritative needs-human-input set across **all runs'** reports. Do not eyeball it — run:
 
 ```
-grep -rn '(needs human input)' .reviews/<session>/run-*/
+grep -rh '\*(needs human input)\*[[:space:]]*$' .reviews/<session>/run-*/ | sed 's/[[:space:]]*\*(needs human input)\*[[:space:]]*$//'
 ```
 
-Record the line count as `needs_human`. These exact lines are the canonical list; paste them into the prompt below so the collation **copies** them rather than re-deriving them.
+Two details matter:
 
-Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt (with the grep output substituted in):
+- **Anchor to end of line (`…$`).** Step 5 *appends* the marker, so a real annotation is always the last thing on its line. When this skill reviews itself a finding may quote the marker in its prose (e.g. `` `*(needs human input)*` `` inside a code span), but that sits mid-line with a closing backtick after it — `$` excludes it. Matching the marker anywhere on the line caused false positives.
+- **`-h` plus the `sed`.** `-h` drops the filename prefix so the session's absolute, username-bearing audit path never leaks into the shared `review.md`; the `sed` then strips the marker itself — internal jargon, meaningless to an external PR/MR reviewer. The run-N source files keep their markers for the drop rule below.
 
-> Read all reviewer report files under `.reviews/<session>/`. Create a consolidated review at `.reviews/<session>/review.md` with:
+Scan **all** runs (`run-*/`), not just the last one: the reviewer agents are non-deterministic, so an item flagged in one run may be absent from another. Duplication across runs is acceptable here — a repeated needs-human item is harmless, but a dropped one is not. Record the output line count as `needs_human`. These exact lines are the canonical list; paste them into the prompt below so the collation **copies** them rather than re-deriving them.
+
+Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt with the grep output substituted in, and substitute `<session>` as the **repo-relative** path `.reviews/<YYYY-MM-DD-HHMMSS>/` (never an absolute path — `review.md` is shared). The template below is **mandatory and exact** — emit exactly these sections, in this order, with these heading texts verbatim. Do not rename, reorder, merge, split, or add sections (no `## Summary`, no `## No Issues`, no run-count in the title). Do not append finding counts to any heading.
+
+> Read all reviewer report files under `.reviews/<session>/run-*/`. Write a consolidated review to `.reviews/<session>/review.md` reproducing this skeleton **exactly** — fill in the placeholders, change nothing else:
 >
-> 1. **Summary table**: rows = reviewer agents, columns = run number and finding count per run. Show how many critical, major, and minor findings each reviewer reported in each run.
-> 2. **Findings by Severity**: Group all findings (across all runs and reviewers) by severity. Place each finding under the **exact** severity heading (Critical / Major / Minor) it carries in its source `run-N` file — do NOT re-classify. A Critical stays Critical. For each, show the `[ ]` or `[x]` status and which run it appeared in, but **strip any `*(needs human input)*` annotation here** — that marker must appear only in section 4, so a grep of `review.md` for it yields the canonical count, not double.
-> 3. **Auto-Fixed Items**: List all findings marked `[x]`.
-> 4. **Needs Human Input**: Reproduce these `<needs_human>` lines verbatim — do not add, drop, re-label, or change the severity of any. This section must contain exactly `<needs_human>` items: <paste the grep output here>
-> 5. **Minor / Suggestions Not Actioned**: Summary of all minor/suggestions that were never looped on. Do NOT include any line that already appears in section 4.
+> ```markdown
+> # Consolidated Review
 >
-> Format as clean markdown. Include counts and cross-references to the original reports in `run-N/` folders.
+> **Session**: `.reviews/<session>/`
+> **Runs**: <highest run number>
+>
+> ## Summary Table
+>
+> | Reviewer | Run | Critical | Major | Minor |
+> |----------|-----|----------|-------|-------|
+> | <agent-name> | <n> | <count> | <count> | <count> |
+> | **Total** | — | <sum> | <sum> | <sum> |
+>
+> ## Needs Human Input
+>
+> <canonical lines, pasted verbatim>
+>
+> ## Other findings
+>
+> ### Critical
+>
+> - [ ] <finding> — <file:line> (run <n>)
+>
+> ### Major
+>
+> - [ ] <finding> — <file:line> (run <n>)
+>
+> ### Minor / Suggestions
+>
+> - [ ] <finding> — <file:line> (run <n>)
+>
+> ### Auto-Fixed Items
+>
+> - [x] <finding> — <file:line>
+> ```
+>
+> Rules for filling it in:
+>
+> - One Summary Table row per (reviewer, run) pair; the final `**Total**` row sums every cell above it.
+> - Under `## Other findings`, in `### Critical`, `### Major`, `### Minor / Suggestions`: place each finding under the **exact** severity heading it carries in its source `run-N` file — never re-classify. Show its `[ ]`/`[x]` status and originating run. **Omit entirely any line that *ends with* the `*(needs human input)*` marker** — drop the whole line, do not edit it. (Match only the marker at end of line: a Minor finding may quote the marker mid-line in its prose — keep those.) The dropped findings already appear in the `## Needs Human Input` section above; dropping them here keeps each finding in exactly one section. The marker exists only in the run-N source files — it never appears in `review.md`.
+> - `### Auto-Fixed Items` (under `## Other findings`): every finding marked `[x]`, across all runs.
+> - `## Needs Human Input`: reproduce these lines verbatim — do not add, drop, re-label, or change the severity of any. This section must contain exactly <needs_human> items: <paste the grep output here>
+> - If a section has no items, keep its heading and write `None` on the line below it. Never omit a heading.
 
 ## Step 8: Report to user
 

@@ -79,7 +79,7 @@ Skills, agents, and rules for GitHub projects.
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `create-pull-request` | Create a GitHub PR for the current branch; adds `Closes #N` when the work implements a ticket; posts the session's `/review` summary as a comment if the session folder is known |
+| Skill | `create-pull-request` | Create a GitHub PR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review.md file verbatim as a comment if the session folder is known |
 | Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
 | Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
 | Rule | `pr` | Always invoke the `github:create-pull-request` skill rather than calling `gh pr create` directly |
@@ -90,7 +90,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the session's `/review` summary as a comment if the session folder is known |
+| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review.md file verbatim as a comment if the session folder is known |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
 | Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a ticket |
 | Skill | `custom-work-item-types` | Create or convert work items to custom types (Bug/Incident/Ticket/Tracker) via `glab api graphql`; carries this org's type GIDs |
