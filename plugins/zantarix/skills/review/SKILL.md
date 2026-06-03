@@ -85,6 +85,8 @@ For each unchecked `- [ ]` triageable item:
 
 Do NOT fix minor/suggestions items.
 
+**The `*(needs human input)*` lines in the `run-N` report files are the single source of truth for the "needs human attention" list.** Every downstream view — the `review.md` collation (Step 7) and the inline summary (Step 8) — must reproduce *exactly* that set: same items, same count, same severity heading. Never re-derive, re-classify, or re-count the set downstream; only ever copy it. A Critical that needs human input stays a Critical; a Minor is never in this set.
+
 Record `fixed_this_run` = the number of items you marked `- [x]` in this step. This is the signal that decides whether to loop (Step 6).
 
 ## Step 6: Check loop condition
@@ -105,15 +107,23 @@ Proceed to Step 7 only when either:
 
 ## Step 7: Final collation
 
-Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt:
+First, mechanically extract the authoritative needs-human-input set. Do not eyeball it — run:
+
+```
+grep -rn '(needs human input)' .reviews/<session>/run-*/
+```
+
+Record the line count as `needs_human`. These exact lines are the canonical list; paste them into the prompt below so the collation **copies** them rather than re-deriving them.
+
+Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt (with the grep output substituted in):
 
 > Read all reviewer report files under `.reviews/<session>/`. Create a consolidated review at `.reviews/<session>/review.md` with:
 >
 > 1. **Summary table**: rows = reviewer agents, columns = run number and finding count per run. Show how many critical, major, and minor findings each reviewer reported in each run.
-> 2. **Findings by Severity**: Group all findings (across all runs and reviewers) by severity (Critical, Major, Minor). For each, show the `[ ]` or `[x]` status and which run it appeared in.
+> 2. **Findings by Severity**: Group all findings (across all runs and reviewers) by severity. Place each finding under the **exact** severity heading (Critical / Major / Minor) it carries in its source `run-N` file — do NOT re-classify. A Critical stays Critical. For each, show the `[ ]` or `[x]` status and which run it appeared in, but **strip any `*(needs human input)*` annotation here** — that marker must appear only in section 4, so a grep of `review.md` for it yields the canonical count, not double.
 > 3. **Auto-Fixed Items**: List all findings marked `[x]`.
-> 4. **Needs Human Input**: List findings marked "needs human input" — these were not auto-fixed.
-> 5. **Minor / Suggestions Not Actioned**: Summary of all minor/suggestions that were never looped on.
+> 4. **Needs Human Input**: Reproduce these `<needs_human>` lines verbatim — do not add, drop, re-label, or change the severity of any. This section must contain exactly `<needs_human>` items: <paste the grep output here>
+> 5. **Minor / Suggestions Not Actioned**: Summary of all minor/suggestions that were never looped on. Do NOT include any line that already appears in section 4.
 >
 > Format as clean markdown. Include counts and cross-references to the original reports in `run-N/` folders.
 
@@ -139,5 +149,7 @@ Present a concise inline summary:
 
 **Full report**: `.reviews/<session>/review.md`
 ```
+
+The **Needs Human Attention** list must contain exactly the `needs_human` items from Step 7 — the same lines, the same count, with their original severity. It is a copy of the canonical set, not a fresh judgement. Before presenting, re-run the Step 7 grep and confirm its line count equals both this list's count and `review.md`'s Needs Human Input count. If the three diverge, the `run-N` files win — recount from them and correct the summary before reporting.
 
 All findings and iterations are logged in the session folder for audit and transparency.

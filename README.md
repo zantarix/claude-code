@@ -38,7 +38,7 @@ Rules pulled in this way are **organisation rules** and should be treated as imm
 ### Model recommendations
 
 - **Session model:** use `opusplan` — Opus does the planning, Sonnet executes. For work that runs deep in a 1M-token window, the `opus[1m]` / `sonnet[1m]` overrides keep the same tiers while accommodating the larger context. The plugin content is authored against a **Sonnet-at-high-context-fill** floor, so it stays reliable on the executing tier.
-- **Subagents:** each agent declares its own `model:` (and, where supported, `effort:`) — reviewers run on Sonnet/Haiku, while the `adr-architect` and reasoning-heavy agents run on Opus. You don't need to tune these per-session; the tier is baked into the agent for the judgment it requires.
+- **Subagents:** each agent declares its own `model:` (and, where supported, `effort:`) — you don't need to tune these per-session; the tier is baked into the agent for the judgment it requires.
 
 ## Plugins
 
@@ -66,9 +66,12 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `investigation` | Never claim "known issue" without evidence — bisect first to rule out self-introduced regressions |
 | Rule | `memory-feedback` | Write feedback memories as generalized rules, not session-specific notes; reframe narrow entries rather than discarding them |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments, including dev shell lifecycle |
+| Rule | `non-functional` | Non-functional requirements |
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, and surfacing real alternatives) |
 | Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
+| Rule | `testing` | Test conventions |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
+| Rule | `workflow` | Coding discipline |
 
 ### `github`
 
@@ -94,12 +97,12 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Skill | `link-work-items` | Link two work items (related / blocks / blocked-by) via the relationship API |
 | Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`) |
 | Rule | `child-task-work-items` | Track ticket pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
-| Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill; the MCP enum rejects them |
+| Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
 | Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
-| Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`); change it via the `gitlab:set-work-item-status` skill |
+| Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`) |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
 | Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
