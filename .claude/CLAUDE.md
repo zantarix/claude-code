@@ -11,11 +11,7 @@ This repo also uses its own plugins: `zantarix`, `github`, and `gitlab` are enab
 ## Repository layout
 
 - **`/.claude-plugin/marketplace.json`** — registry root; lists all five plugins with their source paths
-- **`/plugins/<name>/`** — one directory per plugin, containing:
-  - `.claude-plugin/plugin.json` — plugin metadata and hook definitions
-  - `skills/` — skill `.md` files with YAML frontmatter
-  - `agents/` — agent prompt files
-  - `scripts/` — shell scripts invoked by hooks
+- **`/plugins/<name>/`** — one directory per plugin; holds `plugin.json` metadata plus `skills/`, `agents/`, and `scripts/` subdirectories
 - **`/rules/<name>/`** — rule markdown files for each plugin; kept separate from `plugins/` because the plugin harness does not distribute them automatically (tracked: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Consumer projects must add this repo as a git submodule and symlink the relevant `rules/<plugin>/` directories into their own `.claude/rules/`.
 - **`/.claude/skills/`** — project-local skills, not distributed via the plugin system (e.g. `triage-new-memory`)
 - **`/.claude/rules/`** — symlinks to `rules/<plugin>/` for org-level rules; direct `.md` files for project-specific overrides
@@ -27,12 +23,14 @@ Each plugin component has a specific format:
 - **Skills** — `plugins/<name>/skills/<skill-name>/SKILL.md`; required frontmatter: `name`, `description`; add `disable-model-invocation: true` for harness-driven skills that must not be invoked by the model itself
 - **Agents** — `plugins/<name>/agents/<agent-name>.md` defining the agent system prompt
 - **Rules** — `rules/<plugin-name>/<rule-name>.md`; use a `paths:` YAML list to scope to specific globs (omit for repo-wide rules):
+
   ```yaml
   ---
   paths:
     - "**/*.rs"
   ---
   ```
+
 - **Hooks** — registered in `plugins/<name>/.claude-plugin/plugin.json` under `PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/` and receive the hook payload as JSON on stdin
 
 After adding a new plugin component, update the README table for that plugin.

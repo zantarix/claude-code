@@ -6,9 +6,7 @@ When proposing structural changes (new modules, new patterns, cross-cutting infr
 
 ## Scan Proposed ADRs before designing a new feature
 
-When designing a new feature, scan `docs/adr/` for ADRs with status `Proposed` (not just `Accepted`) that touch overlapping subsystems. The new design must either depend on them, work around them, or explicitly note the conflict. Check `git log docs/adr/` and the README index to surface recent additions.
-
-**Why:** Proposed ADRs are upcoming commitments. Ignoring them produces designs that immediately rot when the proposed decision lands.
+When designing a new feature, scan `docs/adr/` for ADRs with status `Proposed` (not just `Accepted`) that touch overlapping subsystems — they are upcoming commitments. The new design must either depend on them, work around them, or explicitly note the conflict. Check `git log docs/adr/` and the README index to surface recent additions.
 
 ## Pause before accepting an ADR
 

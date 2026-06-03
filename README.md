@@ -101,11 +101,10 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
-| Rule | `prefer-gitlab-mcp` | Prefer `mcp__gitlab__*` tools over the `glab` CLI for GitLab operations |
+| Rule | `prefer-gitlab-mcp` | GitLab tool order: prefer `mcp__gitlab__*` tools, fall back to `glab` CLI, never raw `curl` |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
 | Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`) |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
-| Rule | `use-glab-cli-not-curl` | Use `glab` CLI instead of raw `curl` for GitLab API calls |
 | Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
 
 ### `rescript`

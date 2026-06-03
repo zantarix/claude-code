@@ -6,13 +6,9 @@ paths:
 
 # React optional prop annotation asymmetry
 
-When a `@react.component` receives an optional prop with no default value, the annotation must differ between files:
+For an optional `@react.component` prop with no default value, the annotation differs by file:
 
-- **`.resi`**: `~prop: T=?` — `=?` already implies `option<T>` at the interface; write the base type
-- **`.res`**: `~prop: option<T>=?` — annotate explicitly as `option<T>` because there is no default to derive the type from; this gives `option<T>` inside the function body
+- **`.resi`**: `~prop: T=?` — `=?` already implies `option<T>`; write the base type. (`option<T>=?` here causes a props-type mismatch.)
+- **`.res`**: `~prop: option<T>=?` — annotate explicitly; with no default the compiler cannot infer the type, and `T=?` gives a type error.
 
-The asymmetry is required — without explicit `option<T>` on the impl side the compiler cannot infer the type. Contrast with `~exact: bool=false` where the default makes `bool` unambiguous.
-
-**Why:** Non-obvious; easy to get wrong in both directions (`option<int>=?` in `.resi` causes a props-type mismatch; `int=?` in `.res` gives a type error with no default).
-
-**How to apply:** For any optional prop with no default — `T=?` in `.resi`, `option<T>=?` in `.res`.
+Contrast `~exact: bool=false`, where the default makes `bool` unambiguous.

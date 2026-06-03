@@ -1,5 +1,7 @@
-When the user writes a GitLab reference like `api#14` vs `api!14`, the sigil matters: `#N` is an **issue / work item**, `!N` is a **merge request**, `&N` is an **epic**. They are distinct objects with the same number.
+Honour the sigil in a GitLab reference exactly — `#N`, `!N`, and `&N` are distinct objects that can share a number:
 
-**Why:** I read "api#14 with feedback from GitHub" and fetched MR `!14` instead of issue `#14`. The user corrected: "You've confused api!14 (the MR) and api#14 (the work item)."
+- `#N` → issue / work item: use `get_issue` or work-item notes for that iid
+- `!N` → merge request: use `get_merge_request`
+- `&N` → epic
 
-**How to apply:** Honour the exact sigil. `#` → `get_issue` / work-item-notes for that iid. `!` → `get_merge_request`. Don't substitute one for the other even if numbers coincide. Note: `get_workitem_notes` with a given iid resolves the *issue* work item, not the MR.
+Never substitute one sigil for another, even when the numbers coincide. Note: `get_workitem_notes` with a given iid resolves the *issue* work item, not the MR.
