@@ -17,7 +17,7 @@ ADR's can be in one of four statuses:
 
 ### Accepting ADRs
 
-After implementation, an ADR must be marked accepted using the `/accept-adr` skill. Accepting an ADR should not be included as part of an implementation plan, rather it should be a step taken just before committing changes.
+After implementation, an ADR must be marked accepted using the `/accept-adr` skill. This happens automatically as part of the `/zantarix:commit` skill — do not invoke `/accept-adr` manually or include it as a step in an implementation plan.
 
 Once an ADR has been marked accepted and committed to git, it is immutable. The only exceptions to this is further updates to it's status or the addition of an Errata section at the end of the ADR with notes about smaller changes that affect this ADR with a forward link to the ADR that made the change.
 

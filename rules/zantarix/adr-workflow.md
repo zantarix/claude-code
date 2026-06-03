@@ -8,9 +8,9 @@ When proposing structural changes (new modules, new patterns, cross-cutting infr
 
 When designing a new feature, scan `docs/adr/` for ADRs with status `Proposed` (not just `Accepted`) that touch overlapping subsystems — they are upcoming commitments. The new design must either depend on them, work around them, or explicitly note the conflict. Check `git log docs/adr/` and the README index to surface recent additions.
 
-## Pause before accepting an ADR
+## Pause before committing an ADR implementation
 
-After completing an ADR implementation (code + tests + verify-code + reviewers), pause and report. Do NOT immediately delegate to the adr-architect to run `/accept-adr`, and do NOT commit. The user reviews first. The "accept just before commit" ordering is correct but the user is the trigger.
+After completing an ADR implementation (code + tests + verify-code + reviewers), pause and report. Do NOT commit automatically — the user commits when ready. Accepting the ADR runs as part of the `/zantarix:commit` skill under the user's control.
 
 ## Verify existing implementation before scoping ADR work
 
