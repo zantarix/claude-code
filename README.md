@@ -53,7 +53,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
-| Skill | `review` | Run all `*-reviewer` agents concurrently, auto-fix critical/major issues, and report results |
+| Skill | `review` | Run all `*-reviewer` agents over the current changes — partitioning large diffs into cohesive chunks reviewed in parallel — then fix critical/major findings in a single pass; stores all output under `.reviews/` |
 | Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |

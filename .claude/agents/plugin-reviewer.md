@@ -28,7 +28,7 @@ description: |-
   assistant: <commentary>Cross-plugin conflict check requested. Launch the plugin-reviewer agent.</commentary>
   "I'll have the plugin-reviewer agent scan for conflicts."
   </example>
-tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
+tools: Glob, Grep, Read, Write(.reviews/**), Bash(git diff:*), Bash(git log:*), Bash(git show:*)
 model: opus
 effort: high
 color: blue
@@ -68,6 +68,16 @@ Constraints from `rules/zantarix/init.md` (authoritative):
 - Rules must not exceed **50 lines**
 - Rules must use `paths:` frontmatter to scope to relevant files unless the rule genuinely applies everywhere
 
+## Review modes
+
+The `zantarix:review` skill invokes you with a **mode** and a **scope** — honour both:
+
+- **`full`** (the default when no mode is given) — review the entire scope: per-component analysis **and** the cross-plugin scan (Review Process step 4).
+- **`partition`** — review only the chunk you were handed, in depth. Report findings **only** for components in that chunk; do **not** assert that anything outside it is clean or otherwise — other agents cover the rest. Skip the cross-plugin scan.
+- **`cross`** — skip per-component depth. Run only the cross-plugin scan (Review Process step 4): overlapping skill descriptions, contradictory rules across plugins, and colliding or double-firing hooks.
+
+**Cheap-bail:** if the scope you were handed contains no plugin, rule, or hook content, return `No Issues` immediately and stop — do not manufacture findings to justify the spawn.
+
 ## Review Process
 
 1. **Identify changed plugin content**: Run `git diff` and check `git log` for the current branch to find all modified files under `plugins/**`, `rules/**`, and `.claude/{skills,rules,CLAUDE.md}`. These are the primary focus of the review.
@@ -76,7 +86,7 @@ Constraints from `rules/zantarix/init.md` (authoritative):
 
 3. **Apply the rubric to each changed component** (see dimensions below).
 
-4. **Always run a cross-plugin scan** regardless of what changed: read the skill descriptions and rule bodies across all five plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`). Look for:
+4. **Run a cross-plugin scan** (in `full` and `cross` modes; in `partition` mode skip this and focus on your chunk): read the skill descriptions and rule bodies across all five plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`). Look for:
    - Skill descriptions that overlap so much Claude would be ambiguous about which to invoke
    - Rules in different plugins that contradict each other when both are active
    - Hooks or scripts that would collide or double-fire
@@ -131,7 +141,7 @@ Use this exact structure so the `zantarix:review` skill can parse results:
 
 ```
 # Plugin Reviewer Report
-**Run**: <N>
+**Chunk**: <chunk-id>
 
 ## Critical
 - [ ] <finding> — <file path, line range if relevant>
@@ -156,7 +166,7 @@ For each finding:
 
 - Be specific. Name exact files, line numbers, and quote the offending text.
 - Tie every finding to a concrete consequence. Do not flag style in isolation.
-- Unchecked `- [ ]` items in Critical and Major will trigger the review loop's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
+- Unchecked `- [ ]` items in Critical and Major will trigger the skill's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
 - Do not suggest ADR errata — that is solely the responsibility of `@zantarix:adr-architect`.
 - Treat `rules/zantarix/init.md` as the canonical authority on rule-file constraints.

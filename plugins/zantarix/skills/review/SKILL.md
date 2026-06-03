@@ -1,19 +1,21 @@
 ---
 name: review
 description: |-
-  Run all *-reviewer agents concurrently, fix critical/major issues, and report results.
-  Re-runs the reviewers after each fix round, stopping only when a run surfaces no new
-  critical/major findings to fix. Stores all output under .reviews/.
+  Run all *-reviewer agents over the current changes — partitioning a large diff into
+  cohesive chunks reviewed in parallel — then fix critical/major findings in a single pass.
+  Stores all output under .reviews/. There is no re-run loop: the human review (local, or via
+  the create-pull-request / create-merge-request skills) is the verifying gate; this skill's
+  job is to surface and fix the obvious issues before that gate.
 
-  Proactively use this skill to review code you've created if you have added or modified more than two functions, or
-  whenever you complete an implementation plan.
+  Proactively use this skill to review code you've created if you have added or modified more
+  than two functions, or whenever you complete an implementation plan.
 ---
 
-Review the current changes by running all available reviewer agents concurrently, fixing critical/major issues, and looping until no triageable findings remain.
+Review the current changes by partitioning them into cohesive chunks, running all available reviewer agents over those chunks in parallel, then fixing critical/major findings in a single pass. There is **no re-run loop** — breadth comes from partitioning, not from repeated runs.
 
 ## Step 1: Create review session
 
-Create a timestamped session folder:
+Create a timestamped session folder using `date +%Y-%m-%d-%H%M%S`:
 
 ```
 .reviews/<YYYY-MM-DD-HHMMSS>/
@@ -21,154 +23,132 @@ Create a timestamped session folder:
 
 > **Note**: `.reviews/` is expected to be in `.gitignore`. If it is not present, add it before proceeding.
 
-Use `date +%Y-%m-%d-%H%M%S` to generate the timestamp.
+## Step 2: Determine scope and partition
 
-Initialize a loop counter: `run = 1`, `max_runs = 5`.
+Establish the review scope from the arguments passed to the skill (e.g. specific files, a commit range, or — by default — `git diff HEAD` plus recent commits on the current branch).
 
-## Step 2: Discover reviewers
+**Cheap pre-check first.** If the scope is small — roughly **≤ 10 changed files or ≤ 500 changed lines** — skip partitioning entirely. Treat the whole scope as a single chunk with id `full`, and go to Step 3.
 
-Find all available, pre-defined agents — using only system context — with a name that ends with `-reviewer`. Do not try to search the file system for reviewers. Each matching agent is a reviewer to launch.
+Otherwise, spawn a **partitioner subagent** (`model: opus`; `sonnet` with high effort is acceptable) to divide the scope into cohesive chunks. Pass it this directive:
 
-## Step 3: Launch reviewers and collect output
+> Read the changed code in the given scope (`git diff …`) and group the changed files into cohesive blocks based on the **code's own structure** — module membership, import/call relationships, files that change together.
+>
+> **Keep each feature's code, its tests, and the artifacts they depend on in the same chunk.** A source file and its test file (and the queries, fixtures, or schemas they exercise) are one unit — never separate them. In particular, **never split a subsystem horizontally** into an implementation chunk and a separate tests chunk: that denies every reviewer the ability to judge whether the tests actually cover the code.
+>
+> **Default to grouping at the module / subsystem / directory level**, not per individual struct, type, or file. Sibling files under one directory that changed together usually belong in one chunk, and a lone `mod.rs`, a test harness, or an isolated one-file change should fold into its nearest cohesive neighbour rather than stand alone.
+>
+> **When a single subsystem's change is too large to review in one pass, split it *vertically* into sub-feature slices** — each slice carrying its own code, tests, and artifacts (e.g. split a large GraphQL layer into `comment`/`commit`/`ref-ops` and `pull-request`/`check-run`/`team`, **not** into `impl` and `tests`). Splitting deeper is correct when the volume demands it; just split along feature lines, never along the code-versus-tests line — and this holds even when asked to reduce the chunk count: merge or slice by feature, never by layer.
+>
+> Do not impose an artificial limit on the number of chunks, and do not over-fragment — aim for chunks each reviewable in one focused pass. You may return a single block if the scope is already cohesive.
+>
+> **No chunk should be smaller than 5 files.**
+>
+> **Never leave a single-file or trivially small chunk standing alone** — consolidate bare files, lone test harnesses, or isolated one-file changes into a miscellaneous bucket.
+>
+> You are **reviewer-remit-agnostic**: do NOT consider which reviewers exist or what file types any reviewer cares about. Group by code cohesion only. Deciding that "no reviewer needs this file" is not your job and will cause silent under-coverage.
+>
+> Return a list of chunks. Each chunk has a short kebab-case `id` (e.g. `auth-core`, `cli-flags`) and the list of files/hunks it contains.
 
-Create the run directory:
+Record the returned chunks. A single returned chunk is equivalent to the `full` case.
 
-```
-.reviews/<session>/run-<N>/
-```
+**If the partitioner returns more than 5 chunks, pause and confirm with the user before executing.** Large diffs are exactly where fine-grained automated review is most valuable, so do not silently cap — but a wide fan-out is worth a check. Tell the user the chunk count and the resulting agent estimate — reviewers × (chunks + 1) — and ask whether to proceed as-is or constrain to a lower chunk count. If they give a lower number, re-run the partitioner with that number as a hard maximum and use its result. Five or fewer chunks: proceed without asking.
 
-Launch every discovered reviewer agent **in parallel** using the Agent tool. Pass each agent a prompt describing the scope of the review (e.g., uncommitted changes, recent commits on the branch) and the required output format:
+## Step 3: Discover reviewers
 
-> Please provide your findings in this exact format (return as text):
+Find all available, pre-defined agents — using only system context — whose name ends with `-reviewer`. Do not search the file system. Each match is a reviewer type to launch.
+
+## Step 4: Launch reviewers as background agents
+
+Launch every reviewer with the Agent tool, **as background agents**, so the slow per-result file writes by each reviewer overlap with other reviews still running. Each spawn is parameterised by a **mode** and a **scope**:
+
+- **Single chunk (`full`)** — for each reviewer type, launch one agent with `mode: full`, scope = the entire review scope. A `full`-mode reviewer does both deep review and cross-boundary analysis itself.
+- **Multiple chunks** — for **each chunk**, launch one agent of **each reviewer type** with `mode: partition`, scope = that chunk. Then additionally launch **one agent of each reviewer type** with `mode: cross`, scope = the cross-boundary surface (for declarative reviewers this is the small surface only — e.g. skill `description:` frontmatter, rule bodies, hook definitions — not the full content of every chunk).
+
+Reviewers self-filter: a `partition`/`full` agent handed a chunk with nothing in its remit returns `No Issues` and stops cheaply — it does not manufacture findings. A `partition`-mode agent must report **only on its assigned chunk** and must not assert anything (clean or otherwise) about code it was not given.
+
+**Spawn every reviewer up front** — launch them all, then move on; do not throttle, wave, or count them yourself. The harness tracks how many spawned agents are still running, which is what the Step 6 barrier reads.
+
+Pass each agent the required output format:
+
+> Provide your findings in this exact format and write it to `.reviews/<session>/<reviewer-name>/<chunk-id>.md`:
 >
 > ```
 > # <Your Agent Name> Report
-> **Run**: <N>
+> **Chunk**: <chunk-id>
+> **Mode**: <mode>
+> **Scope**: <scope>
 >
 > ## Critical
-> - [ ] <finding description> — <file/location>
-> - [ ] <finding description> — <file/location>
+> - [ ] <finding> — <file/location>
 >
 > ## Major
-> - [ ] <finding description> — <file/location>
+> - [ ] <finding> — <file/location>
 >
 > ## Minor / Suggestions
-> - [ ] <finding description>
+> - [ ] <finding> — <file/location>
 >
 > ## No Issues
-> <items confirmed clean, or "None">
+> <items confirmed clean within your scope, or "None">
 > ```
 >
 > Use `- [ ]` for each unchecked finding. Do NOT use HTML comments or other markers.
 
-After all agents return, write each result to a file:
+## Step 5: Collation
 
-```
-.reviews/<session>/run-<N>/<agent-name>.md
-```
+Spawn a generic subagent with `model: haiku`. Substitute `<session>` as the **repo-relative** path `.reviews/<YYYY-MM-DD-HHMMSS>/` (never absolute — `review.md` is shared). The template is **mandatory and exact** — emit exactly these sections, in this order, with these heading texts verbatim. Do not rename, reorder, merge, split, or add sections. Do not append counts to any heading.
 
-## Step 4: Triage findings
-
-Read all report files from `run-<N>/`. Triageable items are all findings in the **Critical** and **Major** sections.
-
-Note the triage count for this run **before fixing anything**: the number of Critical + Major findings across this run's reports. This feeds the per-run summary table in Step 7. The loop decision itself is driven by how many of these you actually fix (`fixed_this_run`, recorded in Step 5) — not by re-counting checkboxes after the fact.
-
-**Important**: Minor/Suggestions never trigger loop iterations — they are recorded for the user to review in the final report.
-
-## Step 5: Fix triageable items
-
-For each unchecked `- [ ]` triageable item:
-
-- Apply the fix directly in code or documentation.
-- After fixing, update the checkbox in the report file from `- [ ]` to `- [x]`.
-- If a fix is ambiguous, risky, or requires user input (e.g., architectural decision), **leave the checkbox as `- [ ]`** and append `*(needs human input)*` to that line.
-
-Do NOT fix minor/suggestions items.
-
-**The `*(needs human input)*` lines in the `run-N` report files are the single source of truth for the "needs human attention" list.** Every downstream view — the `review.md` collation (Step 7) and the inline summary (Step 8) — must reproduce *exactly* that set: same items, same count, same severity heading. Never re-derive, re-classify, or re-count the set downstream; only ever copy it. A Critical that needs human input stays a Critical; a Minor is never in this set.
-
-Record `fixed_this_run` = the number of items you marked `- [x]` in this step. This is the signal that decides whether to loop (Step 6).
-
-## Step 6: Check loop condition
-
-Fixing code in Step 5 can introduce regressions or reveal findings that were hidden behind the issues you just fixed, so **every fix round must be verified by re-running the reviewers against the updated code.** Do NOT treat "I fixed everything in this run" as a reason to stop — that is the most common failure of this skill. You may only finish from a run in which you fixed nothing.
-
-Decide using the values you recorded, not by re-reading and re-counting the (now mutated) checkboxes:
-
-If `fixed_this_run > 0` **AND** `run < max_runs`:
-
-- Increment `run` by 1.
-- Return to Step 3. This re-launches all reviewers against the code as it now stands, including your fixes.
-
-Proceed to Step 7 only when either:
-
-- `fixed_this_run == 0` — this run made no fixes, meaning it was clean or its only remaining items are marked `*(needs human input)*`. This is the verifying run that confirms the previous round's fixes hold. (Note: a run whose findings are *all* needs-human-input also stops here — re-running would surface the identical findings on unchanged code.) **Or**
-- `run == max_runs` — in this case, annotate any remaining unchecked `- [ ]` triageable items across all run reports with `*(needs human input)*`.
-
-## Step 7: Final collation
-
-First, mechanically extract the authoritative needs-human-input set across **all runs'** reports. Do not eyeball it — run:
-
-```
-grep -rh '\*(needs human input)\*[[:space:]]*$' .reviews/<session>/run-*/ | sed 's/[[:space:]]*\*(needs human input)\*[[:space:]]*$//'
-```
-
-Two details matter:
-
-- **Anchor to end of line (`…$`).** Step 5 *appends* the marker, so a real annotation is always the last thing on its line. When this skill reviews itself a finding may quote the marker in its prose (e.g. `` `*(needs human input)*` `` inside a code span), but that sits mid-line with a closing backtick after it — `$` excludes it. Matching the marker anywhere on the line caused false positives.
-- **`-h` plus the `sed`.** `-h` drops the filename prefix so the session's absolute, username-bearing audit path never leaks into the shared `review.md`; the `sed` then strips the marker itself — internal jargon, meaningless to an external PR/MR reviewer. The run-N source files keep their markers for the drop rule below.
-
-Scan **all** runs (`run-*/`), not just the last one: the reviewer agents are non-deterministic, so an item flagged in one run may be absent from another. Duplication across runs is acceptable here — a repeated needs-human item is harmless, but a dropped one is not. Record the output line count as `needs_human`. These exact lines are the canonical list; paste them into the prompt below so the collation **copies** them rather than re-deriving them.
-
-Spawn a generic subagent with `model: haiku` using the Agent tool. Pass this prompt with the grep output substituted in, and substitute `<session>` as the **repo-relative** path `.reviews/<YYYY-MM-DD-HHMMSS>/` (never an absolute path — `review.md` is shared). The template below is **mandatory and exact** — emit exactly these sections, in this order, with these heading texts verbatim. Do not rename, reorder, merge, split, or add sections (no `## Summary`, no `## No Issues`, no run-count in the title). Do not append finding counts to any heading.
-
-> Read all reviewer report files under `.reviews/<session>/run-*/`. Write a consolidated review to `.reviews/<session>/review.md` reproducing this skeleton **exactly** — fill in the placeholders, change nothing else:
+> Read all reviewer report files under `.reviews/<session>/*/*.md`. Write a consolidated review to `.reviews/<session>/review.md` reproducing this skeleton **exactly** — fill in the placeholders, change nothing else:
 >
 > ```markdown
 > # Consolidated Review
 >
 > **Session**: `.reviews/<session>/`
-> **Runs**: <highest run number>
 >
 > ## Summary Table
 >
-> | Reviewer | Run | Critical | Major | Minor |
-> |----------|-----|----------|-------|-------|
-> | <agent-name> | <n> | <count> | <count> | <count> |
+> | Reviewer | Chunk | Critical | Major | Minor |
+> |----------|-------|----------|-------|-------|
+> | <agent-name> | <chunk-id> | <count> | <count> | <count> |
 > | **Total** | — | <sum> | <sum> | <sum> |
 >
 > ## Needs Human Input
 >
-> <canonical lines, pasted verbatim>
+> None
 >
 > ## Other findings
 >
 > ### Critical
 >
-> - [ ] <finding> — <file:line> (run <n>)
+> - [ ] <finding> — <file:line> (chunk <id>)
 >
 > ### Major
 >
-> - [ ] <finding> — <file:line> (run <n>)
+> - [ ] <finding> — <file:line> (chunk <id>)
 >
 > ### Minor / Suggestions
 >
-> - [ ] <finding> — <file:line> (run <n>)
->
-> ### Auto-Fixed Items
->
-> - [x] <finding> — <file:line>
+> - [ ] <finding> — <file:line> (chunk <id>)
 > ```
 >
 > Rules for filling it in:
 >
-> - One Summary Table row per (reviewer, run) pair; the final `**Total**` row sums every cell above it.
-> - Under `## Other findings`, in `### Critical`, `### Major`, `### Minor / Suggestions`: place each finding under the **exact** severity heading it carries in its source `run-N` file — never re-classify. Show its `[ ]`/`[x]` status and originating run. **Omit entirely any line that *ends with* the `*(needs human input)*` marker** — drop the whole line, do not edit it. (Match only the marker at end of line: a Minor finding may quote the marker mid-line in its prose — keep those.) The dropped findings already appear in the `## Needs Human Input` section above; dropping them here keeps each finding in exactly one section. The marker exists only in the run-N source files — it never appears in `review.md`.
-> - `### Auto-Fixed Items` (under `## Other findings`): every finding marked `[x]`, across all runs.
-> - `## Needs Human Input`: reproduce these lines verbatim — do not add, drop, re-label, or change the severity of any. This section must contain exactly <needs_human> items: <paste the grep output here>
-> - If a section has no items, keep its heading and write `None` on the line below it. Never omit a heading.
+> - One Summary Table row per (reviewer, chunk) pair; the final `**Total**` row sums every cell above it.
+> - Under `## Other findings`, place each finding under the **exact** severity heading it carries in its source file — never re-classify. Show its `[ ]`/`[x]` status and originating chunk. Drop the whole line, do not edit it. (A Minor finding may quote the marker mid-line in prose — keep those.)
+> - `## Needs Human Input`: write `None`. This section is populated during Step 7 triage — not by the collation agent.
+> - If a section has no items, keep its heading and write `None` below it. Never omit a heading.
 
-## Step 8: Report to user
+## Step 6: Triage and fix (single pass)
+
+Read the summary report. Triageable items are all findings in the **Critical** and **Major** sections. (Minor/Suggestions are never fixed here — they are recorded for the user.)
+
+For each unchecked `- [ ]` triageable item:
+
+- Apply the fix directly in code or documentation, then change its checkbox from `- [ ]` to `- [x]` in `review.md`.
+- If a fix is ambiguous, risky, or needs a human decision (e.g. an architectural call), **leave the checkbox `- [ ]`** and move it to `review.md`'s `## Needs Human Input` section. Remove it from the original section.
+
+There is **no loop**. Once you have triaged every report once and applied or deferred each fix, go to Step 8. Post-fix verification is delegated to the human review gate.
+
+## Step 7: Report to user
 
 Present a concise inline summary:
 
@@ -176,21 +156,21 @@ Present a concise inline summary:
 ## Review Complete
 
 **Session**: `.reviews/<session>/`
-**Runs**: <N> / <max_runs>
 **Reviewers run**: <comma-separated agent names>
+**Chunks**: <chunk count> (<chunk ids>)
 
 ### Issues Fixed
 <numbered list of fixes applied, with file paths>
 
-### Needs Human Attention
-<numbered list of items marked "needs human input" with reason>
+### Needs Human Input
+<numbered list of items moved to Needs Human Input with reason>
 
 ### Minor / Suggestions (not actioned)
-<brief list or count per agent>
+<brief list or count per reviewer>
 
 **Full report**: `.reviews/<session>/review.md`
 ```
 
-The **Needs Human Attention** list must contain exactly the `needs_human` items from Step 7 — the same lines, the same count, with their original severity. It is a copy of the canonical set, not a fresh judgement. Before presenting, re-run the Step 7 grep and confirm its line count equals both this list's count and `review.md`'s Needs Human Input count. If the three diverge, the `run-N` files win — recount from them and correct the summary before reporting.
+The **Needs Human Input** list must match `review.md`'s `## Needs Human Input` section exactly — same items, same count.
 
-All findings and iterations are logged in the session folder for audit and transparency.
+All findings are logged in the session folder for audit and transparency.
