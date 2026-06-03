@@ -3,7 +3,7 @@ name: create-merge-request
 description: |-
   Create a GitLab merge request for the current branch, describing the changes made.
   Adds a `Closes #N` line when the work implements a ticket.
-  If /review was run in this session and the session folder is known, posts the review.md file verbatim as a comment.
+  If /review was run in this session and the session folder is known, posts the review to the MR as a batched draft-note review via the `gitlab:post-mr-review` skill.
   Use proactively whenever the user asks to create an MR or merge request.
 ---
 
@@ -53,7 +53,7 @@ Use this to draft the MR title and body:
 
 Check whether `/review` was run earlier in this conversation and the session folder path is already known from context (e.g. `.reviews/2026-05-29-200316/`). Do **not** scan the filesystem — `.reviews/` accumulates folders from many branches and sessions, so a filesystem search would pick up stale reviews.
 
-If the session folder is known, the review is at `<session>/review.md`. Read its full contents — it is already the finished review document and will be posted **verbatim** as a comment after MR creation. Do not summarise, paraphrase, or re-format it.
+If the session folder is known, the review is at `<session>/review.md`. Read its full contents — they will be handed to the `gitlab:post-mr-review` skill for posting after MR creation.
 
 If no session folder is known from this conversation, skip the comment step entirely.
 
@@ -90,19 +90,7 @@ glab mr list --source-branch <branch> -F json | jq '.[0].iid'
 
 ## Step 6: Post the review as a comment (if found)
 
-If a `review.md` was found in Step 4, post its contents **verbatim** as a note on the MR. The file already carries its own title and section headings — paste it exactly as written; do not add a wrapping header, summarise, paraphrase, truncate, re-classify findings, or restructure headings. The only permitted addition is the sign-off appended below it.
-
-Try the MCP tool `mcp__gitlab__manage_mr_discussion` with `action: comment`, `noteable_type: merge_request` first (if available). Otherwise fall back to:
-
-```bash
-glab mr note create <iid> --message "$(cat <<'EOF'
-<verbatim contents of review.md — pasted exactly, not summarised>
-
----
-:robot: Submitted by Claude Code on behalf of this user.
-EOF
-)"
-```
+If a `review.md` was found in Step 4, post it to the new MR using the `/gitlab:post-mr-review` skill.
 
 ## Step 7: Report to the user
 

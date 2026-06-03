@@ -90,7 +90,8 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review.md file verbatim as a comment if the session folder is known |
+| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review as a batched draft-note review via `post-mr-review` if the session folder is known |
+| Skill | `post-mr-review` | Reconcile a prior code review against the current branch state and publish it to the GitLab MR as a single batched review: inline diff comments for in-diff findings, summary comment for the rest |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
 | Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a ticket |
 | Skill | `custom-work-item-types` | Create or convert work items to custom types (Bug/Incident/Ticket/Tracker) via `glab api graphql`; carries this org's type GIDs |
