@@ -35,6 +35,10 @@ Each plugin component has a specific format:
 
 After adding a new plugin component, update the README table for that plugin.
 
+## Memory reconciliation workflow
+
+The `zantarix:memory-reconciliation` skill files GitHub issues (label: `new-memory`) when a project memory looks like it should become a distributed org rule. The project-local `triage-new-memory` skill processes that queue — classifying each issue as accept, merge, reject, or defer — writing rule files only for accepted and merged outcomes. Issues are auto-closed via `Closes #N` commit trailers when the commit lands on `main`.
+
 ## Active hooks
 
 The `zantarix` plugin installs two hooks active in this repo:

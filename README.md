@@ -139,4 +139,5 @@ Skills, agents, and rules for Rust projects.
 | Rule | `modules` | Module organisation conventions |
 | Rule | `non-functional` | Non-functional requirements (performance, reliability, etc.) |
 | Rule | `style` | Code style conventions |
+| Rule | `test-modules` | Tests must live in dedicated `tests` submodule files — inline `#[cfg(test)] mod tests { ... }` blocks in production source files are forbidden |
 | Rule | `workflow` | Prefer `cargo make` tasks over README runbooks for repeatable maintenance steps |
