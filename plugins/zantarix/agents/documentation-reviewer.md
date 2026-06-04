@@ -83,6 +83,8 @@ Use this exact structure so the `zantarix:review` skill can parse results:
 ```
 # Documentation Reviewer Report
 **Chunk**: <chunk-id>
+**Mode**: <mode>
+**Scope**: <scope>
 
 ## Critical
 - [ ] <finding> — <file/location>

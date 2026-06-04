@@ -98,6 +98,8 @@ Use this exact structure so the `zantarix:review` skill can parse results:
 ```
 # Rust Code Reviewer Report
 **Chunk**: <chunk-id>
+**Mode**: <mode>
+**Scope**: <scope>
 
 ## Critical
 - [ ] <finding> — <file:line>

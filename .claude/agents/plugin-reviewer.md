@@ -142,6 +142,8 @@ Use this exact structure so the `zantarix:review` skill can parse results:
 ```
 # Plugin Reviewer Report
 **Chunk**: <chunk-id>
+**Mode**: <mode>
+**Scope**: <scope>
 
 ## Critical
 - [ ] <finding> — <file path, line range if relevant>
