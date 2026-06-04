@@ -44,7 +44,7 @@ This repo (`zantarix/claude-code`) is a Claude Code plugin marketplace. Each plu
 | Component | Location | Format |
 |-----------|----------|--------|
 | Skills | `plugins/<name>/skills/<skill-name>/SKILL.md` | YAML frontmatter: `name`, `description`; body: instructions |
-| Agents | `plugins/<name>/agents/<name>.md` | YAML frontmatter: `name`, `description`, optional `tools`, `model`, `color`, `memory`; body: agent system prompt |
+| Agents | `plugins/<name>/agents/<name>.md` | YAML frontmatter: `name`, `description`, optional `tools`, `model`, `effort`, `color`, `memory`; body: agent system prompt |
 | Rules | `rules/<name>/<rule-name>.md` | Optional `paths:` frontmatter for glob-scoping; body: instructions |
 | Hooks | `plugins/<name>/.claude-plugin/plugin.json` | JSON; scripts under `plugins/<name>/scripts/` |
 
