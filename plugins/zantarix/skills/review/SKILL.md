@@ -146,7 +146,7 @@ For each unchecked `- [ ]` triageable item:
 - Apply the fix directly in code or documentation, then change its checkbox from `- [ ]` to `- [x]` in `review.md`.
 - If a fix is ambiguous, risky, or needs a human decision (e.g. an architectural call), **leave the checkbox `- [ ]`** and move it to `review.md`'s `## Needs Human Input` section. Remove it from the original section.
 
-There is **no loop**. Once you have triaged every report once and applied or deferred each fix, go to Step 8. Post-fix verification is delegated to the human review gate.
+There is **no loop**. Once you have triaged every report once and applied or deferred each fix, go to Step 7. Post-fix verification is delegated to the human review gate.
 
 ## Step 7: Report to user
 
