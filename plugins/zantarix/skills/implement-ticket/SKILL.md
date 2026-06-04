@@ -36,7 +36,7 @@ Call `EnterPlanMode` directly — do **not** invoke any skill at this step. `/pl
 Inside plan mode:
 
 1. Explore the codebase to understand scope and existing patterns.
-2. Based on what you find, assess whether the work warrants `/plan-adr`: does it introduce a new architectural surface, require choosing between alternatives with meaningfully different trade-offs, or commit to a cross-cutting pattern? Apply the criteria from the `adr` and `adr-workflow` rules.
+2. Based on what you find, assess whether the work warrants `/plan-adr`: does it introduce a new architectural surface, require choosing between alternatives with meaningfully different trade-offs, or commit to a cross-cutting pattern? Apply the criteria from the `adr` rule.
    - **If yes**: exit plan mode, then invoke the `/plan-adr` skill with the ticket context and exploration findings as the starting point.
    - **If no**: complete the implementation plan here and present it to the user for approval. The plan must include a note identifying the ticket being implemented (e.g. "This plan implements #N") so that when a PR/MR is created later, the issue number is available in context.
 

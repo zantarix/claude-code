@@ -108,7 +108,9 @@ A brief title like the title of the page is all that is required for the link ti
 
 7. **Create the File**: Write the ADR to `docs/adr/NNN-kebab-case-title.md`.
 
-8. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
+8. **Verify the Files**: Before returning, read back the ADR file you created and the index/inventory entries you updated. Proof read that everything you have written meets your quality standards. If you find any mistakes, fix them and then reverify. Repeat as necessary.
+
+9. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
    - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table. The table should contain: ADR # (linked to ADR), Title, Status
    - `.claude/agent-memory/zantarix-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
 
@@ -119,12 +121,14 @@ A brief title like the title of the page is all that is required for the link ti
 - All ADR cross-references MUST use markdown links: `[ADR-013](013-logging-infrastructure.md)` not plain `ADR-013`
 - Links use relative paths (just the filename, no directory prefix) since all ADRs live in the same directory
 - Title lines (`# ADR-NNN: ...`) are self-references and should NOT be linkified
-- This applies to all sections: Context, Decision, Consequences, Alternatives, Errata
+- This applies to all sections: Context, Decision, Consequences, Alternatives Considered, Errata
+- When cross-linking to ADRs in related projects, use the format "Project Name ADR-XXX" as the link label and link to the ADR file on GitHub rather than using relative paths. For example: `[Cursus ADR-001](https://github.com/zantarix/cursus/blob/main/docs/adr/001-some-decision.md)`.
 
 ## Quality Standards
 
 - Context uses present tense, Decisions use future tense
-- When referencing other ADRs, you must always include a markdown link to the referenced file.
+- ADRs should describe current state, and upcoming decisions. They do not describe the process taken to get to those decisions. Edits applied during implementation should be rewritten into the document as if that were the original decision.
+- The decision section should not contain statements such as "We will do X, *not Y*.". In a situation like this, you should drop the "not Y" statement. If it is truly important context for the decision then it should be promoted to the Alternatives Considered section as a new alternative.
 - ADRs must be **immutable once accepted** and committed into the `main` git branch - they are historical records
 - Context section should be comprehensive enough that someone unfamiliar with the project can understand the decision
 - Keep ADRs at the right abstraction level. Discussing implementation approaches is fine, but do not reference specific lines of code. ADRs capture architectural and design decisions conceptually, not as code documentation.

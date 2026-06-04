@@ -57,8 +57,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |
 | Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
-| Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent |
-| Rule | `adr-workflow` | ADR process conventions: when to write, scanning Proposed ADRs, pausing before acceptance, verifying existing implementation |
+| Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent; ADR statuses, accepting, errata, when to skip |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `changesets` | Changeset policy: always add a changeset for any releasable change |
 | Rule | `git-workflow` | Prefer cherry-pick over merge commit when integrating a finished branch into `main` |
