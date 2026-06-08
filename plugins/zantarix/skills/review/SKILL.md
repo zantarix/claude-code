@@ -66,7 +66,7 @@ Launch every reviewer with the Agent tool, **as background agents**, so the slow
 
 Reviewers self-filter: a `partition`/`full` agent handed a chunk with nothing in its remit returns `No Issues` and stops cheaply — it does not manufacture findings. A `partition`-mode agent must report **only on its assigned chunk** and must not assert anything (clean or otherwise) about code it was not given.
 
-**Spawn every reviewer up front** — launch them all, then move on; do not throttle, wave, or count them yourself. The harness tracks how many spawned agents are still running, which is what the Step 6 barrier reads.
+**Spawn every reviewer up front, then end your turn.** Launch them all; do not throttle, wave, or count them yourself. Do **not** call `ScheduleWakeup`, sleep, or poll to wait for them — background agents are harness-tracked, so each completion re-invokes you automatically. (Never schedule a wakeup carrying an autonomous-loop prompt to "check back" — that starts a self-perpetuating loop.) Once every reviewer has written its report, continue to Step 5.
 
 Pass each agent the required output format:
 
