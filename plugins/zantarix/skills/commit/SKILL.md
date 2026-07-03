@@ -21,7 +21,7 @@ Commit the current changes following this project's standards. Perform the steps
    - Keep the subject line under 72 characters.
    - If the change is non-trivial, add a blank line followed by a short body.
 
-6. **Commit** using a HEREDOC to preserve formatting:
+6. **Commit** using a HEREDOC to preserve formatting. Fill in `{{MODEL_NAME}}` with your own display name and version (e.g. `Claude Sonnet 5`, `Claude Opus 4.8`), taken from your system prompt's model identification — never the bare word `Claude`:
 
    ```bash
    git commit -m "$(cat <<'EOF'
@@ -29,7 +29,7 @@ Commit the current changes following this project's standards. Perform the steps
 
    <optional body>
 
-   Co-Authored-By: <description of current model>
+   Co-Authored-By: {{MODEL_NAME}} <noreply@anthropic.com>
    EOF
    )"
    ```

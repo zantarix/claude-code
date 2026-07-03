@@ -123,11 +123,11 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
 
 - Subject line: `feat(<plugin>): <imperative description>` (matches recent history; see `git log --oneline -10`).
 - Body: short rationale if non-obvious.
-- Trailer block:
+- Trailer block. Fill in `{{MODEL_NAME}}` with your own display name and version (e.g. `Claude Sonnet 5`, `Claude Opus 4.8`), taken from your system prompt's model identification — never the bare word `Claude`:
   ```
   Closes #<n>
 
-  Co-Authored-By: <description of current model>
+  Co-Authored-By: {{MODEL_NAME}} <noreply@anthropic.com>
   ```
 - Stage only the files for this row (the rule file plus the relevant README row). Never `git add -A`.
 - Use a HEREDOC for the message to preserve formatting (mirroring `/zantarix:commit`).
