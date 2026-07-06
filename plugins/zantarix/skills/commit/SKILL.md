@@ -29,7 +29,7 @@ Commit the current changes following this project's standards. Perform the steps
 
    <optional body>
 
-   Co-Authored-By: {{MODEL_NAME}} <noreply@anthropic.com>
+   Assisted-By: {{MODEL_NAME}}
    EOF
    )"
    ```
