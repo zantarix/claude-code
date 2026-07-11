@@ -104,17 +104,31 @@ A brief title like the title of the page is all that is required for the link ti
 
 5. **Number the ADR**: Check `docs/adr/` for the highest existing ADR number and increment by one. Use three-digit zero-padded format (e.g., ADR-001, ADR-042).
 
-6. **Write with Clarity**: Use precise technical language. Avoid vague terms. Be specific about what will and won't be done. Write for future maintainers who may not have your context.
+6. **Write the file**: Use the precise steps below to write the ADR to `docs/adr/NNN-kebab-case-title.md`.
 
-7. **Create the File**: Write the ADR to `docs/adr/NNN-kebab-case-title.md`.
+7. **Verify the Files**: Before returning, read back the ADR file you created and the index/inventory entries you updated. Proof read that everything you have written meets your quality standards. If you find any mistakes, fix them and then reverify. Repeat as necessary.
 
-8. **Verify the Files**: Before returning, read back the ADR file you created and the index/inventory entries you updated. Proof read that everything you have written meets your quality standards. If you find any mistakes, fix them and then reverify. Repeat as necessary.
-
-9. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
+8. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
    - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table. The table should contain: ADR # (linked to ADR), Title, Status
    - `.claude/agent-memory/zantarix-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
 
    These updates are mandatory and must happen in the same operation as the ADR change. Never leave the index or inventory out of date.
+
+### Writing the file
+
+Use precise technical language. Avoid vague terms. Be specific about what will and won't be done. Write for future maintainers who may not have your context.
+
+The steps below should be followed in order; one by one as separate operations, a single `Write`/`Edit` that contains more than one of `{Decision, Context, Consequences}` is a process violation. The precise ordering helps avoid pitfalls when writing the document. The document is laid out for easier reading, but writing it is done more logically by writing sections in the document out of order. Generating Context as text before the Decision exists as text is what pulls decision reasoning upward — knowing the Decision is not enough; it must be written down first as the referent you check each Context sentence against.
+
+1. If you are updating an existing ADR, then reread the whole ADR first.
+2. Prepare the file for writing:
+   - If you are updating an existing ADR, then truncate the contents of the Context, Decision and Consequences sections.
+   - Otherwise, write a new file that contains all titles from the template with the Context, Decision and Consequences sections left blank.
+3. Write the Decision section first, as if **it has always been the decision** and as if **your reader has full knowledge** of the system.
+4. Write the Context section.
+   - Every Context sentence must be a fact about the world *before* this decision, or a pressure that made the decision necessary. Nothing that states or argues for the chosen design belongs there.
+   - If the Decision already carries its own immediate justification for a point, do **not** duplicate the justifying fact into Context — that duplication is the most common leak.
+5. Write the Consequences sections.
 
 ## ADR Cross-References
 
