@@ -20,6 +20,7 @@
         default = nixpkgs.legacyPackages.${system}.mkShell {
           buildInputs = with nixpkgs.legacyPackages.${system}; [
             markdownlint-cli
+            nodejs
           ];
         };
       });
