@@ -1,1 +1,0 @@
-When writing scratch artefacts (coverage outputs, intermediate JSON, temporary reports, long build logs), write to a repo-local `./.tmp/<name>.txt` (creating the dir with `mkdir -p .tmp` if needed) rather than `/tmp` paths. Clean up with `rm -rf .tmp`.
