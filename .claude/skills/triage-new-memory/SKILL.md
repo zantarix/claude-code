@@ -127,7 +127,7 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
   ```
   Closes #<n>
 
-  Co-Authored-By: {{MODEL_NAME}} <noreply@anthropic.com>
+  Assisted-By: {{MODEL_NAME}}
   ```
 - Stage only the files for this row (the rule file plus the relevant README row). Never `git add -A`.
 - Use a HEREDOC for the message to preserve formatting (mirroring `/zantarix:commit`).
