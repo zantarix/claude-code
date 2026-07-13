@@ -66,7 +66,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `memory-feedback` | Write feedback memories as generalized rules, not session-specific notes; reframe narrow entries rather than discarding them |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments, including dev shell lifecycle |
 | Rule | `non-functional` | Non-functional requirements |
-| Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, and surfacing real alternatives) |
+| Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, surfacing real alternatives, and scope discipline) |
 | Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
 | Rule | `refine-proposed-adr` | Fold a refinement of a Proposed ADR into that ADR via `adr-architect`; don't spawn a new ADR (it's not errata) |
 | Rule | `testing` | Test conventions |
