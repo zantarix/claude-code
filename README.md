@@ -68,6 +68,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `non-functional` | Non-functional requirements |
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, and surfacing real alternatives) |
 | Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
+| Rule | `refine-proposed-adr` | Fold a refinement of a Proposed ADR into that ADR via `adr-architect`; don't spawn a new ADR (it's not errata) |
 | Rule | `testing` | Test conventions |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
 | Rule | `workflow` | Coding discipline |
