@@ -97,6 +97,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Skill | `link-work-items` | Link two work items (related / blocks / blocked-by) via the relationship API |
 | Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`) |
 | Rule | `child-task-work-items` | Track ticket pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
+| Rule | `commit-closes-ticket` | Add a `Closes #N` commit footer when a commit completes a ticket; a `(#N)` subject reference alone does not close it |
 | Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `glab-api-gotchas` | `glab api`/MCP traps: commenting on non-Issue work items needs a `WorkItem` GID; `@file` bodies need `--field`, not `-f` |
