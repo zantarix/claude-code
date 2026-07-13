@@ -27,3 +27,7 @@ Summarize what was done, what's verified, what's left. Don't continue from a sta
 ## Rule 7 — Fail loud
 
 "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
+
+## Rule 8 — Incidental gap ≠ deliberate decision
+
+Don't treat the current code's structure as a deliberate decision unless a design doc says so. A helper that omits X is usually an incidental gap (X didn't exist when it was written), not a choice to exclude it. When extending a surface, justify any exclusion on principle, not on the current shape of the code.
