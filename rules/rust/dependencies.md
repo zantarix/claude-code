@@ -7,7 +7,7 @@ paths:
 
 # Adding new dependencies
 
-Before running `cargo add` or adding crate entries to `Cargo.toml`, ask the user first. Adding dependencies changes the dependency tree and lock file, which the user wants control over.
+Before adding crates not already in use within the workspace, ask the user first. Crates used as direct dependencies by other crates in the workspace are preapproved. Adding dependencies changes the dependency tree and lock file, which the user wants control over.
 
 After adding a new crate dependency, always run `cargo deny check` to verify licenses, check for advisories, and ensure supply chain security.
 
