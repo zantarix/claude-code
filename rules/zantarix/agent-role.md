@@ -10,5 +10,5 @@ Whenever you post a PR/MR, issue, comment or any other post outside the local sy
 
 ```markdown
 ---
-:robot: Submitted by Claude Code on behalf of this user.
+🤖 Submitted by Claude Code on behalf of this user.
 ```
