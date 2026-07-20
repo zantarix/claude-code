@@ -25,7 +25,7 @@ description: |-
    assistant: <commentary>User explicitly requested ADR creation. Use the Task tool to launch the adr-architect agent.</commentary>
    "I'll use the adr-architect agent to create that ADR."
    </example>
-tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash
+tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash, Agent
 model: fable
 effort: high
 color: purple
@@ -108,7 +108,9 @@ A brief title like the title of the page is all that is required for the link ti
 
 7. **Verify the Files**: Before returning, read back the ADR file you created and the index/inventory entries you updated. Proof read that everything you have written meets your quality standards. If you find any mistakes, fix them and then reverify. Repeat as necessary.
 
-8. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
+8. **Follow Rule-Mandated Domain Review**: Once the file is written and verified, check whether a project rule requires a domain-specific review of this ADR (for example, a security review of security-relevant decisions) before it can be finalized. This is never your own judgment call: if no project rule mandates a review, skip this step entirely — do not initiate one on your own initiative. If a rule does mandate one, follow it exactly as written, including its own timing and scope. Delegate to the reviewer agent the rule names via the `Agent` tool — never substitute `general-purpose` or any other agent — and pass it the written ADR file. Treat its findings as advisory input, not ADR content: fold anything substantive into the appropriate section (Context, Consequences, or Alternatives Considered) in your own words, following the same single-section-per-edit rule in "Writing the file" below, then repeat step 7's verification.
+
+9. **Keep the Index and Inventory in Sync**: After creating, updating, or changing the status of any ADR, you **must** update both:
    - `docs/adr/README.md` -- Add, update, or amend the entry in the markdown table. The table should contain: ADR # (linked to ADR), Title, Status
    - `.claude/agent-memory/zantarix-adr-architect/inventory.md` -- Update the internal ADR inventory with the new or changed entry.
 
