@@ -21,7 +21,7 @@ description: |-
   "Let me delegate that to the code-reviewer agent."
   </example>
 tools: Glob, Grep, Read, Write(.reviews/**), Bash(git diff:*), Bash(git log:*), Bash(git show:*)
-model: sonnet
+model: opus
 effort: medium
 color: cyan
 ---

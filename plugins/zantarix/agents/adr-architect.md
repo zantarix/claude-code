@@ -26,7 +26,7 @@ description: |-
    "I'll use the adr-architect agent to create that ADR."
    </example>
 tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash
-model: opus
+model: fable
 effort: high
 color: purple
 memory: project

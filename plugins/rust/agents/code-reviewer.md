@@ -27,7 +27,7 @@ description: |-
    "I'll have the code-reviewer agent look over the recent changes."
    </example>
 tools: Glob, Grep, Read, Write(.reviews/**), Bash, WebFetch, WebSearch, Bash(cargo test:*)
-model: sonnet
+model: opus
 effort: high
 color: cyan
 ---
