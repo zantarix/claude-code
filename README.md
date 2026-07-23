@@ -52,6 +52,12 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
+| Skill | `okf-curate` | Author or revise one OKF concept, keeping its `index.md` and the bundle `log.md` in sync in one operation |
+| Skill | `okf-guide` | Canonical OKF format reference and Zantarix house style; loaded by the other `okf-*` skills and preloaded into OKF-aware agents |
+| Skill | `okf-index` | Rebuild a directory's `index.md` from its concepts' frontmatter — the bulk-reindex counterpart to `okf-curate` |
+| Skill | `okf-init` | Scaffold a new OKF bundle — root `index.md` with the `okf_version` marker plus a directory skeleton |
+| Skill | `okf-migrate-adr` | One-time, human-invoked migration of an existing ADR library into an OKF bundle; must be run by the `adr-architect` agent |
+| Skill | `okf-validate` | Read-only OKF conformance check — reports frontmatter/`type`, reserved-file, and broken-link issues; makes no changes |
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents over the current changes — each proposes a partition suited to its own remit, then reviews its slices in parallel via a dynamic workflow — then fix critical/major findings in a single pass; stores all output under `.reviews/` |
 | Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |

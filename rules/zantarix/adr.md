@@ -1,6 +1,6 @@
 # Architecture Decision Register
 
-Big decisions are documented in ADR format in the `docs/adr/` folder. To see what ADRs exist, their titles, statuses, and summaries, consult `docs/adr/README.md`.
+Big decisions are documented in ADR format in the `docs/adr/` folder. To see what ADRs exist, their titles, statuses, and summaries, consult `docs/adr/README.md` — or `docs/adr/index.md` when the library is an OKF bundle (its root `index.md` carries an `okf_version` marker and `README.md` is retired).
 
 Any changes to the `docs/adr/` folder should be handled by delegating to the `@zantarix:adr-architect` agent.
 
@@ -29,7 +29,7 @@ Once an ADR has been marked accepted and committed to git, it is immutable. The 
 
 ## Related Projects
 
-When writing ADRs that reference cursus or other related Zantarix projects, check the ADRs of those related projects for relevant context and prior decisions. Related Zantarix project repositories can be found as siblings of the current project folder (e.g., `../cursus` for the cursus project). The Related Projects section of @docs/adr/README.md lists the known related projects and their GitHub URLs.
+When writing ADRs that reference cursus or other related Zantarix projects, check the ADRs of those related projects for relevant context and prior decisions. Related Zantarix project repositories can be found as siblings of the current project folder (e.g., `../cursus` for the cursus project). The Related Projects section of @docs/adr/README.md (or `docs/adr/index.md` in an OKF-mode library) lists the known related projects and their GitHub URLs.
 
 ## Errata
 

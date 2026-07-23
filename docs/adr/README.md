@@ -11,6 +11,7 @@ Once an ADR is accepted and committed, it is treated as immutable. If a decision
 | ADR | Title | Status |
 |-----|-------|--------|
 | [ADR-001](001-review-dynamic-workflow.md) | Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow | Accepted |
+| [ADR-002](002-adopt-okf-knowledge-bundles.md) | Adopt the Open Knowledge Format for Zantarix Knowledge Bundles | Accepted |
 
 ## Related Projects
 
