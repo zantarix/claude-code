@@ -1,4 +1,13 @@
-# ADR-001: Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow
+---
+type: Architecture Decision
+title: Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow
+description: Re-architects the /review skill around a deterministic two-phase dynamic Workflow with remit-aware per-reviewer partitioning under a hard cost cap.
+tags: [orchestration, review, dynamic-workflow, subagents]
+timestamp: 2026-07-13T00:00:00Z
+status: Accepted
+---
+
+# ADR-0001: Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow
 
 ## Status
 
@@ -74,10 +83,10 @@ holds no `Write` tool grant.
 
 - [Orchestrate subagents at scale with dynamic workflows](https://code.claude.com/docs/en/workflows)
 - [Introducing dynamic workflows in Claude Code](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
-- [review skill](../../plugins/zantarix/skills/review/SKILL.md)
-- [create-pull-request skill](../../plugins/github/skills/create-pull-request/SKILL.md)
-- [create-merge-request skill](../../plugins/gitlab/skills/create-merge-request/SKILL.md)
-- [post-mr-review skill](../../plugins/gitlab/skills/post-mr-review/SKILL.md)
+- [review skill](../../../plugins/zantarix/skills/review/SKILL.md)
+- [create-pull-request skill](../../../plugins/github/skills/create-pull-request/SKILL.md)
+- [create-merge-request skill](../../../plugins/gitlab/skills/create-merge-request/SKILL.md)
+- [post-mr-review skill](../../../plugins/gitlab/skills/post-mr-review/SKILL.md)
 
 ## Decision
 

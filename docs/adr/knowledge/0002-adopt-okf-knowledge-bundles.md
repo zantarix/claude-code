@@ -1,4 +1,13 @@
-# ADR-002: Adopt the Open Knowledge Format for Zantarix Knowledge Bundles
+---
+type: Architecture Decision
+title: Adopt the Open Knowledge Format for Zantarix Knowledge Bundles
+description: Adopts OKF v0.1 as the standard format for Zantarix knowledge bundles, restructuring ADR libraries as opt-in OKF bundles maintained via an /okf-* skill suite.
+tags: [knowledge, okf, adr, skills]
+timestamp: 2026-07-24T00:00:00Z
+status: Accepted
+---
+
+# ADR-0002: Adopt the Open Knowledge Format for Zantarix Knowledge Bundles
 
 ## Status
 
