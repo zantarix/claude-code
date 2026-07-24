@@ -27,7 +27,7 @@ description: |-
    </example>
 tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash, Agent, Skill
 skills: [zantarix:okf-guide]
-model: fable
+model: opus
 effort: high
 color: purple
 memory: project
