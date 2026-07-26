@@ -12,7 +12,7 @@ Project rules are allowed to override or extend organisation rules, however any 
 
 ## Brevity
 
-Long lists of individual items are not relevant. Exploration can provide detail when needed. `CLAUDE.md` should be used to provide enough context to know where to look to find things, not to fully explain everything in the project.
+Long lists of individual items are not relevant. Exploration can provide detail when needed. `CLAUDE.md` should be used to provide enough context to know where to look to find things, not to fully explain everything in the project.` CLAUDE.md` should stay under 40KB - this is a limit enforced by the harness.
 
 ## Rule length
 
