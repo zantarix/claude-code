@@ -9,10 +9,13 @@ ADRs are long term commitments to a project direction and must be fully research
 
 During the dialog:
 
-- Ask the user if they want an implementation plan as well or not. Some ADR's may be small enough to implement immediately, but others may be large enough to warrant implementing in parts after the relevant architectural level decisions have been made.
-- Ask clarifying questions to understand the problem being solved, the constraints, and any alternatives the user has already considered or ruled out.
+- Interview the user relentlessly about every aspect of this until you reach a shared understanding. Walk down each branch of the decision tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
+- Ask the questions one at a time, waiting for feedback on each question before continuing. Asking multiple questions at once is bewildering.
+- If a fact can be found by exploring the environment (filesystem, tools, etc.), look it up rather than asking the user. The decisions, though, are theirs — put each one to them and wait for their answer.
 - Propose options where relevant and push back on choices that seem contradictory or likely to lead to worse outcomes.
 - Summarise the agreed decision back to the user before proceeding, and confirm they are happy with it.
+- Do not act on it until the user confirms you have reached a shared understanding.
+- Ask the user if they want an implementation plan as well or not. Some ADR's may be small enough to implement immediately, but others may be large enough to warrant implementing in parts after the relevant architectural level decisions have been made.
 
 Your plan should explicitly note to not automatically accept the ADR directly after implementation.
 
