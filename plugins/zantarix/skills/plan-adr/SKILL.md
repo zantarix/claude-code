@@ -5,6 +5,8 @@ description: Enter planning mode to scope a piece of work with the user, then pa
 
 Enter plan mode immediately, then conduct a dialog with the user to scope and define the work described in $ARGUMENTS.
 
+Start by familiarising yourself with any `CONTEXT.md` or `CONTEXT-MAP.md` file that exists in this repo if you haven't already loaded them.
+
 ADRs are long term commitments to a project direction and must be fully researched. The ADR format will expect a list of references where applicable. Only the smallest most targeted ADRs warrant no references at all. If external projects are involved in the decision then references to external documentation validating claims about that project are required.
 
 During the dialog:

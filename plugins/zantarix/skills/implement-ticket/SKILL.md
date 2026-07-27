@@ -33,6 +33,8 @@ Keep questions focused; don't ask about things you can resolve by reading the ti
 
 Call `EnterPlanMode` directly — do **not** invoke any skill at this step. `/plan-adr` must not be used as the entry point into planning.
 
+Once in plan mode, start by familiarising yourself with any `CONTEXT.md` or `CONTEXT-MAP.md` file that exists in this repo if you haven't already loaded them.
+
 Inside plan mode:
 
 1. Explore the codebase to understand scope and existing patterns.
