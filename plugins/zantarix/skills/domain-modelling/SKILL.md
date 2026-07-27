@@ -1,5 +1,5 @@
 ---
-name: domain-modeling
+name: domain-modelling
 description: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, or when another skill needs to maintain the domain model.
 ---
 

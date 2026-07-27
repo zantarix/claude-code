@@ -50,7 +50,9 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 |------|------|-------------|
 | Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
+| Skill | `domain-modelling` | Build and sharpen a project's domain model — pin down terminology and ubiquitous language as the design evolves |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
+| Skill | `init` | Audit the repository and write or update `CLAUDE.md` so future runs start with project context |
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
 | Skill | `okf-curate` | Author or revise one OKF concept, keeping its `index.md` and the bundle `log.md` in sync in one operation |
 | Skill | `okf-guide` | Canonical OKF format reference and Zantarix house style; loaded by the other `okf-*` skills and preloaded into OKF-aware agents |
@@ -67,7 +69,6 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `changesets` | Changeset policy: always add a changeset for any releasable change |
 | Rule | `git-workflow` | Prefer cherry-pick over merge commit when integrating a finished branch into `main` |
-| Rule | `init` | Conventions for managing `CLAUDE.md` and `.claude/rules/` files |
 | Rule | `investigation` | Never claim "known issue" without evidence — bisect first to rule out self-introduced regressions |
 | Rule | `memory-feedback` | Write feedback memories as generalized rules, not session-specific notes; reframe narrow entries rather than discarding them |
 | Rule | `nix` | Nix flakes and direnv guidance for development environments, including dev shell lifecycle |
@@ -75,6 +76,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, surfacing real alternatives, and scope discipline) |
 | Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
 | Rule | `refine-proposed-adr` | Fold a refinement of a Proposed ADR into that ADR via `adr-architect`; don't spawn a new ADR (it's not errata) |
+| Rule | `rules` | Project vs. organisation rule ownership, the 50-line cap, and `paths:` scoping conventions |
 | Rule | `testing` | Test conventions |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
 | Rule | `workflow` | Coding discipline |

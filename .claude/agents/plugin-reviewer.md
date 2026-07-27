@@ -59,11 +59,11 @@ Project-local content (not distributed) lives in `.claude/` — skills in `.clau
 
 The following are intentional design choices — do not flag them as issues:
 
-- **`/init` skill invocations** in `memory-reconciliation` and `triage-new-memory` — `/init` is a harness built-in provided by all Claude Code installations; it is always available regardless of which plugins are installed.
+- **`zantarix:init` skill invocations** in `memory-reconciliation` and `triage-new-memory` — these explicitly target the plugin's own `init` skill (refreshes `CLAUDE.md`), not the harness built-in `/init`. Do not flag them as ambiguous.
 - **`plugin-reviewer` included in `/review` scope** — the `zantarix:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
-- **`rules/zantarix/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/zantarix/init.md`.
+- **`rules/zantarix/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/zantarix/rules.md`.
 
-Constraints from `rules/zantarix/init.md` (authoritative):
+Constraints from `rules/zantarix/rules.md` (authoritative):
 
 - Rules must not exceed **50 lines**
 - Rules must use `paths:` frontmatter to scope to relevant files unless the rule genuinely applies everywhere
@@ -140,5 +140,5 @@ Group findings by severity — **Critical**, **Major**, **Minor**, **Suggestions
 - Findings you mark Critical or Major will trigger the skill's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
 - Do not suggest ADR errata — that is solely the responsibility of `@zantarix:adr-architect`.
-- Treat `rules/zantarix/init.md` as the canonical authority on rule-file constraints.
+- Treat `rules/zantarix/rules.md` as the canonical authority on rule-file constraints.
 - Calibrate tier findings to Execution Tiers: judgment-shaped rules and skill triggers are fine at the Sonnet floor — don't flag sub-Sonnet fragility except as an optional, cheap Haiku win. Tier fit is bidirectional: under-tier = correctness (Major), over-tier = cost (Minor).

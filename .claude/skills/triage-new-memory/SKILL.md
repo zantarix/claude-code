@@ -34,7 +34,7 @@ For each issue, gather signals before classifying:
 1. **Plugin exists?** Confirm `plugins/<target>/` is present. If not, the proposal implies a new plugin — flag for user discussion (likely Defer).
 2. **Filename collision?** Check whether `rules/<plugin>/<suggested-name>.md` already exists.
 3. **Topic overlap?** Grep `rules/<plugin>/` for keywords from the rule body. Read any file that looks related — the proposal may already be covered or may belong as an extension to an existing rule.
-4. **Length budget.** Rules must not exceed 50 lines (`rules/zantarix/init.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
+4. **Length budget.** Rules must not exceed 50 lines (`rules/zantarix/rules.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
 5. **Contradictions.** Skim other rules in the same plugin for direct conflicts with the proposal.
 
 ## Step 4: Classify each issue
@@ -124,11 +124,13 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
 - Subject line: `feat(<plugin>): <imperative description>` (matches recent history; see `git log --oneline -10`).
 - Body: short rationale if non-obvious.
 - Trailer block. Fill in `{{MODEL_NAME}}` with your own display name and version (e.g. `Claude Sonnet 5`, `Claude Opus 4.8`), taken from your system prompt's model identification — never the bare word `Claude`:
+
   ```
   Closes #<n>
 
   Assisted-By: {{MODEL_NAME}}
   ```
+
 - Stage only the files for this row (the rule file plus the relevant README row). Never `git add -A`.
 - Use a HEREDOC for the message to preserve formatting (mirroring `/zantarix:commit`).
 - Do not skip hooks, do not force-push, do not amend.
@@ -154,6 +156,7 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
 
 4. **Outcome D — Reject:**
    - No commit. Close via the CLI:
+
      ```sh
      gh issue close <#> --reason "not planned" --comment "<one- to two-sentence reason from the table>
 
@@ -172,9 +175,9 @@ Skip this step if no A, B, or C row ran (no rule files changed).
 
 Otherwise:
 
-1. Invoke the `/init` skill to refresh `CLAUDE.md` against the new rule set.
+1. Invoke the `zantarix:init` skill to refresh `CLAUDE.md` against the new rule set.
 2. Run the `/review` skill over all changed files. This runs all reviewer agents concurrently, auto-fixes critical/major findings, and loops until clean — follow its full workflow rather than surfacing findings for manual action.
-3. If `/init` made any edits, commit them as a single trailing `chore: refresh CLAUDE.md after rule additions` commit. Do not bundle these changes into a per-issue commit — they reflect the whole batch, not any one issue.
+3. If `zantarix:init` made any edits, commit them as a single trailing `chore: refresh CLAUDE.md after rule additions` commit. Do not bundle these changes into a per-issue commit — they reflect the whole batch, not any one issue.
 
 ## Step 8: Report
 
@@ -183,7 +186,7 @@ Summarise:
 - Total issues triaged, counts per outcome (A/B/C/D/E).
 - Per-row commit hashes and subjects (A/B/C), with the linked issue number.
 - Issues closed via the CLI (D) and issues left open (E), with links.
-- `/init` and `/review` findings, if Step 7 ran.
+- `zantarix:init` and `/review` findings, if Step 7 ran.
 - Any rows the user deferred for a future run.
 
 The issues closed via `Closes #<n>` trailers remain *open* on GitHub until the commit reaches the default branch — flag this in the report so the user knows the final close happens at merge time.
