@@ -34,7 +34,10 @@ Perform the migration in order, stopping and reporting any failure.
 
 3. **Derive frontmatter** for each ADR: `type: Architecture Decision`, `title`
    from the H1, `status` and its date parsed from the `## Status` section,
-   `timestamp`, `tags` (theme plus topics), and a one-sentence `description`. For
+   `generated: { by, at }` (`at` from the parsed acceptance date, `by` the best
+   available actor — e.g. `human:<author>` if known, otherwise
+   `zantarix:okf-migrate-adr`), `tags` (theme plus topics), and a one-sentence
+   `description`. For
    a large library, fan out **read-only** proposer agents to draft
    `{title, description, theme, tags}` per ADR in parallel and apply their output
    yourself — read-only agents raise no `guard-adr.sh` conflict.

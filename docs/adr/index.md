@@ -1,5 +1,5 @@
 ---
-okf_version: "0.1"
+okf_version: "0.2"
 ---
 
 # Architecture Decision Records
@@ -19,6 +19,7 @@ Once an ADR is accepted and committed, it is treated as immutable. If a decision
 
 * [Knowledge](knowledge/) - knowledge and documentation formats: how decisions and reference material are structured, indexed, and maintained.
 * [Adopt the Open Knowledge Format for Zantarix Knowledge Bundles](knowledge/0002-adopt-okf-knowledge-bundles.md) - adopts OKF v0.1 as the standard format for Zantarix knowledge bundles, restructuring ADR libraries as opt-in OKF bundles maintained via an /okf-* skill suite.
+* [Migrate the Zantarix OKF House Style to v0.2](knowledge/0003-adopt-okf-v0-2-house-style.md) - migrates the OKF house style to the v0.2 canonical form (generated, sources, trust families) for every bundle including ADRs, with ADRs keeping their mid-document References section as the sole divergence.
 
 # Related Projects
 

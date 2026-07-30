@@ -17,8 +17,10 @@ nothing and fixes nothing; it produces a report the caller acts on.
 3. **Check concepts (hard rules).** For every non-reserved `.md`:
    - It has a parseable YAML frontmatter block — else a **violation**.
    - The block carries a non-empty `type` — else a **violation**.
-   Note (advisory, not a violation) missing recommended keys
-   (`title`/`description`/`tags`/`timestamp`).
+   Note (advisory, not a violation) missing recommended keys — `title`/
+   `description`/`tags` plus `generated` (a legacy `timestamp` is expected on an
+   untouched pre-v0.2 concept, including older ADRs, and is not itself a
+   violation).
 
 4. **Check reserved files.** `index.md` files carry no frontmatter except a
    bundle-root `okf_version`; `log.md` uses `## YYYY-MM-DD` headings newest-first.

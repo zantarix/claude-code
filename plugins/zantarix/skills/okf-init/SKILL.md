@@ -20,7 +20,7 @@ order, stopping and reporting any failure.
 
    ```markdown
    ---
-   okf_version: "0.1"
+   okf_version: "0.2"
    ---
 
    # <Bundle title>

@@ -120,3 +120,9 @@ Mark the guide skill `disable-model-invocation: true` so only explicit skill run
 ### Shared spec file referenced from each `/okf-*` skill
 
 Keep one copy of the spec elsewhere in the plugin and have every `/okf-*` skill body point at it via `${CLAUDE_PLUGIN_ROOT}`. Rejected: that variable does not expand inside a skill body (only `${CLAUDE_SKILL_DIR}` and `${CLAUDE_PROJECT_DIR}` do), so cross-skill file references cannot resolve. Vendoring the spec as a supporting file of the single `okf-guide` skill achieves one canonical copy without the broken indirection.
+
+## Errata
+
+### 2026-07-31: House style superseded by OKF v0.2
+
+This ADR's five-key concept frontmatter ending in `timestamp`, and its body provenance under a `# Citations` heading, are no longer current: [ADR-0003](0003-adopt-okf-v0-2-house-style.md) migrates the Zantarix house style to OKF v0.2, where a freshly written concept records `generated: { by, at }` in place of `timestamp`, general bundles cite through the `sources` frontmatter family instead of `# Citations`, and the optional `verified`/`status`/`stale_after` families become available. Consequently the "Index and metadata" section's ADR frontmatter list (`type: Architecture Decision` plus `title, description, tags, timestamp, and status`) now reads `… tags, generated, and status`, though ADR bundles keep the mid-document `## References` section rather than adopting `sources`, and `status` keeps the ADR vocabulary. No existing file is invalidated: untouched pre-v0.2 concepts validly retain `timestamp` under the spec's fallbacks.

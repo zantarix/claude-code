@@ -183,7 +183,7 @@ A project MAY keep its ADR library as an Open Knowledge Format (OKF) bundle. The
 In OKF mode:
 
 - **Numbering is four-digit** zero-padded (`0001`) — a deliberate clean break from legacy three-digit ADRs. Numbering stays global and sequential across themes.
-- **ADRs carry frontmatter**: `type: Architecture Decision`, plus `title`/`description`/`tags`/`timestamp`/`status`. `status` lives in the frontmatter as the canonical field the index reads; keep the `## Status` body section too. The body template is otherwise unchanged.
+- **ADRs carry frontmatter**: `type: Architecture Decision`, plus `title`/`description`/`tags`/`generated`/`status` — `generated: { by, at }` records who authored the content and when (an ADR you are freshly writing or revising uses `generated`; an untouched older ADR may still carry a legacy `timestamp`, which is not an error). `status` lives in the frontmatter as the canonical field the index reads, using the ADR vocabulary (`Proposed`/`Accepted`/`Deprecated`/`Superceded`), and keep the `## Status` body section too. Cite external material through the body's `## References` section, never `sources` frontmatter. The body template is otherwise unchanged.
 - **ADRs live in theme subdirectories** (`docs/adr/<theme>/0042-title.md`). Cross-references stay relative: same-theme links are bare filenames, cross-theme links use `../<theme>/0042-title.md`.
 - **The canonical index is `docs/adr/index.md`** (themed sections, one bullet per ADR) and history is `docs/adr/log.md`. These retire the README table and your `inventory.md` — in OKF mode maintain neither. Author and revise ADRs via the `/okf-curate` skill so the concept, index, and log stay in sync in one operation; rebuild an index in bulk with `/okf-index`.
 

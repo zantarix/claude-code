@@ -17,13 +17,23 @@ the change to make are given in `$ARGUMENTS`.
    file path and whether this is a **create** or an **update**. If updating, read
    the existing concept in full first.
 
-3. **Write the concept.** Give it the base 5-key frontmatter
-   (`type`/`title`/`description`/`tags`/`timestamp`) — set `timestamp` to now in
-   ISO-8601 `Z` form. **Also set, and on update never drop, any additional key the
-   bundle already establishes for this concept type** — e.g. an ADR bundle's
-   `status`. Favour structural markdown (headings, lists, tables) in the body; use
-   conventional headings (`# Schema`, `# Examples`, `# Citations`) where they
-   apply. Keep cross-links in whatever style the bundle already uses.
+3. **Write the concept in full v0.2 form — write it as if authored fresh
+   today.** Use `type`/`title`/`description`/`tags`/`generated` (`generated.at`
+   set to now, `generated.by` the acting actor), plus `sources`/`verified`/
+   `status`/`stale_after` where they carry meaning for this concept. On an
+   **update**, upgrade any legacy key the existing concept still carries
+   (`timestamp` → `generated`, a body `# Citations` list → `sources`) rather
+   than preserving it — a write always brings the concept to current
+   compliance; only untouched concepts stay in their old shape. **Also set,
+   and never drop, any additional key the bundle already establishes for this
+   concept type.** Favour structural markdown (headings, lists, tables) in the
+   body; use conventional headings (`# Schema`, `# Examples`) where they
+   apply, and attribute claims via footnotes keyed to `sources[].id` rather
+   than a body `# Citations` list. Keep cross-links in whatever style the
+   bundle already uses.
+
+   **If this is an ADR bundle**, apply the ADR divergences from the house
+   style instead (citations, `status` vocabulary) — see `okf-guide`.
 
 4. **Reconcile the directory `index.md`.** In the concept's own directory index,
    ensure a bullet links to the concept under the right section, with a one-line

@@ -4,10 +4,13 @@ description: Canonical OKF (Open Knowledge Format) reference and Zantarix house 
 ---
 
 The Open Knowledge Format (OKF) is a directory of markdown *concepts* with YAML
-frontmatter — a self-describing, tooling-free knowledge bundle. The full v0.1
+frontmatter — a self-describing, tooling-free knowledge bundle. The full v0.2
 spec is vendored beside this skill at `${CLAUDE_SKILL_DIR}/SPEC.md`; read it for
 anything not covered here. This guide distills the rules the okf-* skills enforce
 plus the **Zantarix house style** layered on top of the spec.
+
+Every bundle — ADR bundles included — uses the same v0.2 house style, with one
+structural carve-out for how ADRs cite sources; see "ADR bundles" below.
 
 ## Conformance — the hard rules
 
@@ -20,9 +23,9 @@ A bundle is conformant when:
 Consumption is permissive: never reject a bundle for missing optional fields,
 unknown `type` values, unknown keys, broken cross-links, or a missing `index.md`.
 
-## Concept frontmatter — the 5-key house style
+## Concept frontmatter — the v0.2 house style
 
-Every concept uses exactly these keys, in this order:
+Every concept uses these base keys, in this order:
 
 ```yaml
 ---
@@ -30,7 +33,7 @@ type: <Title-Cased Human String>    # REQUIRED; e.g. "Architecture Decision", "S
 title: <Human-readable display name>
 description: <One sentence summarising the concept>
 tags: [<tag>, <tag>]                 # inline YAML list of short slugs
-timestamp: <ISO-8601 with Z>         # e.g. 2026-07-23T00:00:00Z; last meaningful change
+generated: { by: <actor>, at: <ISO-8601 with Z> }   # last meaningful content change
 ---
 ```
 
@@ -38,6 +41,65 @@ timestamp: <ISO-8601 with Z>         # e.g. 2026-07-23T00:00:00Z; last meaningfu
 concept's directory (a `boundaries/` file is a `Security Boundary`). Keep
 `description` to a single sentence; it is what `index.md` bullets and search
 snippets show. Do not invent extra keys unless a bundle already establishes one.
+
+`generated` replaces the legacy `timestamp` key: `generated.at` is the ISO-8601
+datetime of the concept's last meaningful change, and `generated.by` is an actor
+— `<producer>/<version>` for an agent or tool, `human:<id>` for a person,
+`process:<id>` for an automated process.
+
+Add the following families where they carry meaning for the concept; none are
+required:
+
+- **`sources`** — provenance, replacing a body `# Citations` heading. A list of
+  `{ resource, id, title, author, usage_count, last_modified }` entries
+  (`resource` is the only required key per entry); a sibling
+  `usage_window: { from, to }` frames every `usage_count`. Attribute a specific
+  claim with a markdown footnote whose label is a `sources[].id`:
+
+  ```markdown
+  Recognized revenue sums `amount` over booked rows.[^rev-policy]
+
+  [^rev-policy]: Revenue recognition policy
+  ```
+
+- **`verified`** — a list of `{ by, at }` confirmation events (or a single bare
+  mapping for one verifier). Consumers derive a trust tier from it: no key ⇒
+  unverified, non-`human:` actors only ⇒ machine-confirmed, any `human:<id>` ⇒
+  human-reviewed.
+- **`status`** — `draft | stable | deprecated`; defaults to `stable` when absent.
+- **`stale_after`** — an absolute `YYYY-MM-DD`; the concept is stale on or after
+  that date.
+
+## Writes bring a concept to full v0.2 compliance
+
+Whenever you write a concept — a new one, or a permitted edit to an existing
+one — write it as if authored fresh today: full v0.2 form, no legacy field
+(`timestamp`, a body `# Citations` list) carried forward out of habit. Never
+bulk-rewrite untouched content merely to bump its metadata; a v0.1-shaped
+concept you are not otherwise touching stays as-is; a v0.2 consumer reads it
+through the spec's fallbacks. A bundle converges on v0.2 as its concepts are
+naturally rewritten, not through a mass migration.
+
+## ADR bundles: two divergences
+
+ADR bundles ([ADR-0003](/docs/adr/knowledge/0003-adopt-okf-v0-2-house-style.md))
+adopt the general v0.2 house style above in full — `generated` replaces
+`timestamp`, and `verified`/`stale_after` are available where they carry
+meaning for a decision record (in practice, rarely: acceptance is already
+recorded by `status`, and an obsolete ADR is superseded rather than
+time-expired). Two things diverge from the general house style:
+
+- **Citations.** ADRs cite external material through their existing
+  mid-document `## References` body section, not `sources` frontmatter or
+  footnote attribution. This is the sole structural carve-out.
+- **The `status` vocabulary.** ADRs keep the ADR vocabulary (`Proposed |
+  Accepted | Deprecated | Superceded`), distinct from the OKF lifecycle
+  vocabulary above despite the shared key name — this is a semantic
+  distinction, not a format freeze.
+
+Apply these two divergences whenever the bundle is an ADR library (`docs/adr/`
+or equivalent); apply the general v0.2 house style, citations included,
+everywhere else.
 
 ## Reserved files
 
@@ -87,8 +149,11 @@ snippets show. Do not invent extra keys unless a bundle already establishes one.
 
 ## Citations
 
-External sources backing a claim go under a trailing `# Citations` heading,
-numbered `[1]`, `[2]`, … Links may be URLs, bundle-relative paths, or paths into
-a `references/` subdirectory that mirrors the source as first-class concepts. Citations
-must be kept short — the detail lives in the referenced documentation, not as part
-of the citation.
+General bundles cite through the `sources` frontmatter family and footnote
+attribution described above, not a body heading. `sources[].resource` may point
+to a URL, a bundle-relative path, or a path into a `references/` subdirectory
+that mirrors the source as a first-class concept; keep source entries short —
+the detail lives in the referenced material, not the citation. A legacy v0.1
+concept still using a trailing `# Citations` list is not forced to migrate; a
+v0.2 consumer falls back to reading it. ADR bundles cite via `## References`
+instead — see "ADR bundles" above.
