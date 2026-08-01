@@ -52,11 +52,11 @@ workflow, which is generic over whatever reviewers you hand it.
 
 ## Step 4: Run the review workflow
 
-The workflow script is bundled beside this skill. Invoke the **Workflow** tool with
-`scriptPath: ${CLAUDE_SKILL_DIR}/review-workflow.js` — do not re-transcribe the script inline. Every
-invocation passes the `scope` and the `session` path (`.reviews/<session>/`, with its trailing
-slash); the `propose`/`full` modes additionally pass the discovered `reviewers` list, while the
-`review` mode passes a `worklist` instead (see below).
+The workflow script and the output-materialisation script are both bundled beside this skill.
+Invoke the **Workflow** tool with `scriptPath: ${CLAUDE_SKILL_DIR}/review-workflow.js` — do not
+re-transcribe the script inline. Every invocation passes the `scope` and the `session` path
+(`.reviews/<session>/`, with its trailing slash); the `propose`/`full` modes additionally pass the
+discovered `reviewers` list, while the `review` mode passes a `worklist` instead (see below).
 
 ### Step 4A — Small scope (single pass)
 
@@ -83,15 +83,32 @@ Go to Step 5.
 
 ## Step 5: Materialise outputs
 
-From the workflow's return value:
+The Workflow tool cannot touch the filesystem, so the workflow's return value
+(`{ reviewMd, auditFiles, findings, failed }`) comes back to you as data, not files. Do **not**
+hand-transcribe it into files yourself — copying many `auditFiles[i].content` blocks by hand risks
+dropping a file or mangling a checklist. Instead, run the bundled script against the result already
+on disk:
 
-- Write each `auditFiles[i].content` to `auditFiles[i].path` (repo-relative, under the session
-  folder).
-- Write `reviewMd` **verbatim** to `.reviews/<session>/review.md`. Do not reformat or re-classify it
-  — it is generated deterministically and is consumed downstream by `create-pull-request` /
-  `post-mr-review`.
-- **Fail loud on failed reviews.** If `failed` is non-empty, each entry is a `(reviewer, chunk)`
-  whose review agent died — those slices were **not** reviewed. Surface them to the user.
+```
+${CLAUDE_SKILL_DIR}/materialize-review.sh .reviews/<session>/ <workflow-output-file>
+```
+
+For `<workflow-output-file>`, use the `<output-file>` path from the Workflow run's
+`<task-notification>` directly — it already holds the result (wrapped as
+`{ result: { reviewMd, auditFiles, findings, failed }, ... }`); the script unwraps that envelope
+automatically. Only fall back to writing the result yourself (verbatim as JSON, via the Write tool,
+to `.reviews/<session>/workflow-output.json`) if you obtained the result some other way (e.g. a
+`TaskOutput` call) with no backing file.
+
+The script writes each `auditFiles[i].content` to `auditFiles[i].path` and `reviewMd` **verbatim**
+to `.reviews/<session>/review.md` — the latter is generated deterministically and is consumed
+downstream by `create-pull-request` / `post-mr-review`, so it must not be reformatted or
+re-classified. The script's stdout lists every file it wrote.
+
+**Fail loud on failed reviews.** The script also prints any `failed` `(reviewer, chunk)` pairs —
+agents that died, so those slices were **not** reviewed. Surface them to the user. (You still have
+`findings` from the workflow's return value in context for Step 6 — the script's job is only to
+write files, not to hand data back.)
 
 ## Step 6: Triage and fix (single pass)
 
