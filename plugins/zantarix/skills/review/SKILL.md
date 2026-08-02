@@ -155,4 +155,18 @@ The **Needs Human Input** list must match `review.md`'s `## Needs Human Input` s
 same items, same count. The session path in your summary lets the `create-pull-request` /
 `create-merge-request` skills locate this review.
 
+## Step 8: Resolve Needs Human Input
+
+If `review.md`'s `## Needs Human Input` section is non-empty, ask the user whether they want to
+resolve any of those items now, or leave them for the human review gate. This is a separate,
+on-demand step, not part of the single triage pass in Step 6 — it happens once, after the report,
+and only for items the user actively chooses.
+
+For each item the user picks, invoke the `zantarix:deep-dive` skill via the Skill tool to interview
+them and reach a shared understanding of how it should be resolved — this is what that skill is for.
+Once `zantarix:deep-dive` reports back a resolution, apply it the same way Step 6 would — fix in code
+or documentation, then flip its checkbox and move the line out of `## Needs Human Input` back into
+its original section. Only ever make targeted checkbox/line edits to `review.md`, per Step 5 — never
+reformat or re-classify the rest of the file.
+
 All findings are logged in the session folder for audit and transparency.

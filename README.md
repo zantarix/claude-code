@@ -50,6 +50,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 |------|------|-------------|
 | Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
+| Skill | `deep-dive` | Interview the user one question at a time to reach a shared understanding of an ambiguous topic, decision, or finding; used by `plan-adr` and `review` |
 | Skill | `domain-modelling` | Build and sharpen a project's domain model — pin down terminology and ubiquitous language as the design evolves |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
 | Skill | `init` | Audit the repository and write or update `CLAUDE.md` so future runs start with project context |
