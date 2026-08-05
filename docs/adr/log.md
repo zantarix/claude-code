@@ -1,5 +1,10 @@
 # Log
 
+## 2026-08-06
+
+* **Creation**: proposed [ADR-0004](knowledge/0004-split-architecture-documentation-into-immutable-adrs-and-living-documents.md) — split architecture documentation into immutable ADRs (constraint admissions and topology decisions, named as commitments) and living documents (overviews, specifications, and a root constraint ledger that doubles as the regime marker) in per-project `docs/architecture` bundles; adds a shared materiality-gate skill, renames `adr-architect` to `architecture-curator`, distributes a generalised `architecture-reviewer`, and turns `/accept-adr` into a human ratification gate writing `verified`.
+* **Update**: added the missing [ADR-0003](knowledge/0003-adopt-okf-v0-2-house-style.md) bullet to the knowledge theme index while reconciling it for ADR-0004.
+
 ## 2026-07-31
 
 * **Acceptance**: marked [ADR-0003](knowledge/0003-adopt-okf-v0-2-house-style.md) Accepted once the `okf-*` skills and the adr-architect OKF-mode guidance were updated to the v0.2 house style.
