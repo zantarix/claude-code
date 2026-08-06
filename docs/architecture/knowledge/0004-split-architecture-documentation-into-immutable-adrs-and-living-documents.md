@@ -4,14 +4,15 @@ title: Split Architecture Documentation into Immutable ADRs and Living Documents
 description: Replaces the single immutable ADR shape with per-project architecture bundles of immutable ADRs over living overviews, specifications, and a root constraint ledger — gated by a shared materiality test, written by a sole curator, policed by a distributable reviewer, and accepted only through a human ratification gate.
 tags: [knowledge, adr, okf, architecture, agents, skills]
 generated: { by: adr-architect/claude-fable-5, at: 2026-08-06T00:00:00Z }
-status: Proposed
+verified: { by: human:mscharley, at: 2026-08-06T00:00:00Z }
+status: Accepted
 ---
 
 # ADR-0004: Split Architecture Documentation into Immutable ADRs and Living Documents
 
 ## Status
 
-Proposed (2026-08-06)
+Accepted (2026-08-06)
 
 ## Context
 

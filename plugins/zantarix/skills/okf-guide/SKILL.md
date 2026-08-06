@@ -82,8 +82,7 @@ naturally rewritten, not through a mass migration.
 
 ## ADR bundles: two divergences
 
-ADR bundles ([ADR-0003](/docs/adr/knowledge/0003-adopt-okf-v0-2-house-style.md))
-adopt the general v0.2 house style above in full — `generated` replaces
+ADR bundles adopt the general v0.2 house style above in full — `generated` replaces
 `timestamp`, and `verified`/`stale_after` are available where they carry
 meaning for a decision record (in practice, rarely: acceptance is already
 recorded by `status`, and an obsolete ADR is superseded rather than
