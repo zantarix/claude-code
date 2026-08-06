@@ -101,6 +101,35 @@ Apply these two divergences whenever the bundle is an ADR library (`docs/adr/`
 or equivalent); apply the general v0.2 house style, citations included,
 everywhere else.
 
+## Architecture bundles: the architecture-documentation regime
+
+A project MAY adopt the architecture-documentation regime.
+The marker is self-describing: a **bundle-root concept of type `Constraint
+Ledger`** (`constraints.md`); the conventional path is `docs/architecture/`
+(the path is human convention — tooling trusts the ledger). Regime bundles are
+ordinary OKF bundles with a fixed working type vocabulary:
+
+- **`Architecture Decision`** — immutable, four-digit numbered; the ADR
+  divergences above apply. Acceptance adds a `verified: { by:
+  human:<forge-username>, at }` event.
+- **`Overview`** — living; one per theme (conventionally `overview.md`),
+  describing the theme's current shape.
+- **`Specification`** — living; named, not numbered; contracts and compact
+  rationale notes. Every edit cites the driving Architecture Decision.
+- **`Constraint Ledger`** — the root singleton; one entry per
+  constraint-admitting decision, citing it.
+
+Living concepts follow the general v0.2 house style in full, `sources` and
+trust families included. Index conventions: the bundle-root `index.md` is
+**targeted** — direct descendants (themes, the ledger) plus a few prominent
+children — with the per-concept roll-call living in theme indexes; a theme
+index lists its overview first, then living documents, then decisions.
+
+Regime *policy* — the materiality gate, the citation discipline, the writing
+procedure — lives in the `architecture-curator` and `architecture-reviewer`
+agents and the `zantarix:materiality-gate` skill, not in the general `okf-*`
+skills. Adoption is human-invoked only, via `/adopt-architecture`.
+
 ## Reserved files
 
 ### `index.md` — progressive disclosure

@@ -1,6 +1,6 @@
 ---
 name: okf-migrate-adr
-description: One-time migration of an existing ADR library into an OKF (Open Knowledge Format) bundle. Human-invoked only; must be run by the zantarix:adr-architect agent.
+description: One-time migration of an existing ADR library into an OKF (Open Knowledge Format) bundle. Human-invoked only; must be run by the zantarix:architecture-curator agent.
 disable-model-invocation: true
 ---
 
@@ -8,16 +8,16 @@ disable-model-invocation: true
 ADRs** as a one-time, content-preserving format lift. That is only permissible
 because a human chose to run this skill — the human invocation **is** the
 authorisation, and no agent may grant it to itself. First confirm you are running
-as the `zantarix:adr-architect` agent. **If you are not, STOP immediately, make
+as the `zantarix:architecture-curator` agent. **If you are not, STOP immediately, make
 no changes, and tell the user, verbatim:**
 
-> This skill is only usable by the ADR architect, please close claude and run `claude --agent zantarix:adr-architect` and try again.
+> This skill is only usable by the architecture curator, please close claude and run `claude --agent zantarix:architecture-curator` and try again.
 
-(The `guard-adr.sh` hook is a hard backstop — non-architect writes under
+(The `guard-adr.sh` hook is a hard backstop — non-curator writes under
 `docs/adr/` are blocked regardless — but stop cleanly at this check rather than
 letting writes fail.)
 
-Once confirmed as the architect: for the duration of this migration, treat every
+Once confirmed as the curator: for the duration of this migration, treat every
 ADR — including accepted ones — as in-scope to reshape. Bodies are preserved
 verbatim; only paths, link targets, numbering width, and added frontmatter change.
 
@@ -63,7 +63,7 @@ Perform the migration in order, stopping and reporting any failure.
    - Delete the whole `docs/adr/README.md` file (its keeper content moved into
      `index.md` in step 5).
    - Delete the agent-private
-     `.claude/agent-memory/zantarix-adr-architect/inventory.md`, and update that
+     `.claude/agent-memory/zantarix-architecture-curator/inventory.md`, and update that
      agent's `MEMORY.md` to drop its `inventory.md` pointer (the inventory no
      longer exists in OKF mode).
 

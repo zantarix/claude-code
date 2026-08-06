@@ -43,7 +43,7 @@ The `zantarix:memory-reconciliation` skill files GitHub issues (label: `new-memo
 
 The `zantarix` plugin installs two hooks active in this repo:
 
-- **`guard-adr.sh`** (PreToolUse, Edit/Write/MultiEdit) — blocks any agent except `zantarix:adr-architect` from writing under `docs/adr/`. Delegate ADR edits via the `@zantarix:adr-architect` agent.
+- **`guard-adr.sh`** (PreToolUse, Edit/Write/MultiEdit) — blocks any agent except `zantarix:architecture-curator` from writing under `docs/adr/` or `docs/architecture/`. Delegate architecture-library edits via the `@zantarix:architecture-curator` agent.
 - **`format.sh`** (PostToolUse, Edit/Write) — runs `markdownlint --fix` on `.md` files after every edit automatically; no manual formatting step is needed.
 
 ## Commit conventions

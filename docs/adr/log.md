@@ -2,6 +2,8 @@
 
 ## 2026-08-06
 
+* **Update**: refined [ADR-0004](knowledge/0004-split-architecture-documentation-into-immutable-adrs-and-living-documents.md)'s Acceptance wording — the gate ratifies the document as written, changing only status and verification, so the reviewed text is exactly what freezes.
+* **Update**: refined [ADR-0004](knowledge/0004-split-architecture-documentation-into-immutable-adrs-and-living-documents.md)'s Adoption wording — a pre-OKF corpus stops adoption cleanly with direction to run `/okf-migrate-adr` first, rather than one human-gated migration firing another.
 * **Creation**: proposed [ADR-0004](knowledge/0004-split-architecture-documentation-into-immutable-adrs-and-living-documents.md) — split architecture documentation into immutable ADRs (constraint admissions and topology decisions, named as commitments) and living documents (overviews, specifications, and a root constraint ledger that doubles as the regime marker) in per-project `docs/architecture` bundles; adds a shared materiality-gate skill, renames `adr-architect` to `architecture-curator`, distributes a generalised `architecture-reviewer`, and turns `/accept-adr` into a human ratification gate writing `verified`.
 * **Update**: added the missing [ADR-0003](knowledge/0003-adopt-okf-v0-2-house-style.md) bullet to the knowledge theme index while reconciling it for ADR-0004.
 

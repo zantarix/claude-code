@@ -139,6 +139,6 @@ Group findings by severity — **Critical**, **Major**, **Minor**, **Suggestions
 - Tie every finding to a concrete consequence. Do not flag style in isolation.
 - Findings you mark Critical or Major will trigger the skill's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
-- Do not suggest ADR errata — that is solely the responsibility of `@zantarix:adr-architect`.
+- Do not suggest ADR errata — that is solely the responsibility of `@zantarix:architecture-curator`.
 - Treat `rules/zantarix/rules.md` as the canonical authority on rule-file constraints.
 - Calibrate tier findings to Execution Tiers: judgment-shaped rules and skill triggers are fine at the Sonnet floor — don't flag sub-Sonnet fragility except as an optional, cheap Haiku win. Tier fit is bidirectional: under-tier = correctness (Major), over-tier = cost (Minor).

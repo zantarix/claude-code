@@ -48,25 +48,29 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 
 | Type | Name | Description |
 |------|------|-------------|
-| Skill | `accept-adr` | Review ADR implementation for completeness and mark it as accepted |
+| Skill | `accept-adr` | Human-invoked ratification gate: mark a Proposed ADR Accepted, recording who ratified it (`verified`) and any constraint-ledger entry |
+| Skill | `adopt-architecture` | One-time, human-invoked adoption of the architecture-documentation regime — converts an ADR corpus into a `docs/architecture` bundle with a constraint ledger; must be run by the `architecture-curator` agent |
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `deep-dive` | Interview the user one question at a time to reach a shared understanding of an ambiguous topic, decision, or finding; used by `plan-adr` and `review` |
 | Skill | `domain-modelling` | Build and sharpen a project's domain model — pin down terminology and ubiquitous language as the design evolves |
 | Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
 | Skill | `init` | Audit the repository and write or update `CLAUDE.md` so future runs start with project context |
+| Skill | `materiality-gate` | Shared materiality test for architecture-regime bundles — decides whether a change newly constrains the project (ADR) or proceeds as specification work; preloaded into the curator and reviewer |
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
 | Skill | `okf-curate` | Author or revise one OKF concept, keeping its `index.md` and the bundle `log.md` in sync in one operation |
 | Skill | `okf-guide` | Canonical OKF format reference and Zantarix house style; loaded by the other `okf-*` skills and preloaded into OKF-aware agents |
 | Skill | `okf-index` | Rebuild a directory's `index.md` from its concepts' frontmatter — the bulk-reindex counterpart to `okf-curate` |
 | Skill | `okf-init` | Scaffold a new OKF bundle — root `index.md` with the `okf_version` marker plus a directory skeleton |
-| Skill | `okf-migrate-adr` | One-time, human-invoked migration of an existing ADR library into an OKF bundle; must be run by the `adr-architect` agent |
+| Skill | `okf-migrate-adr` | One-time, human-invoked migration of an existing ADR library into an OKF bundle; must be run by the `architecture-curator` agent |
 | Skill | `okf-validate` | Read-only OKF conformance check — reports frontmatter/`type`, reserved-file, and broken-link issues; makes no changes |
-| Skill | `plan-adr` | Enter planning mode to scope a decision with the user, then delegate to `adr-architect` to write the ADR |
+| Skill | `plan-adr` | Enter planning mode to scope a decision with the user (routing spec-work via the materiality gate), then delegate to `architecture-curator` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents over the current changes — each proposes a partition suited to its own remit, then reviews its slices in parallel via a dynamic workflow — then fix critical/major findings in a single pass; stores all output under `.reviews/` |
 | Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |
-| Agent | `adr-architect` | Create and maintain Architecture Decision Records in `docs/adr/` |
+| Agent | `architecture-curator` | Sole writer of `docs/adr/` and `docs/architecture/` — ADRs plus, under the architecture-documentation regime, overviews, specifications, and the constraint ledger |
+| Agent | `architecture-reviewer` | Forward-facing review of architectural trajectory and the architecture-regime materiality gate; reads all project specifics from the bundle |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
-| Rule | `adr` | Instructs Claude to delegate ADR changes to the `adr-architect` agent; ADR statuses, accepting, errata, when to skip |
+| Rule | `adr` | Instructs Claude to delegate architecture-library changes to the `architecture-curator` agent; ADR statuses, human-gated acceptance, errata, when to skip |
+| Rule | `architecture-review` | Mandates a pre-acceptance `architecture-reviewer` review of every ADR (arms the curator's rule-mandated review step) |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `changesets` | Changeset policy: always add a changeset for any releasable change |
 | Rule | `git-workflow` | Prefer cherry-pick over merge commit when integrating a finished branch into `main` |
@@ -76,7 +80,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `non-functional` | Non-functional requirements |
 | Rule | `plans` | Implementation plan conventions (verification, review, commit behaviour, surfacing real alternatives, and scope discipline) |
 | Rule | `preserve-multiphase-contracts` | Preserve observable multi-phase contracts rather than collapsing them into single atomic calls |
-| Rule | `refine-proposed-adr` | Fold a refinement of a Proposed ADR into that ADR via `adr-architect`; don't spawn a new ADR (it's not errata) |
+| Rule | `refine-proposed-adr` | Fold a refinement of a Proposed ADR into that ADR via `architecture-curator`; don't spawn a new ADR (it's not errata) |
 | Rule | `rules` | Project vs. organisation rule ownership, the 50-line cap, and `paths:` scoping conventions |
 | Rule | `testing` | Test conventions |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
