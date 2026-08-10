@@ -17,9 +17,9 @@ description: |-
    </example>
 
    <example>
-   Context: The `/review` skill is running its reviewer fan-out over a diff.
-   user: "/review"
-   assistant: <commentary>`/review` discovers every `-reviewer` agent, including this one, and fans it out over the diff via a dynamic Workflow. It reviews its assigned files for architectural drift and gate violations and returns findings.</commentary>
+   Context: The `/zantarix:review` skill is running its reviewer fan-out over a diff.
+   user: "/zantarix:review"
+   assistant: <commentary>`/zantarix:review` discovers every `-reviewer` agent, including this one, and fans it out over the diff via a dynamic Workflow. It reviews its assigned files for architectural drift and gate violations and returns findings.</commentary>
    </example>
 
    <example>

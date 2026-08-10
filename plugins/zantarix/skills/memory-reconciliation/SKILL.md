@@ -107,7 +107,7 @@ Skip this step if no Outcome C rows ran (no new project rules were written).
 Otherwise:
 
 1. Invoke the `zantarix:init` skill to refresh `CLAUDE.md` against the new rule set. This catches any high-level project description that should now defer to a freshly written rule.
-2. Run the `/review` skill over all changed files. This runs all reviewer agents concurrently, auto-fixes critical/major findings, and loops until clean — follow its full workflow rather than surfacing findings for manual action.
+2. Run the `/zantarix:review` skill over all changed files. This runs all reviewer agents concurrently, auto-fixes critical/major findings, and loops until clean — follow its full workflow rather than surfacing findings for manual action.
 
 ## Step 7: Report
 
@@ -116,5 +116,5 @@ Summarise:
 - Total memories reviewed.
 - Counts per outcome (A/B/C/D).
 - Files written, files deleted, and links to any issues filed.
-- `zantarix:init` and `/review` findings, if Step 6 ran.
+- `zantarix:init` and `/zantarix:review` findings, if Step 6 ran.
 - Any rows the user deferred for a future run.

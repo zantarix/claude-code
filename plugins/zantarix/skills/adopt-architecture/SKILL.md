@@ -57,7 +57,7 @@ stopping and reporting any failure.
    the root index's keeper prose (intro, Related Projects).
 
 7. **Retire any project-local architecture reviewer** (e.g.
-   `.claude/agents/architecture-reviewer.md`) so the `/review` fan-out
+   `.claude/agents/architecture-reviewer.md`) so the `/zantarix:review` fan-out
    discovers exactly one — the plugin's. Confirm with the user before
    deleting; port any genuinely project-specific calibration into the bundle's
    overviews first, where the plugin reviewer will read it.

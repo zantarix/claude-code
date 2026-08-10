@@ -60,7 +60,7 @@ Project-local content (not distributed) lives in `.claude/` — skills in `.clau
 The following are intentional design choices — do not flag them as issues:
 
 - **`zantarix:init` skill invocations** in `memory-reconciliation` and `triage-new-memory` — these explicitly target the plugin's own `init` skill (refreshes `CLAUDE.md`), not the harness built-in `/init`. Do not flag them as ambiguous.
-- **`plugin-reviewer` included in `/review` scope** — the `zantarix:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
+- **`plugin-reviewer` included in `/zantarix:review` scope** — the `zantarix:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
 - **`rules/zantarix/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/zantarix/rules.md`.
 
 Constraints from `rules/zantarix/rules.md` (authoritative):

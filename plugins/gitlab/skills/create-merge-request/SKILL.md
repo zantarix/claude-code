@@ -3,7 +3,7 @@ name: create-merge-request
 description: |-
   Create a GitLab merge request for the current branch, describing the changes made.
   Adds a `Closes #N` line when the work implements a ticket.
-  If /review was run in this session and the session folder is known, posts the review to the MR as a batched draft-note review via the `gitlab:post-mr-review` skill.
+  If /zantarix:review was run in this session and the session folder is known, posts the review to the MR as a batched draft-note review via the `gitlab:post-mr-review` skill.
   Use proactively whenever the user asks to create an MR or merge request.
 ---
 
@@ -51,7 +51,7 @@ Use this to draft the MR title and body:
 
 ## Step 4: Check for a session review
 
-Check whether `/review` was run earlier in this conversation and the session folder path is already known from context (e.g. `.reviews/2026-05-29-200316/`). Do **not** scan the filesystem — `.reviews/` accumulates folders from many branches and sessions, so a filesystem search would pick up stale reviews.
+Check whether `/zantarix:review` was run earlier in this conversation and the session folder path is already known from context (e.g. `.reviews/2026-05-29-200316/`). Do **not** scan the filesystem — `.reviews/` accumulates folders from many branches and sessions, so a filesystem search would pick up stale reviews.
 
 If the session folder is known, the review is at `<session>/review.md`. Read its full contents — they will be handed to the `gitlab:post-mr-review` skill for posting after MR creation.
 
