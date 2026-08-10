@@ -35,7 +35,7 @@ When writing ADRs that reference cursus or other related Zantarix projects, chec
 
 Errata are the sole responsibility of the `@zantarix:architecture-curator` agent. No other agent or skill should add or suggest errata.
 
-Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. If a code change contradicts an accepted ADR, flag it as an architectural concern that may need a new ADR. Reviewers may, however, flag implementation discrepancies against a `Proposed` ADR — those are inlined into the ADR before acceptance.
+Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. If an ADR's *decision* is contradicted, flag it as an architectural concern that may need a new ADR; if *current-truth material* baked into an ADR (call signatures, enumerations, formats, layouts) has drifted, flag it as an extraction candidate for the curator's errata-driven extraction instead — never as a new ADR. Reviewers may, however, flag implementation discrepancies against a `Proposed` ADR — those are inlined into the ADR before acceptance.
 
 ## When to skip an ADR
 

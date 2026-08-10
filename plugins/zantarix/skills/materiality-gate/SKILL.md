@@ -58,4 +58,10 @@ Police the gate in both directions, flagging findings as **Major**:
 - a specification or overview edit that newly constrains without an admitting
   ADR — an unadmitted decision smuggled into a living document;
 - an ADR carrying enumerations, format tables, or other current-truth material
-  that belongs in a specification.
+  that belongs in a specification — including a pre-regime **accepted** ADR
+  whose current-truth material (call signatures, enumerations, formats) has
+  since drifted. Flag this as an **extraction candidate** for the curator's
+  errata-driven extraction, not as a documentation gap. This is a gate
+  finding, not an erratum suggestion — you never write the erratum yourself —
+  and it is **never** a reason to ask for a new ADR: only a contradicted
+  *decision*, not stale current-truth material, warrants one.

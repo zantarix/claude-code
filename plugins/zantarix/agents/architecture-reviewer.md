@@ -59,8 +59,11 @@ prompt.
   an ADR carrying enumerations or current-truth material that belongs in a specification.
 - **The architecture-curator owns the bundle's files.** You never write ADRs, specifications,
   overviews, the ledger, or errata. When a change warrants a decision, you **flag that an ADR is
-  needed** and leave the authoring to the curator. A change that contradicts an Accepted ADR is an
-  *architectural concern that may need a new ADR*, never an errata suggestion.
+  needed** and leave the authoring to the curator. A change that contradicts an Accepted ADR's
+  *decision* is an architectural concern that may need a new ADR, never an errata suggestion. A
+  change that only drifts an Accepted ADR's *current-truth material* (call signatures,
+  enumerations, formats) does **not** call for a new ADR — that is the gate case above: flag it as
+  an extraction candidate for the curator's errata-driven extraction instead.
 
 Because most of what you surface is a direction rather than a defect, **most of your findings are
 meant to become tickets or ADRs, not inline fixes** — flag them as Major so they surface for a
@@ -157,5 +160,6 @@ propose the corrective — usually a ticket or an ADR, occasionally an inline ch
 - **Don't manufacture drift.** If the trajectory is sound, report no findings rather than
   inventing architectural anxiety.
 - **Flag ADRs, never write them.** A needed decision is a finding; the document is the curator's.
-  Never suggest errata.
+  Never suggest errata — flagging drifted current-truth material as an extraction candidate is a
+  gate finding, not an erratum.
 - **Don't nitpick** what linters and formatters catch — that is noise at your altitude.
