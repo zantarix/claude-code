@@ -69,16 +69,21 @@ Because most of what you surface is a direction rather than a defect, **most of 
 meant to become tickets or ADRs, not inline fixes** — flag them as Major so they surface for a
 human decision (see Reporting).
 
-## Reading the project's intended shape
+## Reading the project's documented shape
 
-Establish the intended architecture from the project's own documents, in this order, before
-judging anything:
+Establish what the project has committed to, and where it currently stands, from its own documents
+— in this order, before judging anything:
 
 1. **Architecture-regime bundle** (`docs/architecture/`, marked by a bundle-root concept of type
    `Constraint Ledger`): read the root `index.md`, the **constraint ledger**, and the overviews
    and specifications of every theme the change touches. The ledger is your materiality
-   reference; the overviews are your model of intended shape; the specifications are the
-   contracts a change must honour or formally amend.
+   reference; the specifications are the contracts a change must honour or formally amend; the
+   decisions are the commitments.
+
+   **Overviews describe where the project stands, not where it intends to be.** They are your
+   baseline for measuring what a change moves, and they deliberately record known defects, so a
+   change agreeing with an overview is not thereby sound — intent lives in the ledger, the
+   decisions, and the specifications.
 2. **OKF ADR bundle** (`docs/adr/` with an `okf_version` root marker): read the root `index.md`,
    then every ADR whose subject the change touches, in full — errata at the end can change the
    picture.
@@ -92,8 +97,8 @@ project's vocabulary — use the project's words in your findings, not generic o
 1. **Identify the changes.** Use `git diff` / `git log` to understand what changed. Honour any
    given scope; a `zantarix:review` workflow prompt names exactly which files to review — report
    **only** on files inside your assigned set; never assert that anything outside it is clean.
-2. **Read the project's intended shape** (above) before judging, so "drift" is measured against
-   the documented intent rather than your instincts.
+2. **Read the project's documented shape** (above) before judging, so "drift" is measured against
+   the project's stated commitments and its recorded current position rather than your instincts.
 3. **Read the changed code in full** — structure only reveals itself across whole files and their
    neighbours.
 4. **Assess the trajectory** across the dimensions below, then report.
@@ -126,11 +131,14 @@ review; another pass covers the cross surface.
 ## Pre-acceptance ADR review
 
 When the architecture-curator delegates a Proposed ADR to you before acceptance, review the
-document itself: is it one decision surface; is it named as a commitment; does its Context hold
-only pressures and citations (current-state archaeology belongs in an overview); does it carry
-enumerations that belong in a specification; do its consequences honestly state the trade-offs;
-does the materiality gate agree it warrants an ADR at all? Your findings are advisory input — the
-curator folds anything substantive into the document in its own words.
+document itself: is it **one decision** — a single new constraint, positive or negative, such that
+the project could not accept one half and reject the other; is it named as a commitment; does its
+Context hold only pressures and citations (current-state archaeology belongs in an overview); does
+it carry enumerations that belong in a specification; does its Decision or any Consequence assert a
+census of what the code does today, which goes stale by construction and belongs in the living tier;
+do its consequences honestly state the trade-offs; does the materiality gate agree it warrants an
+ADR at all? Your findings are advisory input — the curator folds anything substantive into the
+document in its own words.
 
 ## Reporting
 

@@ -1,6 +1,6 @@
 ---
 name: accept-adr
-description: Human ratification gate for ADRs — marks a Proposed ADR Accepted, recording who ratified it. Human-invoked only, in a curator session; acceptance ratifies the document as written and never modifies its body.
+description: Human ratification gate for ADRs — marks a Proposed ADR Accepted, recording who ratified it. Human-invoked only, in a curator session; acceptance ratifies the text the human reads and amends the body only as they direct.
 disable-model-invocation: true
 ---
 
@@ -19,9 +19,12 @@ it.
 Acceptance is a **human decision**: running this skill is the act of
 ratification, and no agent may perform it on its own initiative or as a step in
 a workflow or implementation plan. The ADR being accepted must currently be
-`Proposed`, and acceptance ratifies it **as written** — this skill changes the
-ADR's frontmatter (`verified`, `status`) and its `## Status` line, and nothing
-else in the document, so what the human reviewed is exactly what freezes.
+`Proposed`.
+
+The guarantee acceptance carries is that **the human saw the text that froze**.
+The document may therefore be corrected during ratification — but only where the
+human directs the correction and then reads the result. You never decide to amend,
+and you never amend silently.
 
 Resolve the ratifier's identity first: the invoking user's username on the
 project's forge (GitHub/GitLab), taken from their per-user `CLAUDE.md` when
@@ -31,15 +34,22 @@ stated there, otherwise from `gh api user --jq .login` (GitHub) or
 
 Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
 
-1. **Confirm it is `Proposed`, and read it in full.** Acceptance ratifies the
-   document as written, so make no edits to its body here. If reading it
-   convinces you the body misstates the **decision**, stop without accepting and
-   raise it with the human: the refinement happens in the ordinary Proposed
-   flow — which, in this session, can happen immediately and in front of them —
-   and acceptance then runs clean over the corrected document.
+1. **Confirm it is `Proposed`, and read it in full.** Amendment answers a document
+   that is wrong **about itself** — a Decision that misstates what was decided, or
+   a Consequence the project has since falsified. Where you find one, follow this
+   sequence and no other:
 
-   A **conformance gap is not grounds to stop.** That the code has not caught
-   up, or that some surface does not comply, says nothing about whether the
+   1. Surface the discrepancy to the human. You may propose wording.
+   2. The human directs the change, or declines it.
+   3. Apply exactly what was directed, and show the result.
+   4. Ratify the text the human has now read.
+
+   If they decline, ratify the document as it stands — the decision is theirs, not
+   yours. Whether an amendment has widened the reviewed surface enough to warrant
+   re-running the architecture review is also their call.
+
+   A **conformance gap is not grounds to amend or to stop.** That the code has not
+   caught up, or that some surface does not comply, says nothing about whether the
    decision is the right one; confirm the gap is tracked and proceed. An ADR is
    ratified as a *decision*, with the understanding that gaps exist.
 
@@ -85,7 +95,8 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
    takes no conformance notes.
 
 6. **Mark it `Accepted`** — the `status` frontmatter and the `## Status` body
-   line, edited directly, and nothing else in the document. Then update the
+   line, edited directly. This step touches nothing else in the document — any
+   correction was made and read at step 1. Then update the
    index and history per your mode: `docs/adr/README.md` plus your inventory in
    legacy mode, or the bundle-root `index.md`/`log.md` in OKF and regime modes.
 

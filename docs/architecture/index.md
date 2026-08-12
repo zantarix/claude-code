@@ -16,6 +16,7 @@ Each ADR describes the context behind a decision, the decision itself, the alter
 
 * [Orchestration](orchestration/) - how skills coordinate multi-agent work: fan-out, gating, and collation of subagent results.
 * [Knowledge](knowledge/) - knowledge and documentation formats: how decisions and reference material are structured, indexed, and maintained.
+* [Components](components/) - the kinds of thing a plugin ships, how they reach a consumer project, and what each costs in context.
 
 # Related Projects
 

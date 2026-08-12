@@ -3,7 +3,7 @@ type: Constraint Ledger
 title: Constraint Ledger
 description: The consolidated register of standing architectural commitments for the Zantarix Claude Code plugin marketplace, one entry per constraint-admitting decision.
 tags: [architecture, constraints, ledger]
-generated: { by: architecture-curator/claude-opus-4-8, at: 2026-08-06T00:00:00Z }
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T11:09:41Z }
 ---
 
 # Constraint Ledger
@@ -19,3 +19,9 @@ The presence of this concept — a bundle-root `Constraint Ledger` — is this b
 Zantarix knowledge bundles, ADR libraries included, are recorded in the Open Knowledge Format (OKF). New and revised knowledge documentation is authored as OKF concepts on the v0.2 house style; other documentation formats are foreclosed for these bundles.
 
 Admitted by [ADR-0002](knowledge/0002-adopt-okf-knowledge-bundles.md); refined to the v0.2 house style by [ADR-0003](knowledge/0003-adopt-okf-v0-2-house-style.md).
+
+## Ratification is interactive
+
+The human-authorisation gates over an architecture bundle — ratifying a decision, adopting the documentation regime, and migrating a corpus into it — run only in a session the architecture curator is driving, with a person present in it. Delegated, scripted, and automated ratification are foreclosed: no path exists by which a decision reaches `Accepted` without a human in the session that marks it.
+
+Admitted by [ADR-0006](knowledge/0006-require-a-curator-session-for-adr-ratification.md).

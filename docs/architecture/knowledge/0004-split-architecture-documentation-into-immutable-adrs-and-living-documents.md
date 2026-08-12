@@ -188,3 +188,9 @@ Require every new theme to open with an overview. Rejected because a theme with 
 ### Bake regime policy into the general `okf-*` skills
 
 Teach `okf-curate` the citation discipline and `okf-index` the regime's index forms directly. Rejected because those skills serve every bundle family — the security bundle among them — and regime policy embedded in general mechanics would leak architecture rules into bundles with different owners and conventions. Policy concentrates in the curator and reviewer definitions and the shared gate skill; the general skills stay bundle-agnostic.
+
+## Errata
+
+### 2026-08-12: Ratification may now change the document
+
+The Decision's "Acceptance is human ratification" section states that acceptance "changes the ADR's status and verification record and nothing else, so what the human reviewed is exactly what freezes." The "and nothing else" half is no longer correct: [ADR-0005](0005-ratify-adrs-in-concert-with-the-human.md) permits ratification to amend the body where the ratifying human directs the change in session. The guarantee that clause exists to deliver is unaffected and was reaffirmed rather than weakened — the ratified text is still the text the human read — but it is now delivered by their reading the final document rather than by the document being unchangeable at the gate. Every other property stated in that section, including human-only initiation, the `verified` record, the ledger entry for a constraint admission, and immutability from acceptance onward, stands as written.
