@@ -67,6 +67,18 @@ costs, because it is in context from the first turn. It buys shared authorship �
 one wording used by several agents — not context. Only skills that fire
 *sometimes* save anything by being left on demand.
 
+That framing has a limit worth stating, because the saving and the risk are the
+same move. **Content that exists to correct in-the-moment judgment must not be
+gated behind in-the-moment judgment.** A procedure an agent follows because its
+unaided instincts are known to be wrong — a fixed authoring order, a checklist
+against a predictable failure — cannot be moved to an on-demand skill without
+assuming the very judgement it compensates for: an agent reliable enough to know
+it needs the rule was reliable enough not to need it. Such material stays in the
+prompt however large it grows, and the curator's authoring apparatus is roughly
+two thirds of that prompt for this reason. What may safely move is material with
+a trigger the agent cannot miss because the trigger *is* the task it was asked to
+do.
+
 ### Hooks — the only mechanical enforcement
 
 A hook is a script registered in `plugin.json`, receiving the tool payload as
