@@ -4,6 +4,7 @@ title: Constraint Ledger
 description: The consolidated register of standing architectural commitments for the Zantarix Claude Code plugin marketplace, one entry per constraint-admitting decision.
 tags: [architecture, constraints, ledger]
 generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T11:09:41Z }
+status: stable
 ---
 
 # Constraint Ledger

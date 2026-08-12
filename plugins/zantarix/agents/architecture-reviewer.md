@@ -29,7 +29,7 @@ description: |-
    "I'll have the architecture-reviewer agent review the proposed ADR."
    </example>
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
-skills: [zantarix:okf-guide, zantarix:materiality-gate]
+skills: [zantarix:okf-guide, zantarix:materiality-gate, zantarix:architecture-vocabulary]
 model: opus
 effort: high
 color: purple
