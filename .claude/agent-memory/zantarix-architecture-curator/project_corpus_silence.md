@@ -33,8 +33,8 @@ proposing an ADR for something already decided in practice.
   something needs to lean on it. A wholesale sprint would mean inventing
   alternatives for decisions nobody deliberated, which manufactures false history.
 - The running list of known-unadmitted constraints lives in the living tier, not
-  in memory: `docs/architecture/components/ticket-workflow.md` closes with the
-  workflow ones, and `knowledge/overview.md` explains the gap.
+  in memory: `docs/architecture/ticket-workflow.md` closes with the workflow ones,
+  and `knowledge/overview.md` explains the gap.
 
 See [[promoting-memory-to-prompts]] for the related hazard of writing down a rule
 without the scope its origin supplied.

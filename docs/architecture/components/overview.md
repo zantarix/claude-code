@@ -3,7 +3,7 @@ type: Overview
 title: Components
 description: The kinds of thing a Zantarix plugin ships — skills, agents, rules, and hooks — what each is good for, how they reach a consumer project, and what each costs in context.
 tags: [components, plugins, skills, rules, agents, hooks, distribution]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T10:05:09Z }
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-13T15:55:00Z }
 status: stable
 ---
 
@@ -43,10 +43,11 @@ Skills may ship files beside them — `review` bundles a workflow script and a
 materialisation script — and those are addressed through `${CLAUDE_SKILL_DIR}`.
 
 `disable-model-invocation: true` removes a skill from the model's reach while
-leaving it available to the user. It carries two distinct meanings here, described
-in the [orchestration overview](../orchestration/overview.md): a human
-authorisation gate, or a procedure that only makes sense once the human has done
-something out of band.
+leaving it available to the user. It carries three distinct meanings here,
+described in the [orchestration overview](../orchestration/overview.md): a human
+authorisation gate, a procedure that only makes sense once the human has done
+something out of band, or reference prose nobody invokes at all, kept off every
+agent's skill listing because it is there to be preloaded.
 
 The common failure is writing as a skill what a rule should carry. A skill that
 must fire *reliably* on some trigger is only as reliable as the model's decision to
@@ -67,17 +68,17 @@ costs, because it is in context from the first turn. It buys shared authorship �
 one wording used by several agents — not context. Only skills that fire
 *sometimes* save anything by being left on demand.
 
-That framing has a limit worth stating, because the saving and the risk are the
-same move. **Content that exists to correct in-the-moment judgment must not be
-gated behind in-the-moment judgment.** A procedure an agent follows because its
-unaided instincts are known to be wrong — a fixed authoring order, a checklist
-against a predictable failure — cannot be moved to an on-demand skill without
-assuming the very judgement it compensates for: an agent reliable enough to know
-it needs the rule was reliable enough not to need it. Such material stays in the
-prompt however large it grows, and the curator's authoring apparatus is roughly
-two thirds of that prompt for this reason. What may safely move is material with
-a trigger the agent cannot miss because the trigger *is* the task it was asked to
-do.
+That framing has a limit. **Content that exists to correct in-the-moment
+judgment is not gated behind in-the-moment judgment**
+([ADR-0008](0008-keep-judgment-correcting-content-out-of-on-demand-skills.md)):
+a fixed authoring order or a checklist against a predictable failure stays
+loaded however large it grows, and only material fired by something the agent can
+check rather than recognise may be left on demand.
+
+The curator is where this bites. Roughly two thirds of its prompt is ADR-authoring
+and errata apparatus that does not fire when it edits a specification or an
+overview — which under the regime is the common case — so the saving from
+splitting it is real, and the prompt stays whole anyway.
 
 ### Hooks — the only mechanical enforcement
 

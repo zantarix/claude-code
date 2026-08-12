@@ -8,10 +8,11 @@ disable-model-invocation: true
 corpus that includes **accepted, immutable ADRs**. That is only permissible
 because a human chose to run this skill — the human invocation **is** the
 authorisation, and no agent may grant it to itself. First confirm you are
-running as the `zantarix:architecture-curator` agent. **If you are not, STOP
-immediately, make no changes, and report exactly this, substituting the
-arguments you were given so the command both opens the curator session and
-re-runs this skill in it:**
+running as the `zantarix:architecture-curator` agent **in a curator session**.
+**If you are not, STOP immediately, make no changes, do not delegate to the
+curator as a subagent, and report exactly this, substituting the arguments you
+were given so the command both opens the curator session and re-runs this
+skill in it:**
 
 > This is not a curator session. Please start one with `claude --agent zantarix:architecture-curator '/adopt-architecture $ARGUMENTS'`
 
@@ -55,7 +56,10 @@ stopping and reporting any failure.
 6. **Rewrite the root `index.md`** into its targeted OKF form: the themes and
    the ledger as direct descendants, plus a few prominent children (typically
    specifications). The per-ADR global roll-call moves entirely into the theme
-   indexes — rebuild any theme index that needs it with `/okf-index`. Preserve
+   indexes — rebuild **every** theme index listing decisions with `/okf-index`,
+   not only those gaining entries: the decision-numbering convention applies from
+   adoption on, so bullets carried over from the ADR bundle are all out of shape.
+   Preserve
    the root index's keeper prose (intro, Related Projects).
 
 7. **Retire any project-local architecture reviewer** (e.g.

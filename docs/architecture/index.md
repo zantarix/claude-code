@@ -10,13 +10,19 @@ Each ADR describes the context behind a decision, the decision itself, the alter
 
 # Constraints
 
-* [Constraint Ledger](constraints.md) - the consolidated register of standing architectural commitments, one entry per constraint-admitting decision.
+* [Constraint Ledger](constraints.md) - the consolidated register of standing constraints, one entry per constraint-admitting decision.
 
 # Themes
 
 * [Orchestration](orchestration/) - how skills coordinate multi-agent work: fan-out, gating, and collation of subagent results.
 * [Knowledge](knowledge/) - knowledge and documentation formats: how decisions and reference material are structured, indexed, and maintained.
 * [Components](components/) - the kinds of thing a plugin ships, how they reach a consumer project, and what each costs in context.
+
+# Specifications
+
+Specifications whose subject spans more than one theme sit here rather than inside any of them.
+
+* [Ticket-to-Merge Workflow](ticket-workflow.md) - how the shipped skills compose from a ticket reference to an open pull or merge request, and the sequencing constraints that path imposes on purpose.
 
 # Related Projects
 

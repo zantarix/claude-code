@@ -8,8 +8,9 @@ disable-model-invocation: true
 ADRs** as a one-time, content-preserving format lift. That is only permissible
 because a human chose to run this skill — the human invocation **is** the
 authorisation, and no agent may grant it to itself. First confirm you are running
-as the `zantarix:architecture-curator` agent. **If you are not, STOP immediately, make
-no changes, and report exactly this, substituting the arguments you were given so
+as the `zantarix:architecture-curator` agent **in a curator session**. **If you are
+not, STOP immediately, make no changes, do not delegate to the curator as a
+subagent, and report exactly this, substituting the arguments you were given so
 the command both opens the curator session and re-runs this skill in it:**
 
 > This is not a curator session. Please start one with `claude --agent zantarix:architecture-curator '/okf-migrate-adr $ARGUMENTS'`

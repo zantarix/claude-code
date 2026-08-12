@@ -3,7 +3,7 @@ type: Overview
 title: Orchestration
 description: How this marketplace's plugins coordinate multi-agent work today — remit-aware review fan-out under a cost cap, sole-writer delegation enforced by a hook, and human authorisation gates.
 tags: [orchestration, subagents, review, human-gates, hooks]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T09:50:49Z }
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-13T10:12:00Z }
 status: stable
 ---
 
@@ -70,8 +70,8 @@ reports nothing — so it silently normalises markdown but never gates a change.
 
 Some actions are authorised by a person choosing to take them, and the mechanism
 is `disable-model-invocation: true`, which removes a skill from the model's reach
-while leaving it available to the user. The flag serves two distinct purposes,
-which is worth knowing when adding one:
+while leaving it available to the user. The flag serves three distinct purposes,
+only the first two of which are gates, which is worth knowing when adding one:
 
 - **Authorisation gates**, where running the skill *is* the permission —
   `/accept-adr`, `/adopt-architecture`, `/okf-migrate-adr`. Each mutates accepted,
@@ -80,6 +80,13 @@ which is worth knowing when adding one:
   happens out of band — `/rust:analyse-mutations` needs a manual `cargo mutants`
   run to have produced a report, and `/zantarix:memory-reconciliation` is a
   periodic triage requiring explicit approval per item.
+- **Reference material nobody invokes**, where the skill is prose to be preloaded
+  rather than an action anyone runs, and the flag keeps it out of every other
+  agent's skill listing — including the user's own session — where it would be
+  noise. `zantarix:architecture-vocabulary` is the case. Preloading alone does not
+  call for the flag: `okf-guide` and `materiality-gate` are preloaded too, but each
+  is also genuinely invoked on demand elsewhere — the first by the `okf-*` skills,
+  the second by `/plan-adr` — so neither carries it.
 
 Gates do not chain. A gate that finds its precondition unmet stops and directs the
 user to the other gate rather than firing it —
@@ -95,12 +102,6 @@ where a subagent could only report it upward and lose the context that found it.
 
 ## Known gaps
 
-- **What happens when acceptance meets a discrepancy is only half-settled.** The
-  gate ratifies a document as written, changing status and verification and nothing
-  else. With the session guard in place a needed refinement can be made in front of
-  the human and acceptance re-run over the corrected text, but whether the curator
-  may amend during the acceptance operation itself is not decided, and the skills
-  currently say it may not.
 - **The workflow script has no lint or format coverage.** `format.sh` handles `.md`
   only, and `review-workflow.js` is the sole JavaScript artifact in a repository
   otherwise made of configuration and markdown. [ADR-0001](0001-review-dynamic-workflow.md)

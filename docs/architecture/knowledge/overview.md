@@ -1,9 +1,9 @@
 ---
 type: Overview
 title: Knowledge
-description: How this project structures the knowledge it keeps — OKF bundles, the two-tier architecture regime, the ADR lifecycle from draft to errata, and the routes by which rules and memories become distributed content.
+description: How this project structures the knowledge it keeps — OKF bundles, the two-tier architecture regime, the shape of the ADR lifecycle, and the routes by which rules and memories become distributed content.
 tags: [knowledge, okf, adr, regime, rules, distribution]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T09:50:49Z }
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T21:58:09Z }
 status: stable
 ---
 
@@ -53,25 +53,34 @@ a walk of the decision chain. A living document therefore tracks what has landed
 in the code, including code implementing a decision the human has not yet
 ratified.
 
+Because a specification binds, it can disagree with the code, and
+[Maintaining Living Documents](living-documents.md) carries the rule that decides
+which side is wrong: the specification yields where a decision authorised the
+change, and stands otherwise, leaving the work out of conformance. The rule
+assigns a fault on every divergence, and it does so in a bundle where
+specifications are routinely written the moment a decision is ratified, ahead of
+anything being built.
+
 Which tier a piece of work belongs to is settled by the materiality gate: work
 that newly forecloses an option the ledger does not already foreclose needs a
 decision first, and everything else is specification work citing the entry that
 covers it.
 
-The ledger currently holds two entries — the OKF knowledge-format commitment and
-the requirement that ratification be interactive. Themes are `orchestration/`,
-`knowledge/`, and `components/`; cross-links within the bundle are relative.
+The ledger currently holds four entries — the OKF knowledge-format constraint,
+the requirement that ratification be interactive, the reading a specification's
+`status` carries, and the rule keeping judgment-correcting content loaded rather
+than on demand. Themes are `orchestration/`, `knowledge/`, and `components/`;
+cross-links within the bundle are relative. One
+specification, the [ticket-to-merge workflow](../ticket-workflow.md), sits at the
+bundle root instead of inside a theme: its subject runs across skills, rules, and
+several plugins, so filing it under any one theme misdescribed it.
 
 ## The ADR lifecycle as it stands
 
 An ADR is drafted by the `zantarix:architecture-curator`, the sole writer of this
 bundle — mechanically, not by convention; see the
 [orchestration overview](../orchestration/overview.md) for the hook that enforces
-it. Drafting follows a fixed section order, Decision before Context, because
-generated prose stays disciplined when checked against a referent already on the
-page.
-
-Every ADR then receives a pre-acceptance review from the
+it. Every ADR then receives a pre-acceptance review from the
 `zantarix:architecture-reviewer`, whose substantive findings the curator folds
 into the body in its own words. Specifications and overviews get no dedicated
 gate; they ride the ordinary `/zantarix:review` fan-out on the branch carrying
@@ -79,26 +88,18 @@ them.
 
 Ratification is a human act, performed through `/accept-adr` — one of the
 authorisation gates whose mechanics the
-[orchestration overview](../orchestration/overview.md) describes. What it records
-here is the lifecycle transition: `verified: { by: human:<forge-id> }`, a `status`
-flip, the ledger entry for a constraint admission, and a sweep of previously
-accepted ADRs for claims this decision falsified. **Accepted means the human
-ratified the direction**, not that anything was built — implementation runs
-independently and may precede ratification.
-
-From acceptance the document is immutable. Later correction is additive: an
-erratum records that a specific passage became functionally incorrect, linking
-forward to whatever now carries the correct position. Where the stale passage is
-current-truth material rather than a decision — an enumeration, a format, a
-layout — it is extracted into a specification and the erratum records the
-extraction, which is how a corpus predating the regime converges one correction at
-a time.
+[orchestration overview](../orchestration/overview.md) describes. **Accepted means
+the human ratified the direction**, not that anything was built: implementation
+runs independently and may precede ratification. From acceptance the document is
+immutable, and correction becomes additive rather than editorial.
 
 [ADR-0005](0005-ratify-adrs-in-concert-with-the-human.md) has ratification amend a
 document that is wrong about itself, where the human directs the change in
 session, and [ADR-0006](0006-require-a-curator-session-for-adr-ratification.md)
 admits the curator-session requirement that makes it safe. The
-[ADR lifecycle](adr-lifecycle.md) carries the resulting contract.
+[ADR lifecycle](adr-lifecycle.md) carries the resulting contract, stage by stage:
+what each step may change, what ratification records, and how an accepted document
+is corrected afterwards.
 
 ## How knowledge becomes distributed content
 
@@ -132,7 +133,7 @@ made and implemented without a record.
 **The corpus's silence therefore does not mean a question is open.** In a mature
 bundle an unadmitted constraint is usually one nobody has committed to; here it is
 as often one committed to before there was anywhere to write it down. The
-[ticket-to-merge workflow](../components/ticket-workflow.md) names several: the
+[ticket-to-merge workflow](../ticket-workflow.md) names several: the
 prohibition on reading the codebase before planning, the ordering of intake, the
 planning fork. Each is enforced and none is admitted.
 
@@ -141,10 +142,23 @@ converges elsewhere — OKF compliance arrives by writing, and a legacy corpus
 converges one erratum at a time — so a missing decision is written when something
 needs to lean on it, in the shape of
 [ADR-0006](0006-require-a-curator-session-for-adr-ratification.md):
-admitting a commitment already in force, honest that nothing is built by accepting
+admitting a constraint already in force, honest that nothing is built by accepting
 it. Reconstructing a decision nobody is currently relying on risks inventing
 deliberation that never happened.
 
-## In flight
+## Decided but not yet built
 
-Nothing. Every decision in this theme is accepted and implemented.
+[ADR-0007](0007-track-specification-conformance-in-status.md) narrows a
+specification's `status` to the contract's realisation in code — a reading that
+extends the format's lifecycle meaning rather than replacing it, since a contract
+the code does not meet is not settled either.
+[Maintaining Living Documents](living-documents.md) carries it value by value.
+
+Only the bundle carries it so far; no distributed prompt implements it. The
+curator's definition asks for `status` on every living document rather than the
+narrower specifications-only claim, and neither the `verified` event on promotion
+nor the rule that the value follows the contract appears in any prompt. The
+prompts are therefore out of conformance with the reading that specification
+states; closing the gap is prompt work, not a change to the specification.
+
+Every other decision in this theme is accepted and implemented.

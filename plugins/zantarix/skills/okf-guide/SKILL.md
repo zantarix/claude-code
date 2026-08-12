@@ -132,6 +132,18 @@ trust families included. Index conventions: the bundle-root `index.md` is
 children — with the per-concept roll-call living in theme indexes; a theme
 index lists its overview first, then living documents, then decisions.
 
+A decision's index bullet carries its number in the link label, four-digit
+padded to match the filename:
+
+```markdown
+* [0007 - Track Specification Conformance in Status](0007-track-specification-conformance-in-status.md) - narrows the lifecycle status on a specification to the contract's realisation in code.
+```
+
+This applies to `Architecture Decision` entries only — overviews,
+specifications, and the ledger keep bare titles — and only inside an
+architecture bundle: a plain OKF ADR bundle is structurally identical but is not
+one, so its bullets stay unnumbered.
+
 Regime *policy* — the materiality gate, the citation discipline, the writing
 procedure — lives in the `architecture-curator` and `architecture-reviewer`
 agents and the `zantarix:materiality-gate` skill, not in the general `okf-*`

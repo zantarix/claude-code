@@ -45,7 +45,7 @@ description, not a category the taxonomy turns on.
 **Overview**
 : A theme's orientation — what the theme holds and how its parts fit, as things
   currently stand. It describes reality, defects included, and never asserts a
-  commitment that is still in flight.
+  decision that is still in flight.
 
 **Specification**
 : One named subject in depth: a contract, a vocabulary, or a maintained view of

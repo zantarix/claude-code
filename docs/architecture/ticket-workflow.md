@@ -2,8 +2,8 @@
 type: Specification
 title: Ticket-to-Merge Workflow
 description: How the shipped skills compose into the intended path from a ticket reference to an open pull or merge request, and the sequencing constraints that path deliberately imposes.
-tags: [components, workflow, skills, tickets, review, shipping]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T10:13:38Z }
+tags: [cross-cutting, workflow, skills, tickets, review, shipping]
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-13T10:12:00Z }
 status: stable
 ---
 
@@ -15,7 +15,7 @@ open pull or merge request. Between and beneath them, several other skills and a
 number of rules fire. This describes how they compose and, more usefully, the
 constraints the composition imposes on purpose.
 
-The review stage is [ADR-0001](../orchestration/0001-review-dynamic-workflow.md)'s;
+The review stage is [ADR-0001](orchestration/0001-review-dynamic-workflow.md)'s;
 see [Where nothing governs](#where-nothing-governs) for the rest.
 
 ## The path
@@ -135,5 +135,5 @@ constraint-ledger entry covering it.
 That is worth stating plainly rather than leaving implicit. Several of these are
 real constraints on how the project works, and the read prohibition in particular
 forecloses an approach a plausible evolution might want. They are recorded here as
-current behaviour; whether any should be admitted as commitments is a materiality
+current behaviour; whether any should be admitted as constraints is a materiality
 question nobody has put.

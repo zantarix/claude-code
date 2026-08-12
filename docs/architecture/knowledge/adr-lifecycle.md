@@ -3,7 +3,7 @@ type: Specification
 title: ADR Lifecycle
 description: The stages an architecture decision passes through — drafting, pre-acceptance review, human ratification, and post-acceptance correction — and which of them may change the document.
 tags: [knowledge, adr, lifecycle, acceptance, errata]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T10:05:09Z }
+generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T13:31:00Z }
 status: stable
 ---
 
@@ -31,8 +31,8 @@ the ratification rules below are
 The curator writes the document, in a fixed section order: the skeleton, then
 Decision, then the theme overview brought current, then Context, then
 Consequences. The order exists because generated prose stays disciplined when it
-is checked against a referent already written down, and because current-state
-material lands in the overview rather than being regenerated inside the ADR.
+is checked against a referent already written down, and because current truth
+lands in the overview rather than being regenerated inside the ADR.
 
 A `Proposed` ADR is not yet immutable, so a follow-up that tightens a design the
 ADR already owns is folded into its body rather than spawning a successor. This is
@@ -86,8 +86,10 @@ the review is the human's call, made with the reviewer's findings in hand.
 ### The accompanying sweep
 
 Ratification also sweeps previously accepted ADRs for claims this decision
-falsified, writes any errata owed, and — for a constraint admission — records the
-ledger entry citing the ADR. A topology decision admits no entry.
+falsified, writes any errata owed, and — where the decision forecloses an option
+the ledger does not already foreclose — records the ledger entry citing the ADR.
+The test is foreclosure, not the decision's subject: a decision that forecloses
+nothing new admits no entry, including one that relaxes an existing foreclosure.
 
 ## After acceptance
 

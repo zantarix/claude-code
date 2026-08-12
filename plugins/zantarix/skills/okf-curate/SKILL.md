@@ -18,7 +18,11 @@ the change to make are given in `$ARGUMENTS`.
    the existing concept in full first.
 
 3. **Write the concept in full v0.2 form — write it as if authored fresh
-   today.** Use `type`/`title`/`description`/`tags`/`generated` (`generated.at`
+   today.** Skip this step, proceeding directly to step 4, when `$ARGUMENTS`
+   explicitly requests **index-and-log-only** — the mode `/accept-adr` uses for
+   its post-ratification bookkeeping, where rewriting the document to current
+   house style would corrupt the text the human just ratified. Otherwise: use
+   `type`/`title`/`description`/`tags`/`generated` (`generated.at`
    set to now, `generated.by` the acting actor), plus `sources`/`verified`/
    `status`/`stale_after` where they carry meaning for this concept. On an
    **update**, upgrade any legacy key the existing concept still carries
@@ -38,14 +42,20 @@ the change to make are given in `$ARGUMENTS`.
 4. **Reconcile the directory `index.md`.** In the concept's own directory index,
    ensure a bullet links to the concept under the right section, with a one-line
    summary drawn from its `description` that describes **behaviour, not paths**.
-   Add it on create; correct it on update only if the behaviour summary changed.
+   In an architecture bundle — one whose root holds a `Constraint Ledger`
+   concept, not merely one holding numbered ADRs — an `Architecture Decision`
+   entry labels its link `[0007 - Title]`, four-digit padded to match the
+   filename, per `okf-guide`; every other concept type, and every other bundle
+   family, keeps a bare title.
+   Add it on create; correct it on update only if the behaviour summary changed,
+   or if the number label is missing from a decision's own bullet.
    (For a bulk rebuild of an index, use `/okf-index` instead.)
 
-   **Touch only this concept's entry.** Never add, remove, or "correct" a status
-   marker on a sibling's bullet, and never infer a sibling's status from
-   recency, from the log, or from the absence of a marker — a marker edited on
+   **Touch only this concept's own bullet.** Never add, remove, or "correct" a
+   sibling's bullet, and never infer a sibling's summary or status from
+   recency, from the log, or from its current wording — an edit made on
    inference silently misreports the corpus. If a sibling entry genuinely looks
-   wrong, read that concept's frontmatter `status`, and even then raise it with
+   wrong, read that concept's frontmatter directly, and even then raise it with
    the user rather than editing it here.
 
 5. **Append to `log.md`.** Add an entry to the bundle-root `log.md` (create it if

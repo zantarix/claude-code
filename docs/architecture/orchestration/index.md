@@ -3,4 +3,4 @@
 How skills coordinate multi-agent work: fan-out, gating, and collation of subagent results.
 
 * [Overview](overview.md) - how the plugins coordinate multi-agent work today: remit-aware review fan-out under a cost cap, sole-writer delegation enforced by a hook, and human authorisation gates.
-* [Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow](0001-review-dynamic-workflow.md) - re-architects the /review skill around a deterministic two-phase dynamic Workflow with remit-aware per-reviewer partitioning under a hard cost cap.
+* [0001 - Orchestrate the `/review` Skill with a Two-Phase Dynamic Workflow](0001-review-dynamic-workflow.md) - re-architects the /review skill around a deterministic two-phase dynamic Workflow with remit-aware per-reviewer partitioning under a hard cost cap.

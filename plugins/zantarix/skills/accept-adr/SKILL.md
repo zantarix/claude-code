@@ -76,14 +76,9 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
      directions, and let the files decide.
 
 3. **Write the errata**, following the rules in `rules/zantarix/adr.md` and your
-   own Errata section, applying errata-driven extraction where the erratum
-   concerns an enumeration or other current-truth passage. Skip ADRs whose
-   status is `Deprecated` or `Superceded`. Where several ADRs are falsified by
-   one change, correct them all — a partial fix leaves a sibling still
-   affirming the guarantee you just retired, which reads worse than deferring
-   the whole set. Where
-   an erratum was already landed alongside the implementation, verify it exists
-   rather than adding a duplicate.
+   own Errata section in full — including its cluster-sweep and
+   pre-landed-erratum rules, which govern here exactly as they do outside
+   ratification.
 
 4. **Record the ratification** — in an OKF or regime bundle, `verified: { by:
    human:<forge-username>, at: <now> }` in the frontmatter, stamped from a real
@@ -91,8 +86,7 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
 
 5. **Write the ledger entry.** In a regime bundle, if this is a constraint
    admission, record it in `constraints.md` citing the ADR, in the same
-   operation. Carry over the decision's exclusions and nothing else — the ledger
-   takes no conformance notes.
+   operation, per your own Quality Standards' ledger rules.
 
 6. **Mark it `Accepted`** — the `status` frontmatter and the `## Status` body
    line, edited directly. This step touches nothing else in the document — any
@@ -100,10 +94,11 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
    index and history per your mode: `docs/adr/README.md` plus your inventory in
    legacy mode, or the bundle-root `index.md`/`log.md` in OKF and regime modes.
 
-   Use `/okf-curate` for the **index and log only** here. Its normal contract
-   rewrites the concept into full current-house-style compliance, which is
-   exactly what acceptance must not do to a document a human has just ratified;
-   this is the one flow where that step is skipped.
+   Invoke `/okf-curate` in **index-and-log-only** mode here — its normal
+   contract rewrites the concept into full current-house-style compliance,
+   which is exactly what acceptance must not do to a document a human has just
+   ratified; `okf-curate` skips that rewrite step when told the request is
+   index-and-log-only.
 
 If no prior ADRs are affected, say so explicitly rather than inventing errata to
 justify the search.

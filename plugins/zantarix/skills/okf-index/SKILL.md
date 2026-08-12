@@ -13,8 +13,12 @@ directory is given in `$ARGUMENTS`.
    Follow its house style for everything below.
 
 2. **Scan the directory.** List its concept files (every non-reserved `.md`) and
-   its immediate subdirectories. Read each concept's frontmatter for `title` and
-   `description`.
+   its immediate subdirectories. Read each concept's frontmatter for `type`,
+   `title`, and `description`. Also check the bundle root for a concept of type
+   `Constraint Ledger` — its presence means this is an **architecture bundle**,
+   which step 4 branches on. A four-digit-numbered `Architecture Decision` in a
+   theme directory is *not* the test: a plain OKF ADR bundle looks identical and
+   is not an architecture bundle.
 
 3. **Group into sections.** Organise entries under `#` headings — by an explicit
    grouping given in `$ARGUMENTS`, otherwise by an obvious semantic grouping (or a
@@ -23,7 +27,11 @@ directory is given in `$ARGUMENTS`.
 
 4. **Write `index.md`.** One bullet per entry:
    `* [Title](url) - one-line behavioural summary`, the summary taken from each
-   concept's `description` and describing **behaviour, not paths**. Carry
+   concept's `description` and describing **behaviour, not paths**. In an
+   architecture bundle — the ledger found in step 2 — an `Architecture Decision`
+   entry instead labels its link `[0007 - Title]`, four-digit padded to match the
+   filename, per `okf-guide`; every other concept type keeps a bare title, and in
+   every other bundle family every entry does. Carry
    `okf_version` frontmatter through unchanged **only** if this is the bundle-root
    index; all other `index.md` files have no frontmatter.
 

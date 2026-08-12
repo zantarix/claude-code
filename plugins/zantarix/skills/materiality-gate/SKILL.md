@@ -17,17 +17,17 @@ A change **newly constrains** when it forecloses an option that:
    software practice.
 
 Materiality is project-relative. A dependency that is an obvious requirement in
-one project is a deliberate, contested commitment in another; the ledger and
+one project is a deliberate, contested constraint in another; the ledger and
 overviews of *this* bundle are the only admissible reference.
 
-Run the gate **per candidate commitment**, not once per piece of work: list the
-commitments a change would make, then route each one. A single session routinely
-carries several, and answering for the batch is how unrelated commitments end up
-sharing one number.
+Run the gate **per candidate constraint**, not once per piece of work: list the
+constraints a change would make, then route each one. A single session routinely
+carries several, and answering for the batch is how unrelated constraints end up
+sharing one ADR number.
 
 ## Routing
 
-- **Newly constrains** → an ADR naming the commitment comes first; the
+- **Newly constrains** → an ADR naming the constraint comes first; the
   mechanism lands in a specification citing that ADR. Exclusions are
   first-class: ruling something out ("rule out Windows support") constrains
   the project exactly as ruling something in does, and is admitted with the
@@ -48,7 +48,7 @@ sharing one number.
   *newly constrains* → ADR "Adopt POSIX as a requirement"; the signal-handling
   mechanics are specification material.
 - **`flock` in the same project, later**: the ledger already carries the POSIX
-  commitment, and advisory locking forecloses nothing further — *covered* →
+  constraint, and advisory locking forecloses nothing further — *covered* →
   specification work, with a rationale note (e.g. `flock` over a PID lockfile)
   citing the POSIX entry.
 - **An on-disk cache in a service whose ledger rules out filesystem
