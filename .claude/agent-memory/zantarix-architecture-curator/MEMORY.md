@@ -3,6 +3,7 @@
 Index of my persistent notes for curating architecture documentation in this repo.
 
 - [Human gates never auto-chain](feedback_human_gates.md) — a disable-model-invocation skill must never fire or inline-execute another; stop cleanly and direct the user.
+- [Promoting memory into distributed prompts](patterns_promoting_memory_to_prompts.md) — a memory rule loses its implicit scope when lifted into a prompt; re-scope explicitly, sweep for the inverse guarantee, always run `@plugin-reviewer` before committing a fold.
 - [Subagents can spawn subagents](reference_subagent_nesting.md) — "no nested subagents" is an outdated premise; verify harness claims before redesigning around them. (I was renamed from `adr-architect` to `architecture-curator` on 2026-08-06 per ADR-0004; old `generated.by: adr-architect/*` values are the pre-regime era marker, never rewritten.)
 
 ## Repo-specific notes

@@ -41,10 +41,24 @@ the change to make are given in `$ARGUMENTS`.
    Add it on create; correct it on update only if the behaviour summary changed.
    (For a bulk rebuild of an index, use `/okf-index` instead.)
 
+   **Touch only this concept's entry.** Never add, remove, or "correct" a status
+   marker on a sibling's bullet, and never infer a sibling's status from
+   recency, from the log, or from the absence of a marker — a marker edited on
+   inference silently misreports the corpus. If a sibling entry genuinely looks
+   wrong, read that concept's frontmatter `status`, and even then raise it with
+   the user rather than editing it here.
+
 5. **Append to `log.md`.** Add an entry to the bundle-root `log.md` (create it if
    absent) under today's `## YYYY-MM-DD` heading, newest date first, led by a
    bolded verb (`**Creation**`, `**Update**`, `**Deprecation**`). Describe the
-   change and link the concept. **Never** edit existing log entries.
+   change and link the concept.
+
+   **Never edit a log entry that has already landed** — past entries are a
+   historical record, and a stale link in one is expected rather than a defect.
+   That discipline protects committed history, not the block you are writing in
+   this same change: if an entry you added earlier in this uncommitted pass would
+   now ship as a false statement, edit it in place. A forward-correcting bullet
+   is for a prior commit's entry.
 
 6. **Report** the concept path, the index section touched, and the log entry
    added.

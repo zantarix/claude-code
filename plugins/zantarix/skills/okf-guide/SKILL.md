@@ -47,6 +47,14 @@ datetime of the concept's last meaningful change, and `generated.by` is an actor
 — `<producer>/<version>` for an agent or tool, `human:<id>` for a person,
 `process:<id>` for an automated process.
 
+**Stamp every frontmatter instant from a real `date -u`**, never a nominal
+local-noon `T12:00:00Z`. For a user in a UTC+ timezone the true instant often
+reads a day behind the human-facing date, and that skew is honest; rounding
+forward to the local date stamps the event in the future — which matters most
+for `verified`, the one field a human may later rely on to establish when they
+confirmed something. Human-facing dates in body text — an ADR's `## Status`
+line, `log.md` date headings, erratum titles — stay on the local date.
+
 Add the following families where they carry meaning for the concept; none are
 required:
 
@@ -160,9 +168,11 @@ skills. Adoption is human-invoked only, via `/adopt-architecture`.
 
 - `## YYYY-MM-DD` date headings; each entry leads with a bolded verb
   (`**Creation**`, `**Update**`, `**Deprecation**`, …) — convention, not required.
-- **House discipline — never reconcile old log entries.** Past entries are a
-  historical record; do not retro-edit them when paths later go stale. A broken
-  link in an old log entry is expected, not a defect.
+- **House discipline — never reconcile a log entry once it has been committed.**
+  Landed entries are a historical record; do not retro-edit them when paths
+  later go stale. A broken link in an old log entry is expected, not a defect.
+  An entry you added earlier in the same uncommitted change is not yet history
+  and may still be corrected in place.
 
 ## Cross-linking
 

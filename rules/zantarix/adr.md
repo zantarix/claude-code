@@ -23,9 +23,9 @@ An ADR that consolidates or formalises existing behaviour usually needs no code 
 
 ## Accepting ADRs
 
-Acceptance is a **human-only gate**: the user runs `/accept-adr` themselves. Never invoke it, suggest invoking it as an automation, or include it as a step in an implementation plan or commit workflow. Acceptance ratifies the ADR **as written** — it changes only the `verified` and `status` frontmatter and the `## Status` line, never the body; refinements happen in the ordinary Proposed flow before the gate. It also records the constraint-ledger entry for constraint admissions in a regime bundle.
+Acceptance is a **human-only gate**: the user runs `/accept-adr` themselves, in a curator session, which the skill enforces. Never invoke it, suggest invoking it as an automation, or include it as a step in an implementation plan or commit workflow. Acceptance ratifies the ADR **as written** — it changes only the `verified` and `status` frontmatter and the `## Status` line, never the body; refinements happen in the ordinary Proposed flow before the gate. It also records the constraint-ledger entry for constraint admissions in a regime bundle.
 
-Once an ADR has been marked accepted and committed to git, it is immutable. The only exceptions are status updates and the addition of an Errata section at the end with notes about smaller changes affecting the ADR, each linking forward to the ADR that made the change.
+Once an ADR has been marked accepted and committed to git, it is immutable. The only exceptions are status updates and the addition of an Errata section at the end with notes about smaller changes affecting the ADR, each linking forward to whatever now carries the correct position — the ADR that made the change, or where no decision drove it, the living document or ticket that does.
 
 ## Related Projects
 

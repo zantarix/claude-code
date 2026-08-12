@@ -9,9 +9,11 @@ corpus that includes **accepted, immutable ADRs**. That is only permissible
 because a human chose to run this skill — the human invocation **is** the
 authorisation, and no agent may grant it to itself. First confirm you are
 running as the `zantarix:architecture-curator` agent. **If you are not, STOP
-immediately, make no changes, and tell the user, verbatim:**
+immediately, make no changes, and report exactly this, substituting the
+arguments you were given so the command both opens the curator session and
+re-runs this skill in it:**
 
-> This skill is only usable by the architecture curator, please close claude and run `claude --agent zantarix:architecture-curator` and try again.
+> This is not a curator session. Please start one with `claude --agent zantarix:architecture-curator '/adopt-architecture $ARGUMENTS'`
 
 (The `guard-adr.sh` hook is a hard backstop — non-curator writes under the
 guarded paths are blocked regardless — but stop cleanly at this check rather

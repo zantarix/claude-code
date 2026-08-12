@@ -20,6 +20,11 @@ Materiality is project-relative. A dependency that is an obvious requirement in
 one project is a deliberate, contested commitment in another; the ledger and
 overviews of *this* bundle are the only admissible reference.
 
+Run the gate **per candidate commitment**, not once per piece of work: list the
+commitments a change would make, then route each one. A single session routinely
+carries several, and answering for the batch is how unrelated commitments end up
+sharing one number.
+
 ## Routing
 
 - **Newly constrains** → an ADR naming the commitment comes first; the

@@ -1,16 +1,27 @@
 ---
 name: accept-adr
-description: Human ratification gate for ADRs — marks a Proposed ADR Accepted, recording who ratified it. Human-invoked only; acceptance ratifies the document as written and never modifies its body.
+description: Human ratification gate for ADRs — marks a Proposed ADR Accepted, recording who ratified it. Human-invoked only, in a curator session; acceptance ratifies the document as written and never modifies its body.
 disable-model-invocation: true
 ---
+
+**Guard — this skill runs only in a curator session.** If you are not the
+`zantarix:architecture-curator` agent, stop here: make no edits, and do not
+delegate to the curator as a subagent. Report exactly this, substituting the
+arguments you were given:
+
+> This is not a curator session. Please start one with
+> `claude --agent zantarix:architecture-curator '/accept-adr $ARGUMENTS'`
+
+Ratification is a conversation: a discrepancy found mid-acceptance has to be put
+to the human, which a subagent cannot do without losing the context that found
+it.
 
 Acceptance is a **human decision**: running this skill is the act of
 ratification, and no agent may perform it on its own initiative or as a step in
 a workflow or implementation plan. The ADR being accepted must currently be
 `Proposed`, and acceptance ratifies it **as written** — this skill changes the
 ADR's frontmatter (`verified`, `status`) and its `## Status` line, and nothing
-else in the document. Refinements belong in the ordinary Proposed-ADR flow
-*before* this gate; if the document needs changes, it is not ready to accept.
+else in the document, so what the human reviewed is exactly what freezes.
 
 Resolve the ratifier's identity first: the invoking user's username on the
 project's forge (GitHub/GitLab), taken from their per-user `CLAUDE.md` when
@@ -18,16 +29,70 @@ stated there, otherwise from `gh api user --jq .login` (GitHub) or
 `glab api user | jq -r .username` (GitLab). This id is recorded as
 `human:<forge-username>` — never a display name.
 
-Then delegate to the `@zantarix:architecture-curator` subagent and pass the
-following prompt, substituting the ADR reference and the resolved identity:
+Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
 
-> The human has ratified ADR $ARGUMENTS (forge identity: `human:<forge-username>`). Carry out the following steps in order:
->
-> 1. Confirm $ARGUMENTS is `Proposed`. Acceptance ratifies the document **as written**: make no edits to its body. If reading it convinces you the body needs changes, STOP without accepting and report what needs to change — the refinement happens in the ordinary Proposed flow, and the human re-runs `/accept-adr` afterward.
-> 2. Search back through previously accepted ADRs for any whose decisions or consequences are now functionally incorrect because of $ARGUMENTS. Use the canonical ADR index as the starting point — `docs/adr/README.md` and your inventory in legacy mode, or the bundle-root `index.md` in OKF and regime modes; read the candidates in full (errata can change context).
-> 3. For each affected accepted ADR, add a single erratum following the rules in `rules/zantarix/adr.md` and your own Errata section — applying errata-driven extraction where the erratum concerns an enumeration or other current-truth passage. Skip ADRs whose status is `Deprecated` or `Superceded`.
-> 4. In an OKF or regime bundle, record the ratification on $ARGUMENTS as `verified: { by: human:<forge-username>, at: <now> }` in its frontmatter.
-> 5. In a regime bundle, if $ARGUMENTS is a constraint admission, write its constraint-ledger entry (citing the ADR) in the same operation.
-> 6. Mark $ARGUMENTS as `Accepted` — the `status` frontmatter and the `## Status` body line — and update the index and history per your mode rules: `docs/adr/README.md` plus your inventory in legacy mode, or the bundle-root `index.md`/`log.md` (via `/okf-curate`) in OKF and regime modes.
->
-> If no prior ADRs are affected, say so explicitly in your report rather than inventing errata to justify the search.
+1. **Confirm it is `Proposed`, and read it in full.** Acceptance ratifies the
+   document as written, so make no edits to its body here. If reading it
+   convinces you the body misstates the **decision**, stop without accepting and
+   raise it with the human: the refinement happens in the ordinary Proposed
+   flow — which, in this session, can happen immediately and in front of them —
+   and acceptance then runs clean over the corrected document.
+
+   A **conformance gap is not grounds to stop.** That the code has not caught
+   up, or that some surface does not comply, says nothing about whether the
+   decision is the right one; confirm the gap is tracked and proceed. An ADR is
+   ratified as a *decision*, with the understanding that gaps exist.
+
+2. **Sweep previously accepted ADRs** for any whose decisions or consequences
+   this one renders functionally incorrect. Start from the canonical index —
+   `docs/adr/README.md` and your inventory in legacy mode, the bundle-root
+   `index.md` in OKF and regime modes — and read candidates in full, since
+   errata change context. To find the sweep set:
+
+   - Grep the corpus for this decision's **mechanism vocabulary**, then run a
+     second, **orthogonal** grep to settle "no others"; classify each hit as
+     descriptive or contractual.
+   - Sweep the **behavioural axis** as well as the text axis. A relocation or
+     timing change surfaces from no grep at all; the trigger is this ADR's own
+     Consequences saying the old behaviour was X and now is not-X, at which
+     point you open the ADR that *owns* that behaviour and check whether it
+     stated X as a design property.
+   - Where ownership moved, grep for **placement phrasing** and for **rejected
+     placement alternatives**, not merely the ADRs this one cites — the clearest
+     errata are usually the ones the new ADR never name-drops.
+   - Grep other ADRs' **errata entries**, not only their bodies.
+   - Where a list of likely-affected ADRs was pre-computed — carried in the ADR
+     body, in the ticket, or in your memory — treat it as wrong in both
+     directions, and let the files decide.
+
+3. **Write the errata**, following the rules in `rules/zantarix/adr.md` and your
+   own Errata section, applying errata-driven extraction where the erratum
+   concerns an enumeration or other current-truth passage. Skip ADRs whose
+   status is `Deprecated` or `Superceded`. Where several ADRs are falsified by
+   one change, correct them all — a partial fix leaves a sibling still
+   affirming the guarantee you just retired, which reads worse than deferring
+   the whole set. Where
+   an erratum was already landed alongside the implementation, verify it exists
+   rather than adding a duplicate.
+
+4. **Record the ratification** — in an OKF or regime bundle, `verified: { by:
+   human:<forge-username>, at: <now> }` in the frontmatter, stamped from a real
+   `date -u`.
+
+5. **Write the ledger entry.** In a regime bundle, if this is a constraint
+   admission, record it in `constraints.md` citing the ADR, in the same
+   operation. Carry over the decision's exclusions and nothing else — the ledger
+   takes no conformance notes.
+
+6. **Mark it `Accepted`** — the `status` frontmatter and the `## Status` body
+   line, edited directly, and nothing else in the document. Then update the
+   index and history per your mode: `docs/adr/README.md` plus your inventory in
+   legacy mode, or the bundle-root `index.md`/`log.md` in OKF and regime modes.
+
+   Use `/okf-curate` for the **index and log only** here. Its normal contract
+   rewrites the concept into full current-house-style compliance, which is
+   exactly what acceptance must not do to a document a human has just ratified;
+   this is the one flow where that step is skipped.
+
+If no prior ADRs are affected, say so explicitly rather than inventing errata to
+justify the search.
