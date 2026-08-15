@@ -177,13 +177,15 @@ You are the sole owner of errata. No other agent or skill is permitted to add or
 
 An erratum is owed when the decision that falsifies a claim **takes effect**, which is not always at that decision's ratification. Where implementation lands first, land the erratum with it — "at this decision's acceptance" is a plan, not a constraint, and waiting leaves an accepted ADR describing shipped behaviour falsely for however long ratification takes. When you do, update the still-`Proposed` ADR's own scheduling sentence in the same pass so the corpus is self-consistent either way, and at the later acceptance verify the pre-landed erratum exists rather than adding a duplicate.
 
+These rules are calibrated for a corpus of bundled, multi-decision ADRs, which is what a pre-regime library is. Under one-decision-per-ADR, an accepted ADR whose single decision has been replaced is **superseded**, not errata'd — errata remain the instrument for a legacy ADR where one clause of many went false, and for current-truth material an ADR should never have carried. If you find yourself scoping more than one erratum onto a single ADR, ask whether consolidating it into a successor now costs less than the next correction.
+
 Rules for writing errata:
 
 - Add an erratum only when a specific part of an accepted ADR has become **functionally incorrect** as a result of a later decision. Phrase it as "this piece of this ADR is now incorrect, because…", not "this is now used over here instead." General updates, refactors, or restatements are not errata.
 - Each erratum is **at most one paragraph**. If you cannot say it in a paragraph, the change is not erratum-shaped — it is a new ADR.
 - Each erratum is introduced by a markdown title of the form `### YYYY-MM-DD: <title>`, followed by the paragraph of explanation. Do not use bold-only headings or bullet lists for erratum entries.
 - Always link forward to whatever now carries the correct position. Usually that is the ADR that introduced the error; where no decision drove the change, it is the specification or overview holding the current shape — the destination of an errata-driven extraction — or the ticket that made the change. An erratum without a forward link is incomplete; an erratum naming the wrong cause is worse than none.
-- Do not add errata to ADRs whose status is `Deprecated` or `Superceded` — these are historical only. If the ADR being amended needs a wholesale reversal rather than a clarification, supercede it instead.
+- Do not add errata to ADRs whose status is `Deprecated` or `Superceded` — these are historical only. If the ADR being amended needs wholesale **replacement** rather than a clarification, supercede it instead — replacement being reversal, expansion, or consolidation, whichever leaves a reader better sent to the successor; where its parts have scattered with no successor to name, deprecate it.
 - If asked to add an erratum to a `Proposed` ADR, inline the change into the document body instead.
 - **Errata-driven extraction** (regime and pre-regime corpora alike): when an erratum would record that an enumeration or other current-truth passage no longer holds as written, extract the passage into a specification in the architecture bundle instead — the erratum then records the extraction and its destination. **Write the destination first, then the erratum that points at it**: the same discipline as the section write order, and the only way the forward link is verifiable at the moment you write it. Close such an erratum by saying what the ADR no longer pins going forward. In a corpus that has not adopted the regime, write the ordinary erratum and note the passage as an extraction candidate for adoption.
 
@@ -207,7 +209,8 @@ An **erratum cannot carry an addition** — it flags what became incorrect, so a
 
 ## Special Cases
 
-- If a decision is being reversed: Create a new ADR documenting the new decision, and update the old ADR's status to "Superceded by ADR-XXX".
+- If a decision is **replaced**, create a new ADR documenting the replacement and update the old ADR's status to "Superceded by ADR-XXX". Replacement is the criterion, not reversal: a successor that expands, consolidates, or restructures supersedes exactly as one that contradicts. The test is whether a reader is now better sent to the successor than to the original.
+- If an ADR stops being relevant with **no single successor** to send a reader to, mark it `Deprecated` instead, with forward pointers to whatever now carries its parts.
 
 # OKF-mode ADR bundles
 
