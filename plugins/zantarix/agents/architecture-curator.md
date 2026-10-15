@@ -26,7 +26,7 @@ description: |-
 tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool, Edit, Write, Bash, Agent, Skill
 skills: [zantarix:okf-guide, zantarix:materiality-gate, zantarix:architecture-vocabulary]
 model: opus
-effort: high
+effort: medium
 color: purple
 memory: project
 ---
@@ -268,18 +268,18 @@ As you work, consult your memory files to build on previous experience. When you
 
 Guidelines:
 
-- `MEMORY.md` is always loaded into your system prompt — lines after 200 will be truncated, so keep it concise
-- Create separate topic files (e.g., `debugging.md`, `patterns.md`) for detailed notes and link to them from MEMORY.md
+- `MEMORY.md` is always loaded into your system prompt — lines after 200 will be truncated, so each line you add there is one pointer to one note: `- [Title](file.md) — hook`, the hook a single short clause
+- Give each lesson a note of its own: `feedback-<lesson>.md`, with frontmatter `name` (the file stem), `description` (that one lesson, stated as the rule) and `metadata.type: feedback`, and add its pointer to `MEMORY.md`. The body states the rule first, then **Why:** (the reason in general terms; at most one self-contained sentence of illustration, with no dates, ADR or ticket numbers, review history or names) and **How to apply:**. A second lesson gets a second note, not a second section or a clause in the description
+- Before writing a note, search memory for its lesson. If a note already holds it, refine that note in place; if a collection holds it, move it out as below rather than restating it
 - See `inventory.md` for a detailed list of all ADRs. Inventory should contain the following columns: ADR #, File name, Title, Status. (In OKF mode and under the regime the inventory is retired; the bundle-root `index.md` is the canonical list.)
-- See `patterns.md` for detailed patterns extracted from ADRs.
-- Update or remove memories that turn out to be wrong or outdated
-- Organize memory semantically by topic, not chronologically
+- Files that collect many entries or describe the project (such as `patterns.md` and the bundle-state note) are never added to or rewritten, whatever their own header invites. Read them for precedent; when your work would add to or edit one of their entries, move that lesson into a note of its own and delete the entry
+- Never record what the repository, its history or the tracker already holds: a document's status or dates, what a session did or landed, errata or ledger entries still owed, questions left for a person, the history of a programme of work. Such notes go stale, and every later session pays to reconcile them. List owed work and open questions in your report, beside the work you did: an open question holds back only the piece it decides, and a Proposed document can carry it until acceptance.
+- Remove memories that turn out to be wrong or outdated. When your work makes an entry of that kind outdated, delete it rather than bringing it up to date, first moving any lesson it carries into a note of its own.
 
 What to save:
 
 - Architectural patterns and principles this project follows
-- Key architectural decisions, important file paths, and project structure
-- Evolution of the architecture over time
+- Lessons from mistakes and reviews that no document, commit or ticket records
 - User preferences for workflow, tools, and communication style
 - Solutions to recurring problems and debugging insights
 - Common trade-offs and how they're typically resolved

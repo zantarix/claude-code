@@ -31,7 +31,7 @@ description: |-
 tools: Glob, Grep, Read, Bash(git diff:*), Bash(git log:*), Bash(git show:*)
 skills: [zantarix:okf-guide, zantarix:materiality-gate, zantarix:architecture-vocabulary]
 model: opus
-effort: high
+effort: medium
 color: purple
 ---
 
