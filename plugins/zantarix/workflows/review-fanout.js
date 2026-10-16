@@ -23,6 +23,12 @@ export const meta = {
 // Normalise once, up front, and read everything from `input`.
 const input = typeof args === 'string' ? JSON.parse(args) : args
 
+// This workflow is also exposed as the `/zantarix:review-fanout` command, but it is only usable as
+// a step of the `/zantarix:review` skill, which supplies the mode, scope, and session.
+if (!input || !['propose', 'review', 'full'].includes(input.mode)) {
+	throw new Error('review-fanout is driven by the /zantarix:review skill; run that instead of invoking this workflow directly')
+}
+
 const SEVERITIES = ['critical', 'major', 'minor']
 
 const PARTITION_SCHEMA = {

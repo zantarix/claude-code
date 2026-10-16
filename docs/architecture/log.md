@@ -1,5 +1,10 @@
 # Log
 
+## 2026-10-17
+
+* **Update**: recorded in the [orchestration overview](orchestration/overview.md) that the `/zantarix:review` workflow script now ships as a plugin workflow component, `review-fanout.js`, invoked by name as `zantarix:review-fanout` — the Workflow tool refuses a script path outside the working directory, so the previous path-based invocation could not reach the plugin's install directory. Below the materiality gate: [ADR-0001](orchestration/0001-review-dynamic-workflow.md) decided the Workflow tool dependency and never named where the script lives or how it is invoked, so no erratum is owed and nothing new is foreclosed.
+* **Update**: added workflows to the [components overview](components/overview.md) as a fifth kind of component — run by name as `<plugin>:<name>`, distributed with the plugin, and auto-exposed as a user command with no `disable-model-invocation` equivalent, so a workflow that is only a skill's engine guards its own arguments. Dropped the workflow script from what `review` bundles beside its skill, and corrected the skill count to 32. Below the materiality gate for the same reason: an option added, nothing foreclosed.
+
 ## 2026-08-13
 
 * **Update**: numbered the decision entries in all three theme indexes — an ADR's bullet now reads `[0007 - Title]`, four-digit padded to match its filename, so a reader scanning an index can cite a decision without opening it. Living documents keep bare titles, and the root index has no per-decision roll-call to number. The convention is stated in the `okf-guide` architecture-bundle profile, with pointers from `/okf-index` and `/okf-curate` so a bulk reindex does not strip the numbers back off.

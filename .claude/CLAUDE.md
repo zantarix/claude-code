@@ -11,7 +11,7 @@ This repo also uses its own plugins: `zantarix`, `github`, and `gitlab` are enab
 ## Repository layout
 
 - **`/.claude-plugin/marketplace.json`** — registry root; lists all five plugins with their source paths
-- **`/plugins/<name>/`** — one directory per plugin; holds `plugin.json` metadata plus `skills/`, `agents/`, and `scripts/` subdirectories
+- **`/plugins/<name>/`** — one directory per plugin; holds `plugin.json` metadata plus `skills/`, `agents/`, `workflows/`, and `scripts/` subdirectories
 - **`/rules/<name>/`** — rule markdown files for each plugin; kept separate from `plugins/` because the plugin harness does not distribute them automatically (tracked: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Consumer projects must add this repo as a git submodule and symlink the relevant `rules/<plugin>/` directories into their own `.claude/rules/`.
 - **`/.claude/skills/`** — project-local skills, not distributed via the plugin system (e.g. `triage-new-memory`)
 - **`/.claude/rules/`** — symlinks to `rules/<plugin>/` for org-level rules; direct `.md` files for project-specific overrides
@@ -31,6 +31,7 @@ Each plugin component has a specific format:
   ---
   ```
 
+- **Workflows** — `plugins/<name>/workflows/<workflow-name>.js`; a Workflow script whose `meta.name` makes it addressable as `<plugin>:<name>` (pass that as the Workflow tool's `name`, never a `scriptPath` — the tool rejects paths outside the working directory). Every plugin workflow is also exposed as a `/<plugin>:<name>` command with no way to hide it, so a workflow that is only an internal step of a skill must throw when invoked without the args that skill supplies
 - **Hooks** — registered in `plugins/<name>/.claude-plugin/plugin.json` under `PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/` and receive the hook payload as JSON on stdin
 
 After adding a new plugin component, update the README table for that plugin.

@@ -3,7 +3,7 @@ type: Overview
 title: Orchestration
 description: How this marketplace's plugins coordinate multi-agent work today — remit-aware review fan-out under a cost cap, sole-writer delegation enforced by a hook, and human authorisation gates.
 tags: [orchestration, subagents, review, human-gates, hooks]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-13T10:12:00Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-16T14:35:39Z }
 status: stable
 ---
 
@@ -40,7 +40,11 @@ deterministically rather than having a model transcribe it, because that documen
 is a downstream contract: `github:create-pull-request` posts it verbatim and
 `gitlab:post-mr-review` parses it structurally.
 
-One as-built detail the decision does not mention: the Workflow tool cannot write
+Two as-built details the decision does not mention. The script ships as a plugin
+workflow component, `plugins/zantarix/workflows/review-fanout.js`, which the skill
+invokes by name as `zantarix:review-fanout`; the harness also lists it as a
+`/zantarix:review-fanout` command, which refuses to run without the mode argument
+only the skill supplies. And the Workflow tool cannot write
 files, so the workflow returns its rendered markdown as strings and a companion
 `materialize-review.sh`, bundled beside the skill, writes them under
 `.reviews/<session>/`. Reviewers are also invoked directly, outside the skill, and
@@ -103,7 +107,7 @@ where a subagent could only report it upward and lose the context that found it.
 ## Known gaps
 
 - **The workflow script has no lint or format coverage.** `format.sh` handles `.md`
-  only, and `review-workflow.js` is the sole JavaScript artifact in a repository
+  only, and `review-fanout.js` is the sole JavaScript artifact in a repository
   otherwise made of configuration and markdown. [ADR-0001](0001-review-dynamic-workflow.md)
   accepted this knowingly.
 - **Reviewer names can collide across plugins.** `rust` and `rescript` both publish

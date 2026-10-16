@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Materialise a review-workflow.js result onto disk.
+# Materialise a review-fanout workflow result onto disk.
 #
-# The Workflow tool cannot touch the filesystem, so review-workflow.js returns its
+# The Workflow tool cannot touch the filesystem, so the review-fanout workflow returns its
 # { reviewMd, auditFiles, findings, failed } result as plain data. When a Workflow run completes,
 # its <task-notification> carries an <output-file> path that already holds this data on disk (as
 # { result: { reviewMd, auditFiles, findings, failed }, ... } — the Task tool's envelope) — pass
@@ -15,7 +15,7 @@ set -euo pipefail
 usage() {
   echo "Usage: $0 <review-session-folder> <workflow-output-file>" >&2
   echo "  review-session-folder  repo-relative session path, e.g. .reviews/2026-08-01-153000/ (must end in /)" >&2
-  echo "  workflow-output-file   JSON file holding the review-workflow.js return value — either the" >&2
+  echo "  workflow-output-file   JSON file holding the review-fanout workflow return value — either the" >&2
   echo "                         task's <output-file> ({ result: { reviewMd, auditFiles, ... } })" >&2
   echo "                         or a bare { reviewMd, auditFiles, findings, failed } object" >&2
   exit 1

@@ -47,7 +47,7 @@ Rules pulled in this way are **organisation rules** and should be treated as imm
 General-purpose skills, agents, and rules for all Zantarix projects.
 
 | Type | Name | Description |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | Skill | `accept-adr` | Human-invoked ratification gate: mark a Proposed ADR Accepted, recording who ratified it (`verified`) and any constraint-ledger entry |
 | Skill | `adopt-architecture` | One-time, human-invoked adoption of the architecture-documentation regime — converts an ADR corpus into a `docs/architecture` bundle with a constraint ledger; must be run by the `architecture-curator` agent |
 | Skill | `architecture-vocabulary` | The ubiquitous language of the architecture-documentation regime (decision, constraint, current truth, conformance gap, living-tier terms); preloaded into the curator and reviewer, never invoked |
@@ -67,6 +67,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `plan-adr` | Enter planning mode to scope a decision with the user (routing spec-work via the materiality gate), then delegate to `architecture-curator` to write the ADR |
 | Skill | `review` | Run all `*-reviewer` agents over the current changes — each proposes a partition suited to its own remit, then reviews its slices in parallel via a dynamic workflow — then fix critical/major findings in a single pass; stores all output under `.reviews/` |
 | Skill | `upstream` | Commit changes, push the branch, and open a pull/merge request in one flow |
+| Workflow | `review-fanout` | Reviewer fan-out driven by the `review` skill: each reviewer partitions the diff, reviews its slices, and the findings are collated into one report; not run directly |
 | Agent | `architecture-curator` | Sole writer of `docs/adr/` and `docs/architecture/` — ADRs plus, under the architecture-documentation regime, overviews, specifications, and the constraint ledger |
 | Agent | `architecture-reviewer` | Forward-facing review of architectural trajectory and the architecture-regime materiality gate; reads all project specifics from the bundle |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
@@ -92,7 +93,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 Skills, agents, and rules for GitHub projects.
 
 | Type | Name | Description |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | Skill | `create-pull-request` | Create a GitHub PR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review.md file verbatim as a comment if the session folder is known |
 | Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
 | Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
@@ -103,7 +104,7 @@ Skills, agents, and rules for GitHub projects.
 Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](https://gitlab-mcp.sw.foundation/guide/quick-start) — a local MCP that exposes browse/manage tool pairs (`mcp__gitlab__browse_*` / `mcp__gitlab__manage_*`) for work items, merge requests, pipelines, and more.
 
 | Type | Name | Description |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review as a batched draft-note review via `post-mr-review` if the session folder is known |
 | Skill | `post-mr-review` | Reconcile a prior code review against the current branch state and publish it to the GitLab MR as a single batched review: inline diff comments for in-diff findings, summary comment for the rest |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
@@ -128,7 +129,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 Skills, agents, and rules for ReScript frontend projects.
 
 | Type | Name | Description |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | Skill | `verify-code` | Format (`pnpm format`), build (`pnpm build`), and test (`pnpm test`) |
 | Agent | `code-reviewer` | Thorough frontend code review covering ReScript, React, TailwindCSS, rescript-relay, and FFI bindings |
 | Rule | `rescript` | ReScript language and project conventions |
@@ -141,7 +142,7 @@ Skills, agents, and rules for ReScript frontend projects.
 Skills, agents, and rules for Rust projects.
 
 | Type | Name | Description |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | Skill | `analyse-mutations` | Analyse `cargo mutants` output and orchestrate parallel subagent fixes for under-tested code paths |
 | Skill | `verify-code` | Lint (`cargo clippy`), test with coverage (`cargo make coverage`), and format (`cargo fmt`) |
 | Agent | `code-reviewer` | Thorough code review covering correctness, safety, style, coverage, and architecture |

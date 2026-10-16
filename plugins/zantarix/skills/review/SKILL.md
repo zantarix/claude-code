@@ -52,8 +52,8 @@ workflow, which is generic over whatever reviewers you hand it.
 
 ## Step 4: Run the review workflow
 
-The workflow script and the output-materialisation script are both bundled beside this skill.
-Invoke the **Workflow** tool with `scriptPath: ${CLAUDE_SKILL_DIR}/review-workflow.js` — do not
+The review workflow ships with this plugin as `zantarix:review-fanout`. Invoke the **Workflow** tool
+with `name: "zantarix:review-fanout"` and `args` as below — do not pass a `scriptPath` or
 re-transcribe the script inline. Every invocation passes the `scope` and the `session` path
 (`.reviews/<session>/`, with its trailing slash); the `propose`/`full` modes additionally pass the
 discovered `reviewers` list, while the `review` mode passes a `worklist` instead (see below).

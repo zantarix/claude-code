@@ -1,22 +1,23 @@
 ---
 type: Overview
 title: Components
-description: The kinds of thing a Zantarix plugin ships — skills, agents, rules, and hooks — what each is good for, how they reach a consumer project, and what each costs in context.
-tags: [components, plugins, skills, rules, agents, hooks, distribution]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-13T15:55:00Z }
+description: The kinds of thing a Zantarix plugin ships — skills, agents, rules, hooks, and workflows — what each is good for, how they reach a consumer project, and what each costs in context.
+tags: [components, plugins, skills, rules, agents, hooks, workflows, distribution]
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-16T14:38:42Z }
 status: stable
 ---
 
 # Components
 
 This marketplace publishes five plugins — `zantarix`, `github`, `gitlab`,
-`rescript`, `rust` — built from four kinds of component. Choosing between them is
+`rescript`, `rust` — built from five kinds of component. Choosing between them is
 the most common design question here, and the axis that decides it is **when the
 content needs to be in context**.
 
-Today the corpus is 31 skills, 5 agents, 47 rules, and hooks in two plugins.
+Today the corpus is 32 skills, 5 agents, 47 rules, hooks in two plugins, and one
+workflow.
 
-## The four kinds
+## The five kinds
 
 ### Rules — always loaded, so always paying
 
@@ -39,8 +40,8 @@ when invoked. That inverts the rule's economics: a skill can carry a long recipe
 a worked example, or a shell incantation, because nobody pays for it until they
 need it.
 
-Skills may ship files beside them — `review` bundles a workflow script and a
-materialisation script — and those are addressed through `${CLAUDE_SKILL_DIR}`.
+Skills may ship files beside them — `review` bundles a materialisation script —
+and those are addressed through `${CLAUDE_SKILL_DIR}`.
 
 `disable-model-invocation: true` removes a skill from the model's reach while
 leaving it available to the user. It carries three distinct meanings here,
@@ -92,10 +93,25 @@ denies by returning a structured decision with a reason the model can act on,
 which is why the guard's denial names both routes to compliance rather than just
 refusing.
 
+### Workflows — scripts the Workflow tool runs by name
+
+A workflow is a script in a plugin-root `workflows/` directory, run by the
+Workflow tool and addressed by name as `<plugin>:<name>` rather than by path — the
+tool refuses a script path outside the working directory, so a path into a
+plugin's install directory cannot reach it. `zantarix` ships one,
+`review-fanout`, which the `review` skill drives.
+
+The harness also exposes every plugin workflow as a user-invocable
+`/<plugin>:<name>` command, and there is no `disable-model-invocation`
+equivalent to withhold it. A workflow meant only as a skill's engine therefore
+guards itself: `review-fanout` throws unless it receives a mode argument that
+only its skill supplies.
+
 ## How any of it reaches a consumer
 
 Plugins are pulled in through `extraKnownMarketplaces` in a consumer's
-`.claude/settings.json`, and skills, agents, and hooks arrive with them.
+`.claude/settings.json`, and skills, agents, hooks, and workflows arrive with
+them.
 
 **Rules do not.** The plugin harness has no mechanism to distribute them, so
 consumers add this repository as a git submodule and symlink `rules/<plugin>/`
