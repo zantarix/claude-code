@@ -7,6 +7,7 @@ Index of my persistent notes for curating architecture documentation in this rep
 - [Promoting memory into distributed prompts](patterns_promoting_memory_to_prompts.md) — a memory rule loses its implicit scope when lifted into a prompt; re-scope explicitly, sweep for the inverse guarantee, always run `@plugin-reviewer` before committing a fold.
 - [Proposed is the trial period](feedback_proposed_as_trial.md) — write the ADR now for a provisional decision and leave it `Proposed`; never defer the write, never suggest ratification.
 - [Errata land at the gate when a spec already carries the reading](feedback_erratum_timing_at_the_gate.md) — delete the ADR's scheduling bullet, don't reword it.
+- [Re-check the working tree before stating build status](feedback-recheck-working-tree-before-build-status.md) — the caller may be implementing concurrently.
 - [Subagents can spawn subagents](reference_subagent_nesting.md) — "no nested subagents" is an outdated premise; verify harness claims before redesigning around them. (I was renamed from `adr-architect` to `architecture-curator` on 2026-08-06 per ADR-0004; old `generated.by: adr-architect/*` values are the pre-regime era marker, never rewritten.)
 
 ## Repo-specific notes

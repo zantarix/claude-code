@@ -37,7 +37,7 @@ For each memory, choose **one** of the four outcomes below. Outcomes describe *w
 Remove the memory. Situations that lead here:
 
 - **Once-off feedback** that does not generalise — the correction was tied to a specific task that is now done.
-- **Already covered by an existing rule** in `.claude/rules/`, `rules/`, or `CLAUDE.md` — the memory is redundant.
+- **Already covered by an existing rule** in `.claude/rules/`, `plugins/*/rules/`, or `CLAUDE.md` — the memory is redundant.
 - **Contradicted by the current code or workflow** — verify against the repo before assuming this; if the code disagrees with the memory, the memory is the one that is wrong.
 - **Decayed beyond use** — the "why" is no longer recoverable and the rule no longer makes obvious sense on its own. Flag these explicitly for user confirmation rather than discarding silently.
 
@@ -88,7 +88,7 @@ Process each row in order:
 1. **Outcome A (Discard)** — delete the memory file and remove its line from `MEMORY.md`.
 2. **Outcome B (Keep)** — add `triaged: true` to the memory file's frontmatter. If no frontmatter block exists, create one at the top of the file (`---\ntriaged: true\n---`). If one already exists, insert `triaged: true` into it. This marks it as reviewed so future triage runs skip it automatically. To re-queue a kept memory, remove the `triaged` key from its frontmatter entirely (do not set it to `false`).
 3. **Outcome C (Project rule)**:
-   - Before writing, grep `.claude/rules/`, `rules/`, and `CLAUDE.md` for the topic to confirm no existing rule covers it. If one does, reclassify as Outcome A and tell the user.
+   - Before writing, grep `.claude/rules/`, `plugins/*/rules/`, and `CLAUDE.md` for the topic to confirm no existing rule covers it. If one does, reclassify as Outcome A and tell the user.
    - Write `.claude/rules/<name>.md`. Use the memory's **Why** and **How to apply** structure as the body. Add `paths:` frontmatter if the rule is scoped to specific files; leave unscoped only if it applies repo-wide.
    - Delete the source memory and update `MEMORY.md`.
 4. **Outcome D (Org rule)**:

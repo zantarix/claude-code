@@ -45,7 +45,7 @@ This repo (`zantarix/claude-code`) is a Claude Code plugin marketplace. Each plu
 |-----------|----------|--------|
 | Skills | `plugins/<name>/skills/<skill-name>/SKILL.md` | YAML frontmatter: `name`, `description`; body: instructions |
 | Agents | `plugins/<name>/agents/<name>.md` | YAML frontmatter: `name`, `description`, optional `tools`, `model`, `effort`, `color`, `memory`; body: agent system prompt |
-| Rules | `rules/<name>/<rule-name>.md` | Optional `paths:` frontmatter for glob-scoping; body: instructions |
+| Rules | `plugins/<name>/rules/<rule-name>.md` | Optional `paths:` frontmatter for glob-scoping; body: instructions |
 | Hooks | `plugins/<name>/.claude-plugin/plugin.json` | JSON; scripts under `plugins/<name>/scripts/` |
 
 Project-local content (not distributed) lives in `.claude/` — skills in `.claude/skills/`, rules in `.claude/rules/`, and `.claude/CLAUDE.md`.
@@ -61,16 +61,16 @@ The following are intentional design choices — do not flag them as issues:
 
 - **`zantarix:init` skill invocations** in `memory-reconciliation` and `triage-new-memory` — these explicitly target the plugin's own `init` skill (refreshes `CLAUDE.md`), not the harness built-in `/init`. Do not flag them as ambiguous.
 - **`plugin-reviewer` included in `/zantarix:review` scope** — the `zantarix:review` skill discovers all agents ending in `-reviewer`. In this repo, `plugin-reviewer` is intentionally within that scope; plugin review is part of this repo's review process for its own content.
-- **`rules/zantarix/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `rules/zantarix/rules.md`.
+- **`plugins/zantarix/rules/changesets.md` overridden by `.claude/rules/changesets.md`** — this repo has no releases, so changesets are not used. The project-level override is correct and intentional per `plugins/zantarix/rules/rules.md`.
 
-Constraints from `rules/zantarix/rules.md` (authoritative):
+Constraints from `plugins/zantarix/rules/rules.md` (authoritative):
 
 - Rules must not exceed **50 lines**
 - Rules must use `paths:` frontmatter to scope to relevant files unless the rule genuinely applies everywhere
 
 ## Review Process
 
-1. **Identify changed plugin content**: Run `git diff` and check `git log` for the current branch to find all modified files under `plugins/**`, `rules/**`, and `.claude/{skills,rules,CLAUDE.md}`. These are the primary focus of the review.
+1. **Identify changed plugin content**: Run `git diff` and check `git log` for the current branch to find all modified files under `plugins/**` (rules included) and `.claude/{skills,rules,CLAUDE.md}`. These are the primary focus of the review.
 
 2. **Read each changed component in full**: Understand the full intent before evaluating any part of it.
 
@@ -140,5 +140,5 @@ Group findings by severity — **Critical**, **Major**, **Minor**, **Suggestions
 - Findings you mark Critical or Major will trigger the skill's fix pass — only put things there that have a clear, actionable fix. Ambiguous items belong in Suggestions.
 - Do not flag markdown formatting — `format.sh` (markdownlint --fix) handles that automatically.
 - Do not suggest ADR errata — that is solely the responsibility of `@zantarix:architecture-curator`.
-- Treat `rules/zantarix/rules.md` as the canonical authority on rule-file constraints.
+- Treat `plugins/zantarix/rules/rules.md` as the canonical authority on rule-file constraints.
 - Calibrate tier findings to Execution Tiers: judgment-shaped rules and skill triggers are fine at the Sonnet floor — don't flag sub-Sonnet fragility except as an optional, cheap Haiku win. Tier fit is bidirectional: under-tier = correctness (Major), over-tier = cost (Minor).

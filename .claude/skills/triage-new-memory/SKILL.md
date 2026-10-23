@@ -32,9 +32,9 @@ If an issue does not follow this template (e.g. a human-filed proposal), extract
 For each issue, gather signals before classifying:
 
 1. **Plugin exists?** Confirm `plugins/<target>/` is present. If not, the proposal implies a new plugin — flag for user discussion (likely Defer).
-2. **Filename collision?** Check whether `rules/<plugin>/<suggested-name>.md` already exists.
-3. **Topic overlap?** Grep `rules/<plugin>/` for keywords from the rule body. Read any file that looks related — the proposal may already be covered or may belong as an extension to an existing rule.
-4. **Length budget.** Rules must not exceed 50 lines (`rules/zantarix/rules.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
+2. **Filename collision?** Check whether `plugins/<plugin>/rules/<suggested-name>.md` already exists.
+3. **Topic overlap?** Grep `plugins/<plugin>/rules/` for keywords from the rule body. Read any file that looks related — the proposal may already be covered or may belong as an extension to an existing rule.
+4. **Length budget.** Rules must not exceed 50 lines (`plugins/zantarix/rules/rules.md`). If the proposed body would push an existing file past 50 lines, the merge becomes a split decision.
 5. **Contradictions.** Skim other rules in the same plugin for direct conflicts with the proposal.
 
 ## Step 4: Classify each issue
@@ -50,13 +50,13 @@ For every accept, decide the scope:
 
 ### A — Accept as new rule (verbatim)
 
-Create `rules/<plugin>/<name>.md` from the issue body verbatim. Pick when:
+Create `plugins/<plugin>/rules/<name>.md` from the issue body verbatim. Pick when:
 
 - The proposal is a clean fit for a new file, no existing rule covers the topic, the body is well-formed, **and** the rule is genuinely repo-wide so no `paths:` is needed.
 
 ### B — Accept with edits
 
-Create `rules/<plugin>/<name>.md` with adjustments. Pick when (any of):
+Create `plugins/<plugin>/rules/<name>.md` with adjustments. Pick when (any of):
 
 - A `paths:` frontmatter needs to be added (the common case).
 - The suggested filename needs renaming for clarity or convention.
@@ -67,7 +67,7 @@ Show the diff between the issue body and what would be written before the user a
 
 ### C — Merge into existing rule
 
-Append to or modify an existing `rules/<plugin>/<existing>.md` rather than creating a new file. Pick when:
+Append to or modify an existing `plugins/<plugin>/rules/<existing>.md` rather than creating a new file. Pick when:
 
 - The issue itself says "addendum to …".
 - An existing rule covers the same topic and the proposal genuinely extends it (without breaking the 50-line cap).
@@ -96,13 +96,13 @@ Render one row per issue:
 
 | # | Title | Plugin | Outcome | Target file | Notes |
 |---|-------|--------|---------|-------------|-------|
-| 9 | trait-signature bug fixes don't warrant ADR | zantarix | C — merge | `rules/zantarix/adr.md` | append as new paragraph; +6 lines (within 50) |
-| 6 | no mutation-test exclusions | rust | B — edit | `rules/rust/mutants.md` | add `paths: .cargo/mutants.toml, **/*.rs`; otherwise verbatim |
-| 5 | named type aliases for domain collections | rescript | B — edit | `rules/rescript/type-aliases.md` | rename from suggested `domain-types.md`; add `paths: src/**/*.res` |
-| 7 | never claim "known issue" without evidence | zantarix | A — accept | `rules/zantarix/investigation.md` | new file, genuinely repo-wide so no `paths:` |
-| 4 | binding modules may expose domain helpers | rescript | C — merge | `rules/rescript/ffi-bindings.md` | extends existing rule, +9 lines |
-| 3 | @react.component optional-prop asymmetry | rescript | B — edit | `rules/rescript/react-optional-props.md` | add `paths: src/**/*.{res,resi}`; add `# Title` header |
-| 8 | read clippy help: hint before manually fixing | rust | D — reject | — | already covered by `rules/rust/clippy.md` |
+| 9 | trait-signature bug fixes don't warrant ADR | zantarix | C — merge | `plugins/zantarix/rules/adr.md` | append as new paragraph; +6 lines (within 50) |
+| 6 | no mutation-test exclusions | rust | B — edit | `plugins/rust/rules/mutants.md` | add `paths: .cargo/mutants.toml, **/*.rs`; otherwise verbatim |
+| 5 | named type aliases for domain collections | rescript | B — edit | `plugins/rescript/rules/type-aliases.md` | rename from suggested `domain-types.md`; add `paths: src/**/*.res` |
+| 7 | never claim "known issue" without evidence | zantarix | A — accept | `plugins/zantarix/rules/investigation.md` | new file, genuinely repo-wide so no `paths:` |
+| 4 | binding modules may expose domain helpers | rescript | C — merge | `plugins/rescript/rules/ffi-bindings.md` | extends existing rule, +9 lines |
+| 3 | @react.component optional-prop asymmetry | rescript | B — edit | `plugins/rescript/rules/react-optional-props.md` | add `paths: src/**/*.{res,resi}`; add `# Title` header |
+| 8 | read clippy help: hint before manually fixing | rust | D — reject | — | already covered by `plugins/rust/rules/clippy.md` |
 
 Below the table, surface:
 
@@ -138,7 +138,7 @@ Before starting, confirm the working tree is clean so per-row commits stay isola
 ### Per-outcome actions
 
 1. **Outcome A — Accept (verbatim, repo-wide):**
-   - Write `rules/<plugin>/<name>.md` with the rule body. Add a `# Title` heading if absent. No `paths:` frontmatter.
+   - Write `plugins/<plugin>/rules/<name>.md` with the rule body. Add a `# Title` heading if absent. No `paths:` frontmatter.
    - Insert a row into the plugin's table in `README.md`, alphabetical within the Rule section.
    - Stage both files and commit with `Closes #<n>`.
 

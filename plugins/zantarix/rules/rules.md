@@ -1,6 +1,6 @@
 ## Project rules versus organisation rules
 
-Project rules are considered to be any rules in `.claude/rules/` which are not included via a symlink. This restriction is important as rules may be included via a symlink as a workaround for Claude Code plugins not including a way to distribute rules. Rules included via a symlink should be categorised as organisation level rules and should be considered immutable.
+Project rules are the files in `.claude/rules/`. Organisation rules are the ones a plugin loads itself from its own `rules/` directory (their paths sit under the plugin's install directory). Organisation rules should be considered immutable.
 
 Project rules are allowed to override or extend organisation rules, however any contradictions should be highlighted to the user.
 

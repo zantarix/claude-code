@@ -3,7 +3,7 @@ type: Overview
 title: Knowledge
 description: How this project structures the knowledge it keeps — OKF bundles, the two-tier architecture regime, the shape of the ADR lifecycle, and the routes by which rules and memories become distributed content.
 tags: [knowledge, okf, adr, regime, rules, distribution]
-generated: { by: architecture-curator/claude-opus-5, at: 2026-08-12T21:58:09Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-23T11:15:49Z }
 status: stable
 ---
 
@@ -105,12 +105,10 @@ is corrected afterwards.
 
 This repository publishes five plugins. Two routes carry knowledge into them:
 
-- **Rules** are markdown directives under `rules/<plugin>/`, kept outside
-  `plugins/` because the plugin harness does not distribute them. Consumers add
-  this repository as a git submodule and symlink the relevant rule directories
-  into their own `.claude/rules/`; this repository does the same to dogfood them.
-  The workaround is tracked upstream at
-  [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200).
+- **Rules** are markdown directives each plugin carries in its own `rules/`
+  directory and loads into a consumer's session itself; the
+  [components overview](../components/overview.md) describes how they reach a
+  consumer.
 - **Memories** promote through review, not automatically.
   `/zantarix:memory-reconciliation` triages accumulated project memories and files
   a GitHub issue when one looks like it should become a distributed rule; the

@@ -3,7 +3,7 @@ type: Overview
 title: Components
 description: The kinds of thing a Zantarix plugin ships — skills, agents, rules, hooks, and workflows — what each is good for, how they reach a consumer project, and what each costs in context.
 tags: [components, plugins, skills, rules, agents, hooks, workflows, distribution]
-generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-16T14:38:42Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-23T11:38:29Z }
 status: stable
 ---
 
@@ -14,14 +14,14 @@ This marketplace publishes five plugins — `zantarix`, `github`, `gitlab`,
 the most common design question here, and the axis that decides it is **when the
 content needs to be in context**.
 
-Today the corpus is 32 skills, 5 agents, 47 rules, hooks in two plugins, and one
-workflow.
+Today the corpus is 32 skills, 5 agents, 47 rules, a hooks module in every
+plugin, command hooks in two, and one workflow.
 
 ## The five kinds
 
 ### Rules — always loaded, so always paying
 
-A rule is markdown directives at `rules/<plugin>/<name>.md`, injected into context
+A rule is markdown directives at `plugins/<plugin>/rules/<name>.md`, injected into context
 whenever it is in scope. That makes a rule the right home for something that must
 shape behaviour without anyone deciding to consult it, and the wrong home for
 anything long: rules are capped at 50 lines, and one that outgrows the cap is
@@ -83,15 +83,24 @@ splitting it is real, and the prompt stays whole anyway.
 
 ### Hooks — the only mechanical enforcement
 
-A hook is a script registered in `plugin.json`, receiving the tool payload as
-JSON on stdin. Hooks are the only component that can *stop* something: prompt
-text is advisory, and a sufficiently distracted model will talk itself past it.
+Hooks come in two forms, both registered in the plugin's `hooks/hooks.json`; no
+plugin registers hooks in `plugin.json`. A **command hook** is a script listed
+under that file's `hooks` key for `PreToolUse` or `PostToolUse`, receiving the
+tool payload as JSON on stdin. A **hooks module** is a TypeScript module the same
+file names under `modules`, written against Claude Code's early-access function-hooks API: it hooks engine
+events directly and reaches everything else through the engine interface, with no
+filesystem or Node access of its own. Hooks are the only component that can *stop*
+something: prompt text is advisory, and a sufficiently distracted model will talk
+itself past it.
 
-Two plugins ship hooks. `zantarix` guards the architecture bundle's authorship and
-formats markdown after every edit; `rust` carries its own. A `PreToolUse` hook
-denies by returning a structured decision with a reason the model can act on,
-which is why the guard's denial names both routes to compliance rather than just
-refusing.
+Two plugins ship command hooks. `zantarix` guards the architecture bundle's
+authorship and formats markdown after every edit; `rust` carries its own
+formatter. A `PreToolUse` hook denies by returning a structured decision with a
+reason the model can act on, which is why the guard's denial names both routes to
+compliance rather than just refusing.
+
+Every plugin ships a hooks module, and today each one does a single job: loading
+that plugin's rules, described below. None of them gates anything.
 
 ### Workflows — scripts the Workflow tool runs by name
 
@@ -110,28 +119,50 @@ only its skill supplies.
 ## How any of it reaches a consumer
 
 Plugins are pulled in through `extraKnownMarketplaces` in a consumer's
-`.claude/settings.json`, and skills, agents, hooks, and workflows arrive with
+`.claude/settings.json`, and skills, agents, hooks, workflows, and rules arrive with
 them.
 
-**Rules do not.** The plugin harness has no mechanism to distribute them, so
-consumers add this repository as a git submodule and symlink `rules/<plugin>/`
-directories into their own `.claude/rules/`. This repository does the same to
-dogfood its own rules. The limitation is tracked upstream at
-[anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200);
-the split between `rules/` and `plugins/` exists only because of it and would not
-survive a fix.
+Rules arrive by a route of the plugins' own, because the plugin harness still has
+no rules component — the gap is tracked upstream at
+[anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200).
+Each plugin keeps its rules in its own `rules/` directory and loads them with its
+hooks module, as [ADR-0009](0009-distribute-rules-through-each-plugins-own-hooks-module.md)
+decides; [Plugin Rule Loading](rule-loading.md) carries the loader's contract. The
+loader has one canonical copy in `zantarix`, and a sync script copies it into the
+other four plugins and can check that the copies have not drifted. That route is
+built, in all five plugins; ADR-0009 is still Proposed.
 
-A consumer distinguishes organisation rules from its own by that symlink: anything
-reached through one is org-level and immutable locally, while a plain file in
-`.claude/rules/` is the project's own and may override — with contradictions
-surfaced rather than blended.
+Rules therefore depend on hooks modules loading at all. The API is early access,
+and whether a module loads depends on a switch in Claude Code rather than on
+anything the plugin ships: with it off, a plugin loads no rules and says nothing in
+the conversation. Each plugin
+registers a command that lists the rules it loaded, which is the way to tell.
+
+The route it replaced had consumers add this repository as a git submodule and
+symlink `rules/<plugin>/` directories into their own `.claude/rules/`. A consumer
+still set up that way receives each rule twice, and each plugin warns at session
+start when it finds its own rules duplicated there.
+
+This repository has left the old route: its own `.claude/rules/` holds only the
+project override `changesets.md`. It enables `zantarix`, `github`, and `gitlab`
+from the installed — that is, pushed — plugin versions, so its sessions receive
+organisation rules only from what those versions deliver, and the pushed versions
+do not yet carry the loader.
+
+A consumer distinguishes organisation rules from its own by origin: a rule a
+plugin loaded is org-level and immutable locally, while a file in `.claude/rules/`
+is the project's own and may override — with contradictions surfaced rather than
+blended.
 
 ## Consequences worth knowing before adding something
 
-- **The repository has no build, test, or compile step.** It is configuration and
-  markdown, so nothing mechanically validates a component; correctness is a
-  reading. The `plugin-reviewer` agent exists for this, and it is the check that
-  catches contradiction-at-a-distance between a prompt and the rules around it.
+- **The repository has no build or compile step, and little is tested.** The
+  rules loader's pure parsing and matching logic has unit tests, run with
+  `claude plugin test plugins/zantarix`, and the sync script's `--check` catches a
+  drifted copy; the engine-facing half of the loader and every other component —
+  configuration and markdown — are validated only by reading. The
+  `plugin-reviewer` agent exists for this, and it is the check that catches
+  contradiction-at-a-distance between a prompt and the rules around it.
 - **Distributed prompts are self-contained.** This bundle is not distributed, so a
   consumer project's agent never reads it. These documents explain *why* the
   prompts say what they say; the operative instruction always lives in the prompt.

@@ -3,7 +3,7 @@ type: Overview
 title: Orchestration
 description: How this marketplace's plugins coordinate multi-agent work today — remit-aware review fan-out under a cost cap, sole-writer delegation enforced by a hook, and human authorisation gates.
 tags: [orchestration, subagents, review, human-gates, hooks]
-generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-16T14:35:39Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-23T11:15:49Z }
 status: stable
 ---
 
@@ -106,10 +106,10 @@ where a subagent could only report it upward and lose the context that found it.
 
 ## Known gaps
 
-- **The workflow script has no lint or format coverage.** `format.sh` handles `.md`
-  only, and `review-fanout.js` is the sole JavaScript artifact in a repository
-  otherwise made of configuration and markdown. [ADR-0001](0001-review-dynamic-workflow.md)
-  accepted this knowingly.
+- **Script code has no lint or format coverage.** `format.sh` handles `.md` only,
+  so neither `review-fanout.js` nor the plugins' TypeScript hooks modules are
+  linted, formatted, or type-checked. [ADR-0001](0001-review-dynamic-workflow.md)
+  accepted this knowingly for the workflow script.
 - **Reviewer names can collide across plugins.** `rust` and `rescript` both publish
   a `code-reviewer`; discovery is by suffix, so a repository enabling both sees two
   agents whose bare names match.

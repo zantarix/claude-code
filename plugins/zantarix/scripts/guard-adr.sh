@@ -38,7 +38,7 @@ jq -n '{
   hookSpecificOutput: {
     hookEventName: "PreToolUse",
     permissionDecision: "deny",
-    permissionDecisionReason: "Files under docs/adr/ and docs/architecture/ are owned by the zantarix:architecture-curator agent. Delegate this change via the Task tool with subagent_type=\"zantarix:architecture-curator\", or invoke directly with `claude --agent zantarix:architecture-curator` (see rules/zantarix/adr.md)."
+    permissionDecisionReason: "Files under docs/adr/ and docs/architecture/ are owned by the zantarix:architecture-curator agent. Delegate this change via the Task tool with subagent_type=\"zantarix:architecture-curator\", or invoke directly with `claude --agent zantarix:architecture-curator` (see plugins/zantarix/rules/adr.md)."
   }
 }'
 exit 0

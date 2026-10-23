@@ -75,7 +75,7 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
      body, in the ticket, or in your memory — treat it as wrong in both
      directions, and let the files decide.
 
-3. **Write the errata**, following the rules in `rules/zantarix/adr.md` and your
+3. **Write the errata**, following the rules in `plugins/zantarix/rules/adr.md` and your
    own Errata section in full — including its cluster-sweep and
    pre-landed-erratum rules, which govern here exactly as they do outside
    ratification.
