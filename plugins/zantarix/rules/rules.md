@@ -1,6 +1,6 @@
 ## Project rules versus organisation rules
 
-Project rules are the files in `.claude/rules/`. Organisation rules are the ones a plugin loads itself from its own `rules/` directory (their paths sit under the plugin's install directory). Organisation rules should be considered immutable.
+Project rules are the files in `.claude/rules/`. Organisation rules are the ones loaded from a plugin's own `rules/` directory (their paths sit under the plugin's install directory). Organisation rules should be considered immutable.
 
 Project rules are allowed to override or extend organisation rules, however any contradictions should be highlighted to the user.
 

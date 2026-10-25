@@ -1,6 +1,7 @@
 {
 	"name": "gitlab",
 	"description": "Helpful skills for working with GitLab projects",
+	"dependencies": ["rules"],
 	"author": {
 		"name": "Zantarix",
 		"email": "github@zantarix.com"

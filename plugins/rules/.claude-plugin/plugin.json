@@ -1,0 +1,9 @@
+{
+	"name": "rules",
+	"description": "Loads the rules shipped by Zantarix plugins; installed automatically as a dependency of them",
+	"types": "./types/index.d.ts",
+	"author": {
+		"name": "Zantarix",
+		"email": "github@zantarix.com"
+	}
+}

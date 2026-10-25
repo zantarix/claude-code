@@ -28,15 +28,15 @@ Enable only the plugins relevant to the project — e.g. a Rust service adds `"r
 
 ### Rules
 
-Each plugin ships its rules in `plugins/<plugin>/rules/` and loads them itself through a hooks module, so enabling the plugin is enough: unscoped rules join your instructions next to `CLAUDE.md`, and rules with `paths:` frontmatter attach when Claude reads (or you `@`-mention) a matching file. Run `/<plugin>-rules` (e.g. `/rust-rules`) to see what a plugin loaded.
+Each plugin ships its rules in `plugins/<plugin>/rules/` and the `rules` plugin, installed automatically as their dependency, loads them through a hooks module, so enabling the plugin is enough: unscoped rules join your instructions next to `CLAUDE.md`, and rules with `paths:` frontmatter attach when Claude reads (or you `@`-mention) a matching file. Run `/zantarix-rules` to see what each plugin loaded.
 
 Rules loaded this way are **organisation rules** and should be treated as immutable; project-specific overrides go in plain `.md` files directly under `.claude/rules/`.
 
-This relies on Claude Code's early-access function hooks ("mods"), because plugins have no native rules component yet (tracked upstream: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Needs Claude Code 2.1.304 or later. On Team/Enterprise plans or with managed settings, Claude Code does not offer user-installed plugins the instructions hook, so unscoped rules arrive with the first prompt after a turn has shown that, and on tool results; path-scoped rules are unaffected. If `/<plugin>-rules` reports nothing loaded, hooks modules may be switched off for your installation.
+This relies on Claude Code's early-access function hooks ("mods"), because plugins have no native rules component yet (tracked upstream: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)). Needs Claude Code 2.1.304 or later. On Team/Enterprise plans or with managed settings, Claude Code does not offer user-installed plugins the instructions hook, so unscoped rules arrive with the first prompt after a turn has shown that, and on tool results; path-scoped rules are unaffected. If `/zantarix-rules` reports nothing loaded, hooks modules may be switched off for your installation. Don't disable the `rules` plugin: Claude Code then disables every plugin that depends on it, not only their rules.
 
 #### Migrating from the submodule and symlinks
 
-1. Update the plugins first (`/plugin` → update, or `claude plugin update <plugin>@zantarix`) and check `/<plugin>-rules` lists the rules.
+1. Update the plugins first (`/plugin` → update, or `claude plugin update <plugin>@zantarix`), then run `/reload-plugins` so the new `rules` dependency is installed, and check `/zantarix-rules` lists the rules.
 2. Delete the `.claude/rules/<plugin>` symlinks and the `.claude/shared` submodule. Until you do, each plugin warns at session start that its rules are duplicated.
 
 ### Model recommendations
@@ -91,7 +91,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Rule | `testing` | Test conventions |
 | Rule | `tmp` | Prefer `.tmp/` inside the repo over `/tmp` for scratch artefacts |
 | Rule | `workflow` | Coding discipline |
-| Hook | `rules-loader` | Hooks module that loads the plugin's own `rules/` (always-on rules as instruction files, `paths:` rules on matching reads) and registers `/zantarix-rules` |
+| Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
 
 ### `github`
 
@@ -103,7 +103,7 @@ Skills, agents, and rules for GitHub projects.
 | Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
 | Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
 | Rule | `pr` | Always invoke the `github:create-pull-request` skill rather than calling `gh pr create` directly |
-| Hook | `rules-loader` | Hooks module that loads the plugin's own `rules/` (always-on rules as instruction files, `paths:` rules on matching reads) and registers `/github-rules` |
+| Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
 
 ### `gitlab`
 
@@ -129,7 +129,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`) |
 | Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
-| Hook | `rules-loader` | Hooks module that loads the plugin's own `rules/` (always-on rules as instruction files, `paths:` rules on matching reads) and registers `/gitlab-rules` |
+| Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
 
 ### `rescript`
 
@@ -143,7 +143,7 @@ Skills, agents, and rules for ReScript frontend projects.
 | Rule | `ffi-bindings` | FFI binding organisation, interface file requirements, and colocating reusable domain helpers |
 | Rule | `named-type-aliases` | Prefer named `type t` aliases over inlined primitives for domain-semantic collections |
 | Rule | `react-optional-props` | Required annotation asymmetry for optional props with no default: `T=?` in `.resi`, `option<T>=?` in `.res` |
-| Hook | `rules-loader` | Hooks module that loads the plugin's own `rules/` (always-on rules as instruction files, `paths:` rules on matching reads) and registers `/rescript-rules` |
+| Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
 
 ### `rust`
 
@@ -166,4 +166,13 @@ Skills, agents, and rules for Rust projects.
 | Rule | `style` | Code style conventions |
 | Rule | `test-modules` | Tests must live in dedicated `tests` submodule files — inline `#[cfg(test)] mod tests { ... }` blocks in production source files are forbidden |
 | Rule | `workflow` | Prefer `cargo make` tasks over README runbooks for repeatable maintenance steps |
-| Hook | `rules-loader` | Hooks module that loads the plugin's own `rules/` (always-on rules as instruction files, `paths:` rules on matching reads) and registers `/rust-rules` |
+| Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
+
+### `rules`
+
+Loads the rules the other plugins ship. It is a dependency of every plugin above, so it is installed and enabled with them and you never enable it yourself.
+
+| Type | Name | Description |
+| ------ | ------ | ------------- |
+| Hook | `register` | Loads each plugin's `rules/` that was handed over through `$.rules.add`: always-on rules as instruction files, `paths:` rules on matching reads, with a prompt/tool-result fallback where instruction files are out of reach |
+| Command | `/zantarix-rules` | Lists the rules each plugin loaded and how always-on rules are being delivered |

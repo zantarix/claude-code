@@ -3,7 +3,7 @@ type: Overview
 title: Knowledge
 description: How this project structures the knowledge it keeps — OKF bundles, the two-tier architecture regime, the shape of the ADR lifecycle, and the routes by which rules and memories become distributed content.
 tags: [knowledge, okf, adr, regime, rules, distribution]
-generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-23T11:15:49Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-25T02:27:52Z }
 status: stable
 ---
 
@@ -103,10 +103,10 @@ is corrected afterwards.
 
 ## How knowledge becomes distributed content
 
-This repository publishes five plugins. Two routes carry knowledge into them:
+This repository publishes six plugins. Two routes carry knowledge into them:
 
 - **Rules** are markdown directives each plugin carries in its own `rules/`
-  directory and loads into a consumer's session itself; the
+  directory, delivered into a consumer's session by the shared `rules` plugin; the
   [components overview](../components/overview.md) describes how they reach a
   consumer.
 - **Memories** promote through review, not automatically.

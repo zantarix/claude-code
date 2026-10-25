@@ -1,6 +1,7 @@
 {
 	"name": "zantarix",
 	"description": "Basic skills for working with Zantarix projects",
+	"dependencies": ["rules"],
 	"author": {
 		"name": "Zantarix",
 		"email": "github@zantarix.com"

@@ -1,6 +1,7 @@
 {
 	"name": "rescript",
 	"description": "Helpful skills for working with Rescript projects",
+	"dependencies": ["rules"],
 	"author": {
 		"name": "Zantarix",
 		"email": "github@zantarix.com"

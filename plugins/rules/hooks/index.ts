@@ -1,11 +1,11 @@
 /*
- * Loads a plugin's own `rules/` directory: Claude Code has no rules component
- * for plugins (anthropics/claude-code#14200), so each plugin does it with a
- * hooks module. Design follows mcmanussliam/claude-plugin-rules (MIT) and
+ * Loads plugins' `rules/` directories: Claude Code has no rules component for
+ * plugins (anthropics/claude-code#14200), so this plugin does it with a hooks
+ * module. Design follows mcmanussliam/claude-plugin-rules (MIT) and
  * Anthropic's mods/agents-md.
  *
- * Canonical copy: plugins/zantarix/hooks/rules-loader/. The other plugins carry
- * byte-identical copies made by scripts/sync-rules-loader.sh.
+ * Each plugin that ships rules depends on this one and hands over its name and
+ * directory with `$.rules.add` (see ../types/index.d.ts).
  *
  * Rules never gate anything: every hook passes its event on if it fails.
  */
@@ -13,11 +13,14 @@ import type { EngineInterface, InstructionFile, On } from 'claude-code';
 
 import { duplicatesOf, frame, parseRule, relativeTo, scopedFor, type Rule } from './rule';
 
+/** What a plugin hands to `$.rules.add`; declared for callers in ../types/index.d.ts. */
+type RulesSource = { plugin: string; root: string };
+
 /** Deepest rules directory nesting walked; also guards against symlink loops. */
 const MAX_DEPTH = 6;
 
-/** Rules read from disk, until the next session start. */
-let cache: Promise<Rule[]> | undefined;
+/** Rules read from disk, by the plugin that ships them; replaced when the plugin registers again. */
+const registry = new Map<string, Rule[]>();
 /** Whether the engine asked `prompt.context` this session, i.e. rules reach it natively. */
 let hasContextRun = false;
 /** Whether a turn finished without `prompt.context` having run. */
@@ -48,19 +51,13 @@ async function walk($: EngineInterface, dir: string, depth = 0): Promise<string[
   return found.sort();
 }
 
-async function readRules($: EngineInterface): Promise<Rule[]> {
-  const files = await walk($, `${$.plugin.root}/rules`);
+async function readRules($: EngineInterface, root: string): Promise<Rule[]> {
+  const files = await walk($, `${root}/rules`);
   const texts = await Promise.all(files.map(file => $.fs.read(file)));
   return files.map((file, i) => parseRule(file, texts[i] ?? '')).filter(rule => rule.content !== '');
 }
 
-function rulesOf($: EngineInterface): Promise<Rule[]> {
-  cache ??= readRules($).catch(error => {
-    cache = undefined;
-    throw error;
-  });
-  return cache;
-}
+const allRules = (): Rule[] => [...registry.values()].flat();
 
 /** Adds rules as `user` instruction files: after the person's own, before the project's. */
 function withUserFiles(files: readonly InstructionFile[], rules: readonly Rule[]): InstructionFile[] {
@@ -80,7 +77,7 @@ async function attachFor($: EngineInterface, file: string, agentId: string | und
 
   const key = keyOf(agentId);
   const done = sent.get(key) ?? new Set<string>();
-  const fresh = scopedFor(await rulesOf($), relPath, done);
+  const fresh = scopedFor(allRules(), relPath, done);
   sent.set(key, new Set([...done, ...fresh.map(rule => rule.path)]));
   return fresh.map(frame);
 }
@@ -96,11 +93,11 @@ async function fallbackFor($: EngineInterface, agentId: string | undefined): Pro
   }
 
   told.add(key);
-  return (await rulesOf($)).filter(rule => rule.paths === undefined).map(frame);
+  return allRules().filter(rule => rule.paths === undefined).map(frame);
 }
 
-/** Tells the person when `.claude/rules` still holds copies of this plugin's rules. */
-async function warnDuplicates($: EngineInterface): Promise<void> {
+/** Tells the person when `.claude/rules` still holds copies of a plugin's rules. */
+async function warnDuplicates($: EngineInterface, plugin: string, rules: readonly Rule[]): Promise<void> {
   const root = await $.session.root();
   const files = await walk($, `${root}/.claude/rules`);
   if (files.length === 0) {
@@ -108,36 +105,55 @@ async function warnDuplicates($: EngineInterface): Promise<void> {
   }
 
   const texts = await Promise.all(files.map(file => $.fs.read(file).catch(() => '')));
-  const copies = duplicatesOf(await rulesOf($), texts);
+  const copies = duplicatesOf(rules, texts);
   if (copies.length > 0) {
     $.ui.log(
-      `${$.plugin.name}: ${copies.length} of this plugin's rules are also in .claude/rules (the old ` +
-        `symlink/submodule route). Remove those symlinks and the .claude/shared submodule: the plugin loads its ` +
-        'rules itself, so each is currently sent twice.',
+      `rules: ${copies.length} of the ${plugin} plugin's rules are also in .claude/rules (the old ` +
+        `symlink/submodule route). Remove those symlinks and the .claude/shared submodule: the rules plugin ` +
+        'loads them itself, so each is currently sent twice.',
     );
   }
 }
 
-async function listing($: EngineInterface): Promise<string> {
-  const rules = await rulesOf($);
-  const mode = hasContextRun ? 'instructions' : isBypassed ? 'fallback (prompt.context skipped)' : 'not yet confirmed';
-  const lines = rules.map(rule => `- ${rule.path.replace(`${$.plugin.root}/`, '')}${rule.paths ? ` [${rule.paths.join(', ')}]` : ''}`);
-  return `${$.plugin.name}: ${rules.length} rules, always-on delivery: ${mode}\n${lines.join('\n')}`;
+/** Reads a plugin's rules now, while the call still runs in the caller's context and can reach its directory. */
+async function register($: EngineInterface, { plugin, root }: RulesSource): Promise<void> {
+  const rules = await readRules($, root);
+  registry.set(plugin, rules);
+  await warnDuplicates($, plugin, rules).catch(() => undefined);
 }
 
-/** Hooks this plugin's `rules/` directory into the session. Call once from `register`. */
+function listing(): string {
+  const mode = hasContextRun ? 'instructions' : isBypassed ? 'fallback (prompt.context skipped)' : 'not yet confirmed';
+  const sections = [...registry].map(([plugin, rules]) => {
+    const lines = rules.map(rule => `- ${rule.path.split('/rules/').slice(1).join('/rules/')}${rule.paths ? ` [${rule.paths.join(', ')}]` : ''}`);
+    return `${plugin}: ${rules.length} rules\n${lines.join('\n')}`;
+  });
+  return `always-on delivery: ${mode}\n\n${sections.join('\n\n') || 'no plugin has registered rules'}`;
+}
+
+/** Hooks registered plugins' `rules/` directories into the session. Call once from `register`. */
 export function rules(on: On): void {
+  // No .catch here: an engine.create hook has no budget, and its failure fails the load.
+  // The namespace only declares `add`: the rules.add hook below answers it.
+  on('engine.create', {}, async (_$, e, next) => {
+    const built = await next(e);
+    return { ...built, rules: { add: async (_source: RulesSource): Promise<void> => undefined } };
+  });
+
+  on('rules.add', {}, async ($, e, next) => {
+    await register($, e);
+    return { value: undefined };
+  }).catch(($, e, next) => next(e));
+
   on('session.start', {}, async ($, e, next) => {
     const started = await next(e);
-    cache = undefined;
-    await $.command.register({ name: `${$.plugin.name}-rules`, description: `List the rules the ${$.plugin.name} plugin loads` });
-    await warnDuplicates($).catch(() => undefined);
+    await $.command.register({ name: 'zantarix-rules', description: 'List the rules plugins have loaded' }).catch(() => undefined);
     return started;
   }).catch(($, e, next) => next(e));
 
-  on('command.run', {}, async ($, e, next) =>
-    e.command === `${$.plugin.name}-rules` ? { text: await listing($) } : next(e),
-  ).catch(($, e, next) => next(e));
+  on('command.run', {}, async (_$, e, next) => (e.command === 'zantarix-rules' ? { text: listing() } : next(e))).catch(
+    ($, e, next) => next(e),
+  );
 
   on('session.end', { reason: 'clear' }, ($, e, next) => {
     sent.clear();
@@ -161,7 +177,7 @@ export function rules(on: On): void {
     }
 
     const present = new Set(e.instructionFiles.map(file => file.path));
-    const always = (await rulesOf($)).filter(rule => rule.paths === undefined && !present.has(rule.path));
+    const always = allRules().filter(rule => rule.paths === undefined && !present.has(rule.path));
     hasContextRun = true;
     return next({ ...e, instructionFiles: withUserFiles(e.instructionFiles, always) });
   }).catch(($, e, next) => next(e));

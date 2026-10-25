@@ -3,14 +3,15 @@ type: Overview
 title: Components
 description: The kinds of thing a Zantarix plugin ships — skills, agents, rules, hooks, and workflows — what each is good for, how they reach a consumer project, and what each costs in context.
 tags: [components, plugins, skills, rules, agents, hooks, workflows, distribution]
-generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-23T11:38:29Z }
+generated: { by: architecture-curator/claude-opus-5-5, at: 2026-10-25T02:27:52Z }
 status: stable
 ---
 
 # Components
 
-This marketplace publishes five plugins — `zantarix`, `github`, `gitlab`,
-`rescript`, `rust` — built from five kinds of component. Choosing between them is
+This marketplace publishes six plugins — `zantarix`, `github`, `gitlab`,
+`rescript`, `rust`, and `rules`, the rules loader the other five depend on — built
+from five kinds of component. Choosing between them is
 the most common design question here, and the axis that decides it is **when the
 content needs to be in context**.
 
@@ -99,8 +100,10 @@ formatter. A `PreToolUse` hook denies by returning a structured decision with a
 reason the model can act on, which is why the guard's denial names both routes to
 compliance rather than just refusing.
 
-Every plugin ships a hooks module, and today each one does a single job: loading
-that plugin's rules, described below. None of them gates anything.
+Every plugin ships a hooks module, and today all of them serve rule loading,
+described below: the `rules` plugin's module is the loader, and each other
+plugin's module only registers that plugin's rules with it. None of them gates
+anything.
 
 ### Workflows — scripts the Workflow tool runs by name
 
@@ -125,32 +128,38 @@ them.
 Rules arrive by a route of the plugins' own, because the plugin harness still has
 no rules component — the gap is tracked upstream at
 [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200).
-Each plugin keeps its rules in its own `rules/` directory and loads them with its
-hooks module, as [ADR-0009](0009-distribute-rules-through-each-plugins-own-hooks-module.md)
-decides; [Plugin Rule Loading](rule-loading.md) carries the loader's contract. The
-loader has one canonical copy in `zantarix`, and a sync script copies it into the
-other four plugins and can check that the copies have not drifted. That route is
-built, in all five plugins; ADR-0009 is still Proposed.
+Each plugin keeps its rules in its own `rules/` directory, and they reach a session
+through hooks modules, as [ADR-0009](0009-distribute-rules-through-plugin-hooks-modules.md)
+decides. The loading itself is done by one plugin, `rules`, as
+[ADR-0010](0010-load-every-plugins-rules-through-a-shared-rules-plugin.md) decides:
+the other five list it under `dependencies` in their `plugin.json`, so installing
+any of them installs it, and each registers its own name and directory with it at
+session start. [Plugin Rule Loading](rule-loading.md) carries the loader's
+contract. Both decisions are built; both are still Proposed.
 
 Rules therefore depend on hooks modules loading at all. The API is early access,
 and whether a module loads depends on a switch in Claude Code rather than on
-anything the plugin ships: with it off, a plugin loads no rules and says nothing in
-the conversation. Each plugin
-registers a command that lists the rules it loaded, which is the way to tell.
+anything the plugin ships: with it off, no rule loads and the conversation shows
+nothing. A `/zantarix-rules` command lists each registered plugin's rules, which is the way to
+tell.
 
-The route it replaced had consumers add this repository as a git submodule and
-symlink `rules/<plugin>/` directories into their own `.claude/rules/`. A consumer
-still set up that way receives each rule twice, and each plugin warns at session
-start when it finds its own rules duplicated there.
+Because every rules-shipping plugin depends on `rules`, disabling or uninstalling
+`rules` disables those plugins too, not only their rules. The dependencies carry no
+version constraint, so each tracks the latest `rules` the marketplace publishes.
+
+The route ADR-0009 replaced had consumers add this repository as a git submodule
+and symlink `rules/<plugin>/` directories into their own `.claude/rules/`. A
+consumer still set up that way receives each rule twice, and the loader warns at
+session start, naming the plugin, when it finds a registered plugin's rules
+duplicated there.
 
 This repository has left the old route: its own `.claude/rules/` holds only the
 project override `changesets.md`. It enables `zantarix`, `github`, and `gitlab`
 from the installed — that is, pushed — plugin versions, so its sessions receive
-organisation rules only from what those versions deliver, and the pushed versions
-do not yet carry the loader.
+organisation rules only through whatever loader those versions carry.
 
 A consumer distinguishes organisation rules from its own by origin: a rule a
-plugin loaded is org-level and immutable locally, while a file in `.claude/rules/`
+plugin delivered is org-level and immutable locally, while a file in `.claude/rules/`
 is the project's own and may override — with contradictions surfaced rather than
 blended.
 
@@ -158,8 +167,8 @@ blended.
 
 - **The repository has no build or compile step, and little is tested.** The
   rules loader's pure parsing and matching logic has unit tests, run with
-  `claude plugin test plugins/zantarix`, and the sync script's `--check` catches a
-  drifted copy; the engine-facing half of the loader and every other component —
+  `claude plugin test plugins/rules`; the engine-facing half of the loader and
+  every other component —
   configuration and markdown — are validated only by reading. The
   `plugin-reviewer` agent exists for this, and it is the check that catches
   contradiction-at-a-distance between a prompt and the rules around it.

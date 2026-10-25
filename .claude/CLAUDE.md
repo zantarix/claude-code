@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project purpose
 
-This repo is a **Claude Code plugin marketplace** for Zantarix projects. It publishes five plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`) that other projects pull in via `extraKnownMarketplaces` in their `.claude/settings.json`. There is no build step or compiled output — the repo is configuration and markdown, plus a small TypeScript rules loader in each plugin's `hooks/` (tested with `claude plugin test plugins/zantarix`).
+This repo is a **Claude Code plugin marketplace** for Zantarix projects. It publishes six plugins (`zantarix`, `github`, `gitlab`, `rescript`, `rust`, plus the `rules` loader they all depend on) that other projects pull in via `extraKnownMarketplaces` in their `.claude/settings.json`. There is no build step or compiled output — the repo is configuration and markdown, plus the small TypeScript rules loader in `plugins/rules/` (tested with `claude plugin test plugins/rules`).
 
 This repo also uses its own plugins: `zantarix`, `github`, and `gitlab` are enabled in `.claude/settings.json`.
 
 ## Repository layout
 
-- **`/.claude-plugin/marketplace.json`** — registry root; lists all five plugins with their source paths
+- **`/.claude-plugin/marketplace.json`** — registry root; lists all six plugins with their source paths
 - **`/plugins/<name>/`** — one directory per plugin; holds `plugin.json` metadata plus `skills/`, `agents/`, `workflows/`, `rules/`, `hooks/`, and `scripts/` subdirectories
 - **`/.claude/skills/`** — project-local skills, not distributed via the plugin system (e.g. `triage-new-memory`)
 - **`/.claude/rules/`** — direct `.md` files for project-specific overrides only. Org-level rules are loaded by the enabled plugins themselves, not symlinked (see Rules below)
@@ -21,7 +21,7 @@ Each plugin component has a specific format:
 
 - **Skills** — `plugins/<name>/skills/<skill-name>/SKILL.md`; required frontmatter: `name`, `description`; add `disable-model-invocation: true` for harness-driven skills that must not be invoked by the model itself
 - **Agents** — `plugins/<name>/agents/<agent-name>.md` defining the agent system prompt
-- **Rules** — `plugins/<plugin-name>/rules/<rule-name>.md`, loaded by the plugin's own hooks module (Claude Code has no native plugin rules component yet: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)); use a `paths:` YAML list to scope to specific globs (omit for repo-wide rules):
+- **Rules** — `plugins/<plugin-name>/rules/<rule-name>.md`, loaded by the `rules` plugin once the plugin registers them (Claude Code has no native plugin rules component yet: [anthropics/claude-code#14200](https://github.com/anthropics/claude-code/issues/14200)); use a `paths:` YAML list to scope to specific globs (omit for repo-wide rules):
 
   ```yaml
   ---
@@ -31,8 +31,8 @@ Each plugin component has a specific format:
   ```
 
 - **Workflows** — `plugins/<name>/workflows/<workflow-name>.js`; a Workflow script whose `meta.name` makes it addressable as `<plugin>:<name>` (pass that as the Workflow tool's `name`, never a `scriptPath` — the tool rejects paths outside the working directory). Every plugin workflow is also exposed as a `/<plugin>:<name>` command with no way to hide it, so a workflow that is only an internal step of a skill must throw when invoked without the args that skill supplies
-- **Hooks** — registered in `plugins/<name>/hooks/hooks.json`: classic command hooks under `hooks` (`PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/` and receive the payload as JSON on stdin) and function-hooks modules under `modules`. Every plugin's `modules` entry is `register.ts`, which calls the rules loader
-- **Rules loader** — `plugins/zantarix/hooks/rules-loader/` is the canonical source; the other plugins carry byte-identical copies because a hooks module can only import from its own plugin. After editing it run `plugins/zantarix/scripts/sync-rules-loader.sh` (`--check` fails on drift); run its tests with `claude plugin test plugins/zantarix`
+- **Hooks** — registered in `plugins/<name>/hooks/hooks.json`: classic command hooks under `hooks` (`PreToolUse`/`PostToolUse`; scripts live in `plugins/<name>/scripts/` and receive the payload as JSON on stdin) and function-hooks modules under `modules`. Every rules-shipping plugin's `register.ts` calls `$.rules.add({ plugin, root })` from `session.start`, after `next(e)`, inline: passing `$` to an imported function fails validation
+- **Rules loader** — `plugins/rules/` owns the loader (`hooks/index.ts`, `hooks/rule.ts`) and the `$.rules` contract (`types/index.d.ts`); the other plugins list it under `dependencies` in `plugin.json`, so installing any of them installs it. A new plugin that ships rules needs that dependency and the `register.ts` above. Run the loader's tests with `claude plugin test plugins/rules`
 
 After adding a new plugin component, update the README table for that plugin.
 

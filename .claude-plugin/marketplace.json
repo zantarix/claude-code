@@ -10,6 +10,12 @@
 	},
 	"plugins": [
 		{
+			"name": "rules",
+			"source": "./plugins/rules",
+			"description": "Loads the rules shipped by Zantarix plugins; installed automatically as a dependency of them",
+			"homepage": "https://github.com/zantarix/claude-code"
+		},
+		{
 			"name": "zantarix",
 			"source": "./plugins/zantarix",
 			"description": "Basic skills for working with Zantarix projects",
