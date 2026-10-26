@@ -19,6 +19,7 @@
       devShells = forAllSystems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {
           buildInputs = with nixpkgs.legacyPackages.${system}; [
+            jq
             markdownlint-cli
             nodejs
           ];
