@@ -55,6 +55,7 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `accept-adr` | Human-invoked ratification gate: mark a Proposed ADR Accepted, recording who ratified it (`verified`) and any constraint-ledger entry |
 | Skill | `adopt-architecture` | One-time, human-invoked adoption of the architecture-documentation regime — converts an ADR corpus into a `docs/architecture` bundle with a constraint ledger; must be run by the `architecture-curator` agent |
 | Skill | `architecture-vocabulary` | The ubiquitous language of the architecture-documentation regime (decision, constraint, current truth, conformance gap, living-tier terms); preloaded into the curator and reviewer, never invoked |
+| Skill | `capture-eval-case` | Human-invoked: capture the current session (transcript, repo state, edits, environment, instructions) as a raw private bundle for building an eval case, cut at the point of invocation; read-only on every repo |
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `deep-dive` | Interview the user one question at a time to reach a shared understanding of an ambiguous topic, decision, or finding; used by `plan-adr` and `review` |
 | Skill | `domain-modelling` | Build and sharpen a project's domain model — pin down terminology and ubiquitous language as the design evolves |
