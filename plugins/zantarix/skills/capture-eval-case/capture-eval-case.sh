@@ -22,6 +22,24 @@ usage() {
 
 die() { echo "error: $*" >&2; exit 1; }
 
+# Portable across GNU and BSD (macOS) userlands: no `date -d`, `find -newermt`, `cp --parents`,
+# `sed -i` or `declare -A`. Hashing falls back to shasum where sha256sum is absent.
+if ! command -v sha256sum >/dev/null; then sha256sum() { shasum -a 256 "$@"; }; fi
+# ISO-8601 timestamp (fractional seconds allowed) -> epoch seconds.
+iso_epoch() { jq -rn --arg t "$1" '$t | sub("\\.[0-9]+"; "") | fromdateiso8601'; }
+# Copy every file under the current directory not modified after $1 (epoch seconds) into $2,
+# preserving relative paths. A reference file stands in for `find -newermt`.
+copy_tree_before() { # <epoch> <dest> <find filter args...>
+  local epoch="$1" dest="$2" ref f; shift 2
+  ref=$(mktemp "${TMPDIR:-/tmp}/capture-ref.XXXXXX")
+  TZ=UTC touch -t "$(jq -rn --argjson e "$epoch" '$e | strftime("%Y%m%d%H%M.%S")')" "$ref"
+  while IFS= read -r -d '' f; do
+    mkdir -p "$dest/$(dirname "$f")"
+    cp -p "$f" "$dest/$f"
+  done < <(find . -type f "$@" ! -newer "$ref" -print0)
+  rm -f "$ref"
+}
+
 OUT=""
 NOTE_FILE=""
 while [ $# -gt 0 ]; do
@@ -78,7 +96,7 @@ warn() { echo "warning: $*" >&2; echo "$*" >> "$WARNINGS"; }
 cp -p "$TRANSCRIPT" "$WORK/main.jsonl"
 # Drop a trailing partial line, if the session was mid-write when copied.
 if [ -s "$WORK/main.jsonl" ] && [ -n "$(tail -c1 "$WORK/main.jsonl")" ]; then
-  sed -i '$d' "$WORK/main.jsonl"
+  sed '$d' "$WORK/main.jsonl" > "$WORK/main.jsonl.tmp" && mv "$WORK/main.jsonl.tmp" "$WORK/main.jsonl"
 fi
 if [ -d "$SIDECAR" ]; then
   cp -a "$SIDECAR" "$WORK/sidecar"
@@ -96,6 +114,7 @@ IFS=$'\t' read -r CUT_LINE CUT_UUID CUT_TS <<<"$CUT"
 require() { [ -n "$2" ] && [ "$2" != "null" ] || die "expected $1 in the transcript but found none (did the transcript format change?)"; }
 require "a uuid on the cut entry" "${CUT_UUID:-}"
 require "a timestamp on the cut entry" "${CUT_TS:-}"
+CUT_EPOCH=$(iso_epoch "$CUT_TS")
 
 head -n $((CUT_LINE - 1)) "$WORK/main.jsonl" > "$OUT/transcript/$SID.jsonl"
 
@@ -125,13 +144,13 @@ if [ -d "$WORK/sidecar/subagents" ]; then
   done < <(find "$WORK/sidecar/subagents" -type f -name 'agent-*.jsonl' -print0)
   # Everything else beside them (meta files, workflow journals): keep what predates the cut.
   (cd "$WORK/sidecar/subagents" \
-    && find . -type f ! -name 'agent-*.jsonl' ! -newermt "$CUT_TS" -exec cp -p --parents {} "$OUT/transcript/subagents" \;) \
+    && copy_tree_before "$CUT_EPOCH" "$OUT/transcript/subagents" ! -name 'agent-*.jsonl') \
     || warn "could not copy subagent metadata"
 fi
 # Tool results: keep only files last modified before the cut.
 if [ -d "$WORK/sidecar/tool-results" ]; then
   (cd "$WORK/sidecar/tool-results" \
-    && find . -type f ! -newermt "$CUT_TS" -exec cp -p --parents {} "$OUT/transcript/tool-results" \;) \
+    && copy_tree_before "$CUT_EPOCH" "$OUT/transcript/tool-results") \
     || warn "could not copy tool-results"
 fi
 
@@ -174,17 +193,17 @@ sort -u -o "$TOPLEVELS" "$TOPLEVELS"
 # sed rather than head: head closing early would SIGPIPE jq, which pipefail turns into a failure.
 SESSION_START=$(jq -r 'select(.timestamp) | .timestamp' "$OUT/transcript/$SID.jsonl" | sed -n '1p')
 require "a timestamp on the first entry" "$SESSION_START"
-SESSION_START_EPOCH=$(date -d "$SESSION_START" +%s)
+SESSION_START_EPOCH=$(iso_epoch "$SESSION_START")
 
 REPOS_JSON="$WORK/repos.json"
 echo '[]' > "$REPOS_JSON"
-declare -A USED_NAMES=()
+USED_NAMES=$'\n'  # newline-delimited set; bash 3.2 has no associative arrays
 while IFS= read -r top; do
   [ -n "$top" ] || continue
   name=$(basename "$top")
   n=1; base="$name"
-  while [ -n "${USED_NAMES[$name]:-}" ]; do n=$((n + 1)); name="$base-$n"; done
-  USED_NAMES[$name]=1
+  while [[ "$USED_NAMES" == *$'\n'"$name"$'\n'* ]]; do n=$((n + 1)); name="$base-$n"; done
+  USED_NAMES+="$name"$'\n'
   dest="$OUT/repos/$name"
   mkdir -p "$dest"
 
