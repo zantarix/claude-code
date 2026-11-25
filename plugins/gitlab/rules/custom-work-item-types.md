@@ -1,5 +1,5 @@
 # Custom GitLab work item types
 
-The `mcp__gitlab__manage_work_item` tool only accepts built-in types via its enum (`ISSUE`, `TASK`, `EPIC`, …). Custom types — `Bug`, `Incident`, `Ticket`, `Tracker` — cannot be created or converted through the MCP and require `glab api graphql`. When creating a work item of a custom type, or changing an existing item's type, invoke the `gitlab:custom-work-item-types` skill via the Skill tool (it carries the known type GIDs and the `workItemCreate` / `workItemConvert` incantations). Don't reach for the MCP enum for these types; it will reject them.
+The `mcp__gitlab__manage_work_item` tool accepts only built-in types in its enum (`ISSUE`, `TASK`, `EPIC`, …). It cannot create or convert the custom types `Bug`, `Incident`, `Ticket`, and `Tracker`. Those types need `glab api graphql`.
 
-See also: `prefer-gitlab-mcp`, `child-task-work-items`.
+Use the `gitlab:custom-work-item-types` skill to create a work item of a custom type or to change the type of a work item. Invoke it with the Skill tool. The skill carries the known type GIDs and the `workItemCreate` and `workItemConvert` mutations. Do not use the MCP enum for these types. It rejects them.

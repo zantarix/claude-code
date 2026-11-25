@@ -2,7 +2,7 @@
 name: create-merge-request
 description: |-
   Create a GitLab merge request for the current branch, describing the changes made.
-  Adds a `Closes #N` line when the work implements a ticket.
+  Adds a `Closes #N` line when the work implements a work item.
   If /zantarix:review was run in this session and the session folder is known, posts the review to the MR as a batched draft-note review via the `gitlab:post-mr-review` skill.
   Use proactively whenever the user asks to create an MR or merge request.
 ---
@@ -47,7 +47,7 @@ Use this to draft the MR title and body:
 - **Title**: Use the single commit's subject if there is only one; otherwise write a short summary that captures the overall theme.
 - **Summary**: 2–4 bullet points describing what changed and why.
 - **Test plan**: A brief markdown checklist of what was tested or verified (e.g. ran verify, reviewed output).
-- **Closes**: If this MR implements a specific work item, include a `Closes #N` line in the body so GitLab auto-closes the work item on merge. Infer the work item number from the plan or context — the user's request, the branch name, or earlier conversation. Omit if no ticket is clearly associated.
+- **Closes**: If this MR implements a specific work item, include a `Closes #N` line in the body so GitLab auto-closes the work item on merge. Infer the work item number from the plan or context — the user's request, the branch name, or earlier conversation. Omit if no work item is clearly associated.
 
 ## Step 4: Check for a session review
 
@@ -72,7 +72,7 @@ glab mr create \
 
 - [ ] <item>
 
-Closes #<number>  ← replace with actual work item number; omit this line entirely if no ticket is associated
+Closes #<number>  ← replace with actual work item number; omit this line entirely if no work item is associated
 
 ---
 :robot: Submitted by Claude Code on behalf of this user.

@@ -1,13 +1,13 @@
-## Project rules versus organisation rules
+# Project rules versus organisation rules
 
-Project rules are the files in `.claude/rules/`. Organisation rules are the ones loaded from a plugin's own `rules/` directory (their paths sit under the plugin's install directory). Organisation rules should be considered immutable.
+Project rules are the files in `.claude/rules/`. Organisation rules are the files in a plugin's own `rules/` directory. Their paths are under the plugin's install directory. Organisation rules are immutable. Do not edit them.
 
-Project rules are allowed to override or extend organisation rules, however any contradictions should be highlighted to the user.
+A project rule can override or extend an organisation rule. Tell the user about any contradiction.
 
 ## Rule length
 
-Rules are sets of short, imperative instructions. Express everything as a clear directive: fold any rationale that shapes how or when the rule applies into the instruction itself, and drop pure motivation. Rule files must not exceed 50 lines. If a rule grows beyond this, split it into multiple focused rules, each covering a distinct concern.
+Write rules as short, imperative instructions. State every instruction as a clear directive. Put any rationale that changes how or when the rule applies into the instruction itself. Remove pure motivation. A rule file must not be longer than 50 lines. If a rule grows past 50 lines, split it into several focused rules. Each rule covers one concern.
 
 ## Rule scope
 
-Rules must be scoped to specific files or directories where possible using the `paths` frontmatter field (accepts glob patterns). Only rules that genuinely apply everywhere — style guides, logging conventions, security requirements — should be left unscoped (repo-wide).
+Scope each rule to specific files or directories with the `paths` frontmatter field when possible. The field accepts glob patterns. Leave a rule unscoped (repo-wide) only when it applies everywhere. Examples are style guides, logging conventions, and security requirements.

@@ -1,5 +1,5 @@
 # GitLab CI
 
-GitLab CI does not offer a native toggle to enforce SHA pinning, so treat it as a project convention. Any `include:` of an external pipeline (`project`, `remote`, `component`, `template`) or `component` reference must be pinned to a commit SHA. Where the upstream publishes immutable `vX.Y.Z` tags, record that tag alongside the SHA in a comment so the intended version stays legible.
+GitLab CI has no native toggle to enforce SHA pinning, so treat it as a project convention. Pin every external pipeline `include:` to a commit SHA. This covers `project`, `remote`, `component`, and `template` includes, and any `component` reference. When the upstream publishes immutable `vX.Y.Z` tags, record that tag in a comment next to the SHA. The comment keeps the intended version clear.
 
-Docker images used in `image:` and `services:` (including `default:` and any `image:` set in `services` entries) must be pinned to an immutable `sha256:` digest, e.g. `image: alpine@sha256:...`. Keep the human-readable tag in a comment so the intended version stays legible. Never rely on `latest` or any other moving tag.
+Pin every Docker image in `image:` and `services:` to an immutable `sha256:` digest, for example `image: alpine@sha256:...`. This includes `default:` and any `image:` set in `services` entries. Keep the human-readable tag in a comment so the intended version stays clear. Never use `latest` or any other moving tag.

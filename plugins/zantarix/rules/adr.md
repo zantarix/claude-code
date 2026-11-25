@@ -1,46 +1,39 @@
 # Architecture Decision Register
 
-Big decisions are documented in ADR format. To see what ADRs exist, consult the library's canonical index: `docs/adr/README.md` for a legacy library, the bundle-root `index.md` for an OKF bundle (marked by `okf_version` frontmatter), or `docs/architecture/index.md` under the architecture-documentation regime (marked by a bundle-root `constraints.md` of type `Constraint Ledger`).
+Document architectural decisions in ADR format. To see which ADRs exist, read the library's canonical index. Use the file for your library type:
 
-Any change under `docs/adr/` or `docs/architecture/` — ADRs, overviews, specifications, the constraint ledger — must be delegated to the `@zantarix:architecture-curator` agent.
+- `docs/adr/README.md` for a legacy library.
+- The bundle-root `index.md` for an OKF bundle, marked by `okf_version` frontmatter.
+- `docs/architecture/index.md` under the architecture-documentation regime, marked by a bundle-root `constraints.md` of type `Constraint Ledger`.
 
-When reading an ADR file, always read the whole file. Errata appear at the end of the file which may change the context of the content.
+Delegate any change under `docs/adr/` or `docs/architecture/` to the `@zantarix:architecture-curator` agent. This covers ADRs, overviews, specifications, and the constraint ledger.
+
+Always read an ADR file in full. Errata appear at the end of the file and can change the meaning of the content.
 
 ## ADR statuses
 
-- **Proposed** ADRs are still under discussion. Implementation may proceed while an ADR is Proposed.
-- **Accepted** ADRs have been ratified by a human — a commitment to the direction, independent of implementation state.
-- **Deprecated** ADRs are no longer relevant, but were not specifically replaced with new decisions.
-- **Superceded** ADRs are no longer relevant, but have been replaced with a new decision.
+- **Proposed** ADRs are under discussion. Implementation can proceed while an ADR is Proposed.
+- **Accepted** ADRs record a human's ratification. They commit to the direction, independent of implementation state.
+- **Deprecated** ADRs are no longer relevant. No new decision replaced them.
+- **Superceded** ADRs are no longer relevant. A new decision replaced them.
 
 ## Write an ADR before structural changes
 
-When proposing structural changes (new modules, new patterns, cross-cutting infrastructure), write an ADR first before creating an implementation plan, via the `architecture-curator` agent. In a regime bundle, apply the `zantarix:materiality-gate` skill first: work already covered by a constraint-ledger entry is a specification update (still delegated to the curator), not an ADR.
+When you propose structural changes (new modules, new patterns, cross-cutting infrastructure), write an ADR first through the `architecture-curator` agent. In a regime bundle, apply the `zantarix:materiality-gate` skill first. A constraint-ledger entry can already cover the work. In that case the work is a specification update, not an ADR. The curator still performs the update.
 
 ## Verify existing implementation before scoping ADR work
 
-An ADR that consolidates or formalises existing behaviour usually needs no code changes. Before planning implementation work for such an ADR, check the code for each behaviour it codifies — anything already present needs documentation only — and state the outcome explicitly: "Verified — already implemented; no code changes needed."
+An ADR that consolidates or formalises existing behaviour usually needs no code changes. Before you plan implementation work for such an ADR, check the code for each behaviour that the ADR codifies. Behaviour that already exists needs documentation only. State the outcome explicitly: "Verified — already implemented; no code changes needed."
 
 ## Accepting ADRs
 
-Acceptance is a **human-only gate**: the user runs `/accept-adr` themselves, in a curator session, which the skill enforces. Never invoke it, suggest invoking it as an automation, or include it as a step in an implementation plan or commit workflow.
+Acceptance is a **human-only gate**. The user runs `/accept-adr` in a curator session, and the skill enforces this. Never include it as a step in an implementation plan or commit workflow.
 
-Once an ADR has been marked accepted and committed to git, it is immutable. The only exceptions are status updates and the addition of an Errata section at the end with notes about smaller changes affecting the ADR, each linking forward to whatever now carries the correct position — the ADR that made the change, or where no decision drove it, the living document or ticket that does.
+After an ADR is marked accepted and committed to git, it is immutable. There are two exceptions:
+
+- Status updates.
+- An Errata section at the end of the file, with notes about smaller changes that affect the ADR. Each note links forward to whatever now carries the correct position. That is the ADR that made the change. If no decision drove the change, it is the living document or work item that carries the position.
 
 ## Related Projects
 
-When writing ADRs that reference cursus or other related Zantarix projects, check the ADRs of those related projects for relevant context and prior decisions. Related Zantarix project repositories can be found as siblings of the current project folder (e.g., `../cursus`). The Related Projects section of the library's canonical index lists the known related projects.
-
-## Errata
-
-Errata are the sole responsibility of the `@zantarix:architecture-curator` agent. No other agent or skill should add or suggest errata.
-
-Reviewer agents (`*-reviewer`) must not suggest adding errata to accepted ADRs. If an ADR's *decision* is contradicted, flag it as an architectural concern that may need a new ADR; if *current-truth material* baked into an ADR (call signatures, enumerations, formats, layouts) has drifted, flag it as an extraction candidate for the curator's errata-driven extraction instead — never as a new ADR. Reviewers may, however, flag implementation discrepancies against a `Proposed` ADR — those are inlined into the ADR before acceptance.
-
-## When to skip an ADR
-
-Do not assume a trait-signature change automatically requires an ADR. If the fix is a straightforward bug repair — no new architectural surface, no alternative designs with meaningfully different trade-offs, just restoring intended behaviour — skip the ADR and go straight to an implementation plan. Before invoking `/zantarix:plan-adr`, ask: does this decision introduce a new pattern, reject a plausible alternative, or affect contracts beyond the immediate fix? If not, propose a direct implementation plan instead.
-
-## ADR-only commits and changesets
-
-When a commit only modifies files under the architecture library (errata sweeps, ADR body edits, status changes, specification or overview updates), no changeset is required — this documentation is internal and never ships.
+When you write ADRs that reference other related projects, check the ADRs of those projects for relevant context and prior decisions. The Related Projects section of the library's canonical index lists the known related projects.

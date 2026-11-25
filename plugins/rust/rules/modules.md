@@ -5,6 +5,6 @@ paths:
 
 # Rust modules guidelines
 
-* All modules should be less than 1000 lines. If a `module.rs` gets longer than this it should be split into a `module/mod.rs` with various topic specific modules as siblings.
-  * When splitting modules, the first step is to split any `tests` submodule for unit tests into their own file.
-  * For particularly large test suites, the `tests` submodule may itself need to be split into topic modules.
+* Keep every module under 1000 lines. If a `module.rs` grows past this limit, split it into a `module/mod.rs` with topic-specific modules as siblings.
+  * When you split a module, first move any `tests` submodule for unit tests into its own file.
+  * For a particularly large test suite, split the `tests` submodule into topic modules.

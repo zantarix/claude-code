@@ -6,10 +6,6 @@ paths:
 
 # Unexpected coverage fluctuations
 
-When coverage numbers move in an unexplainable direction — gate drops on a
-well-tested branch, line counts that exceed physical file size, or covered counts
-that don't match what the code suggests — run `cargo clean` and a fresh coverage
-pass as the first debugging step before investigating the source.
+Coverage numbers can move in a direction that you cannot explain. Examples: the gate drops on a well-tested branch, line counts exceed the physical file size, or covered counts do not match what the code suggests. In that case, run `cargo clean` and a fresh coverage pass as your first debugging step. Do this before you investigate the source.
 
-`cargo llvm-cov clean --workspace` is not sufficient — it clears coverage artifacts
-but does not rebuild stale object code. A full `cargo clean` is required.
+`cargo llvm-cov clean --workspace` is not sufficient. It clears coverage artifacts but does not rebuild stale object code. Run a full `cargo clean`.

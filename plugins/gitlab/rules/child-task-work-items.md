@@ -1,5 +1,5 @@
-When a GitLab work item (see `terminology`) lists pre-work that must happen before the main implementation — write an ADR, decide between options, spike research, dependency upgrades — create that pre-work as child **Task** work items parented to the ticket, not prose in the description. (Tickets *blocking* this one are a different relationship — use `work-item-links`.)
+A GitLab work item can list pre-work that must happen before the main implementation. Create that pre-work as child **Task** work items, parented to the work item. Do not write it as prose in the description. Examples of pre-work are writing an ADR, deciding between options, spike research, and dependency upgrades.
 
-Invoke the `gitlab:create-child-task` skill via the Skill tool (it handles the MCP create, the GraphQL fallback, and the Task-type/parent resolution). Task titles should name a deliverable ("Draft ADR for X"), not pose a question.
+A work item that *blocks* this one is a different relationship. For that, use `work-item-links`.
 
-See also: `work-item-links`, `custom-work-item-types`.
+Invoke the `gitlab:create-child-task` skill with the Skill tool. The skill handles the MCP create, the GraphQL fallback, and the resolution of the Task type and the parent. Name a deliverable in each Task title ("Draft ADR for X"). Do not pose a question.

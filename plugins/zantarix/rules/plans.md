@@ -1,15 +1,15 @@
 # Implementation plans
 
-* The final step of an implementation plan should be verification of the changes using the `/verify-code` skill.
-* After verification, a plan should explicitly specify to use the `/zantarix:review` skill in order to do a self-review before returning control to the user.
-* When executing an implementation plan, you should never automatically commit the results unless the user explicitly asks for it, for instance in a multi-phase implementation plan.
+* The final step of every implementation plan is verification of the changes with the `/verify-code` skill.
+* After verification, the plan must include a self-review with the `/zantarix:review` skill. Do this before you return control to the user.
+* Never commit the results of an implementation plan automatically. Commit only when the user asks, for example in a multi-phase implementation plan.
 
 ## Surfacing alternatives
 
-When weighing implementation options, if a standard or idiomatic option exists in the dependency tree or platform conventions, raise it as an explicit question to the user rather than silently dismissing it in the plan's "alternatives considered" section. Verify claimed objections against actual upstream docs/source before treating them as load-bearing.
+When you weigh implementation options and a standard or idiomatic option exists in the dependency tree or platform conventions, ask the user about it explicitly. Do not dismiss it silently in the plan's "alternatives considered" section. Check each claimed objection against the upstream documentation or source. Treat an objection as a deciding reason only after that check.
 
 ## Scope discipline
 
-When you cut or defer one deliverable for a reason — "no consumer in v1", YAGNI, too speculative — apply that same test to every sibling item in the same change before finalizing scope. After a scope cut, restate its criterion and sweep the remaining in-scope items against it; fold all items failing the same criterion into the one deferral.
+Sometimes you cut or defer one deliverable for a reason, such as "no consumer in v1", YAGNI, or too speculative. Before you finalize scope, apply the same test to every sibling item in the same change. After a scope cut, restate its criterion. Check the remaining in-scope items against it. Put all items that fail the criterion into the one deferral.
 
-When a subsystem was intentionally designed as a provider-neutral abstraction but has only one concrete implementation today, frame new work — tool surfaces, trait extensions, ADR narrative, security-bundle text — against the abstraction, not the sole current backend. Name the concrete backend only as today's implementation detail.
+A subsystem can be designed on purpose as a provider-neutral abstraction but have only one concrete implementation today. In that case, write new work against the abstraction, not against the single current backend. This applies to tool surfaces, trait extensions, ADR narrative, and security-bundle text. Name the concrete backend only as today's implementation detail.

@@ -6,9 +6,9 @@ paths:
 
 # Interfaces
 
-Interfaces (`.resi` files) define just the public interface of a module. This shouldn't include internal details like whether a function is externally defined or not, it should simply declare the type of the things which other modules can interact with.
+An interface (`.resi` file) defines only the public interface of a module. It must not include internal details, such as whether a function is defined externally. It declares only the type of each item that other modules can use.
 
-For example, given the following `Timers.res`:
+For example, take this `Timers.res`:
 
 ```rescript
 type intervalId
@@ -17,7 +17,7 @@ type intervalId
 @val external clearInterval: intervalId => unit = "clearInterval"
 ```
 
-The appropriate `Timers.resi` would be:
+The appropriate `Timers.resi` is:
 
 ```rescript
 type intervalId

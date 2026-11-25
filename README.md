@@ -59,7 +59,8 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Skill | `commit` | Verify and commit staged/unstaged changes with a well-crafted Conventional Commit message |
 | Skill | `deep-dive` | Interview the user one question at a time to reach a shared understanding of an ambiguous topic, decision, or finding; used by `plan-adr` and `review` |
 | Skill | `domain-modelling` | Build and sharpen a project's domain model — pin down terminology and ubiquitous language as the design evolves |
-| Skill | `implement-ticket` | Work a ticket reference to completion — fetch the issue, clarify intent, then plan or implement; plan includes the ticket number so PR/MR creation can emit `Closes #N` |
+| Skill | `implement-work-item` | Take a work item reference to completion — fetch the work item, clarify intent, then plan or implement; plan includes the work item number so PR/MR creation can emit `Closes #N` |
+| Skill | `implement-ticket` | Deprecated alias for `implement-work-item`; hidden from the model and kept so existing `/zantarix:implement-ticket` calls work |
 | Skill | `init` | Audit the repository and write or update `CLAUDE.md` so future runs start with project context |
 | Skill | `materiality-gate` | Shared materiality test for architecture-regime bundles — decides whether a change newly constrains the project (ADR) or proceeds as specification work; preloaded into the curator and reviewer |
 | Skill | `memory-reconciliation` | Triage accumulated project memories into discard / keep / promote-to-project-rule / promote-to-org-rule |
@@ -76,7 +77,9 @@ General-purpose skills, agents, and rules for all Zantarix projects.
 | Agent | `architecture-curator` | Sole writer of `docs/adr/` and `docs/architecture/` — ADRs plus, under the architecture-documentation regime, overviews, specifications, and the constraint ledger |
 | Agent | `architecture-reviewer` | Forward-facing review of architectural trajectory and the architecture-regime materiality gate; reads all project specifics from the bundle |
 | Agent | `documentation-reviewer` | Review code changes and identify project documentation that needs updating |
-| Rule | `adr` | Instructs Claude to delegate architecture-library changes to the `architecture-curator` agent; ADR statuses, human-gated acceptance, errata, when to skip |
+| Rule | `adr` | Instructs Claude to delegate architecture-library changes to the `architecture-curator` agent; ADR statuses and human-gated acceptance |
+| Rule | `adr-errata` | Errata ownership, and how reviewers flag drifted ADRs without suggesting errata |
+| Rule | `adr-exemptions` | When to skip an ADR, and why ADR-only commits need no changeset |
 | Rule | `architecture-review` | Mandates a pre-acceptance `architecture-reviewer` review of every ADR (arms the curator's rule-mandated review step) |
 | Rule | `agent-role` | Defines Claude's role as an adversarial pair-programming partner |
 | Rule | `changesets` | Changeset policy: always add a changeset for any releasable change |
@@ -101,7 +104,7 @@ Skills, agents, and rules for GitHub projects.
 
 | Type | Name | Description |
 | ------ | ------ | ------------- |
-| Skill | `create-pull-request` | Create a GitHub PR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review.md file verbatim as a comment if the session folder is known |
+| Skill | `create-pull-request` | Create a GitHub PR for the current branch; adds `Closes #N` when the work implements a work item; posts the review.md file verbatim as a comment if the session folder is known |
 | Skill | `pr-review-comments` | Fetch open PR review thread comments with resolution status for the current branch |
 | Rule | `github-actions` | Requires pinning GitHub Actions to commit SHAs |
 | Rule | `pr` | Always invoke the `github:create-pull-request` skill rather than calling `gh pr create` directly |
@@ -113,15 +116,15 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 
 | Type | Name | Description |
 | ------ | ------ | ------------- |
-| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a ticket; posts the review as a batched draft-note review via `post-mr-review` if the session folder is known |
+| Skill | `create-merge-request` | Create a GitLab MR for the current branch; adds `Closes #N` when the work implements a work item; posts the review as a batched draft-note review via `post-mr-review` if the session folder is known |
 | Skill | `post-mr-review` | Reconcile a prior code review against the current branch state and publish it to the GitLab MR as a single batched review: inline diff comments for in-diff findings, summary comment for the rest |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
-| Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a ticket |
+| Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a work item |
 | Skill | `custom-work-item-types` | Create or convert work items to custom types (Bug/Incident/Ticket/Tracker) via `glab api graphql`; carries this org's type GIDs |
 | Skill | `link-work-items` | Link two work items (related / blocks / blocked-by) via the relationship API |
 | Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`) |
-| Rule | `child-task-work-items` | Track ticket pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
-| Rule | `commit-closes-ticket` | Add a `Closes #N` commit footer when a commit completes a ticket; a `(#N)` subject reference alone does not close it |
+| Rule | `child-task-work-items` | Track work item pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
+| Rule | `commit-closes-work-item` | Add a `Closes #N` commit footer when a commit completes a work item; a `(#N)` subject reference alone does not close it |
 | Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
 | Rule | `glab-api-gotchas` | `glab api`/MCP traps: commenting on non-Issue work items needs a `WorkItem` GID; `@file` bodies need `--field`, not `-f` |
@@ -129,7 +132,7 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Rule | `prefer-gitlab-mcp` | GitLab tool order: prefer `mcp__gitlab__*` tools, fall back to `glab` CLI, never raw `curl` |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
 | Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`) |
-| Rule | `terminology` | "Ticket" is any work item (Issue/Task/custom); default to work-item APIs over legacy `/issues` endpoints |
+| Rule | `terminology` | "Work item" is the umbrella term (Issue/Task/custom types); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
 | Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |
 

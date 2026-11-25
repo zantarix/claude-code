@@ -6,6 +6,12 @@ paths:
 
 # Pre-acceptance architecture review
 
-Every ADR must receive a review by the `@zantarix:architecture-reviewer` agent before it is accepted. This rule arms the architecture-curator's rule-mandated domain review step: after writing or finalising a Proposed ADR, the curator delegates the written file to `@zantarix:architecture-reviewer` via the Agent tool and folds substantive findings into the document in its own words before the human runs `/accept-adr`.
+The `@zantarix:architecture-reviewer` agent must review every ADR before the user accepts it. This rule activates the architecture-curator's rule-mandated domain review step.
 
-Specification and overview edits need no dedicated review gate — they are covered by the ordinary `/zantarix:review` fan-out on the branch that carries them.
+After the curator writes or finalises a Proposed ADR, the curator must do these steps in order:
+
+1. Delegate the written file to `@zantarix:architecture-reviewer` with the Agent tool.
+2. Add the substantive findings to the document in its own words.
+3. Tell the human that the ADR is ready. The human then runs `/accept-adr`.
+
+Specification and overview edits need no dedicated review gate. The ordinary `/zantarix:review` fan-out on the branch that carries them covers these edits.

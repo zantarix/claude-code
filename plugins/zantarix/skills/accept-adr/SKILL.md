@@ -72,10 +72,10 @@ Then carry out the following steps in order, for the ADR named in `$ARGUMENTS`.
      errata are usually the ones the new ADR never name-drops.
    - Grep other ADRs' **errata entries**, not only their bodies.
    - Where a list of likely-affected ADRs was pre-computed — carried in the ADR
-     body, in the ticket, or in your memory — treat it as wrong in both
+     body, in the work item, or in your memory — treat it as wrong in both
      directions, and let the files decide.
 
-3. **Write the errata**, following the rules in `plugins/zantarix/rules/adr.md` and your
+3. **Write the errata**, following the rules in `plugins/zantarix/rules/adr.md` and `plugins/zantarix/rules/adr-errata.md`, and your
    own Errata section in full — including its cluster-sweep and
    pre-landed-erratum rules, which govern here exactly as they do outside
    ratification.

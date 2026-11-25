@@ -8,7 +8,7 @@ paths:
 
 For an optional `@react.component` prop with no default value, the annotation differs by file:
 
-- **`.resi`**: `~prop: T=?` — `=?` already implies `option<T>`; write the base type. (`option<T>=?` here causes a props-type mismatch.)
-- **`.res`**: `~prop: option<T>=?` — annotate explicitly; with no default the compiler cannot infer the type, and `T=?` gives a type error.
+- **`.resi`**: `~prop: T=?`. The `=?` already implies `option<T>`, so write the base type. Writing `option<T>=?` here causes a props-type mismatch.
+- **`.res`**: `~prop: option<T>=?`. Annotate it explicitly. With no default, the compiler cannot infer the type, and `T=?` gives a type error.
 
-Contrast `~exact: bool=false`, where the default makes `bool` unambiguous.
+Contrast `~exact: bool=false`. The default makes `bool` unambiguous.

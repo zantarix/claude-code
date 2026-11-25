@@ -1,13 +1,13 @@
 ---
 name: create-child-task
 description: |-
-  Create preparatory work as child Task work items under a GitLab ticket — e.g.
+  Create preparatory work as child Task work items under a GitLab work item — e.g.
   "draft an ADR", "decide between options", spike research, dependency upgrades.
-  Use when a ticket's pre-work should be tracked as sub-tasks rather than buried
+  Use when a work item's pre-work should be tracked as sub-tasks rather than buried
   in the description.
 ---
 
-Create child `Task` work items parented to a GitLab ticket. Task titles should name a deliverable ("Draft ADR for X", "Decide between A and B"), not pose a question.
+Create child `Task` work items parented to a GitLab work item. Task titles should name a deliverable ("Draft ADR for X", "Decide between A and B"), not pose a question.
 
 ## Preferred: GitLab MCP
 

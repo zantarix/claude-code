@@ -2,7 +2,7 @@
 name: set-work-item-status
 description: |-
   Set the native status field of a GitLab work item — Triage, To do, In progress,
-  Done, Duplicate, or Won't do. Use when moving a ticket's stage of work, e.g.
+  Done, Duplicate, or Won't do. Use when moving a work item's stage of work, e.g.
   marking it In progress before starting or Done when finished.
 ---
 

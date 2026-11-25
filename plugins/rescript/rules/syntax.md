@@ -6,4 +6,4 @@ paths:
 
 # ReScript syntax rules
 
-* Rescript uses normal `//` and `/* */` comments, even inside JSX. JSX-style comments are compilation errors.
+* ReScript uses normal `//` and `/* */` comments, even inside JSX. JSX-style comments cause compilation errors.

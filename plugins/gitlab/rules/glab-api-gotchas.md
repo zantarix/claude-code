@@ -2,14 +2,12 @@
 
 ## Commenting on a non-Issue work item
 
-`mcp__gitlab__manage_mr_discussion` (action `comment`, `noteable_type: "issue"`) only
-resolves classic Issue-type work items via `noteable_id`. Passing the id (or
-`gid://gitlab/Issue/<id>`) of a **Task**, Epic, or other non-Issue work item 404s
-("Resource not found") even with correct access — that item isn't backed by the legacy
-Issue model the tool queries.
+`mcp__gitlab__manage_mr_discussion` (action `comment`, `noteable_type: "issue"`) resolves only classic Issue-type work items through `noteable_id`. If you pass the id (or `gid://gitlab/Issue/<id>`) of a **Task**, Epic, or other non-Issue work item, the call returns a 404 ("Resource not found"). This happens even with correct access. The legacy Issue model, which the tool queries, does not back that work item.
 
-To comment on a non-Issue work item, get its numeric id via `browse_work_items` (action
-`get`), then post with `glab api graphql` using a `WorkItem` GID:
+To comment on a non-Issue work item, do these steps:
+
+1. Get its numeric id with `browse_work_items` (action `get`).
+2. Post the comment with `glab api graphql`, using a `WorkItem` GID:
 
 ```sh
 glab api graphql --field query='
@@ -20,7 +18,4 @@ mutation($noteableId: NoteableID!, $body: String!) {
 
 ## `glab api` needs `--field` for an `@file` body
 
-`glab api -f body=@path` silently posts the literal string `@path` — `-f` is shorthand for
-`--raw-field`, which does not dereference `@file`. Use the long form `--field body=@path`.
-After any `glab api` POST that embeds file content, inspect the response body to confirm it
-wasn't posted as a literal filename string.
+`glab api -f body=@path` silently posts the literal string `@path`. The `-f` flag is shorthand for `--raw-field`, which does not read `@file`. Use the long form `--field body=@path`. After any `glab api` POST that embeds file content, inspect the response body. Confirm that it does not contain a literal filename string.

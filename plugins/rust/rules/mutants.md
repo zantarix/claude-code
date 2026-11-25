@@ -6,6 +6,6 @@ paths:
 
 # Mutation testing
 
-When working with mutation testing (cargo-mutants), do not add `exclude_re` or `exclude_globs` entries to `.cargo/mutants.toml` to suppress missed mutations. Instead, add tests or simplify code to make mutations detectable.
+When you work with mutation testing (cargo-mutants), do not add `exclude_re` or `exclude_globs` entries to `.cargo/mutants.toml` to suppress missed mutations. Instead, add tests or simplify the code so that the mutations are detectable.
 
-Use `#[mutants::skip]` only as a last resort for genuinely untestable code (e.g. `main()`), and confirm with the user first.
+Use `#[mutants::skip]` only as a last resort, for code that is genuinely untestable (for example `main()`). Confirm with the user first.

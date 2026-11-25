@@ -1,8 +1,7 @@
-Update GitLab work item status to reflect the current stage of work.
+Update the status of a GitLab work item to match the current stage of the work.
 
-The project uses these native status values: `Triage` → `To do` → `In progress` → `Done`, plus terminal `Duplicate` and `Won't do` for closing without completion (use these instead of `Done` when appropriate).
+The project uses these native status values in order: `Triage`, `To do`, `In progress`, `Done`. Two terminal values close a work item without completion: `Duplicate` and `Won't do`. Use them instead of `Done` when they fit.
 
-- Before planning or implementing a ticket: set status to `In progress` (unless it's already there or further along).
-- Never move a ticket backwards — if it's at a later stage, leave it.
+Never move a work item backwards. If it is at a later stage, leave it.
 
-Status is a native work item field, not a label, and the GitLab MCP cannot write it. To change it, invoke the `gitlab:set-work-item-status` skill via the Skill tool (it handles the `glab api graphql` lookup and `statusWidget` mutation).
+Status is a native work item field, not a label. The GitLab MCP cannot write it. To change it, invoke the `gitlab:set-work-item-status` skill with the Skill tool. The skill handles the `glab api graphql` lookup and the `statusWidget` mutation.

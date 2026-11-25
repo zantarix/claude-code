@@ -2,7 +2,7 @@
 name: link-work-items
 description: |-
   Create, change, or remove a relationship link between two GitLab work items —
-  related, blocks, or blocked-by. Use whenever the user wants one ticket marked as
+  related, blocks, or blocked-by. Use whenever the user wants one work item marked as
   blocking, blocked by, or related to another (e.g. "block api#16 on api#20",
   "mark these as related") rather than describing the relationship in prose.
 ---

@@ -5,7 +5,7 @@ description: Interview the user one question at a time to reach a shared underst
 
 Conduct a dialog with the user to reach a shared understanding of $ARGUMENTS.
 
-Start by familiarising yourself with any relevant context already available — `CONTEXT.md` / `CONTEXT-MAP.md`, related code, prior ADRs, ticket or finding descriptions — if you haven't already loaded them.
+Start by familiarising yourself with any relevant context already available — `CONTEXT.md` / `CONTEXT-MAP.md`, related code, prior ADRs, work item or finding descriptions — if you haven't already loaded them.
 
 During the dialog:
 

@@ -1,33 +1,33 @@
 # Workflow
 
-## Rule 1 — Think Before Coding
+## 1. Think before coding
 
-State assumptions explicitly. If uncertain, ask rather than guess. Present multiple interpretations when ambiguity exists. Push back when a simpler approach exists. Stop when confused. Name what's unclear.
+State your assumptions explicitly. If you are uncertain, ask. Do not guess. Present multiple interpretations when the request is ambiguous. Push back when a simpler approach exists. Stop when you are confused, and name what is unclear.
 
-## Rule 2 — Read before you write
+## 2. Read before you write
 
-Before adding code, read exports, immediate callers, shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
+Before you add code, read the exports, the immediate callers, and the shared utilities. "Looks orthogonal" is dangerous. If you are unsure why the code has its structure, ask.
 
-## Rule 3 — Surgical Changes
+## 3. Make surgical changes
 
-Touch only what you must. Clean up only your own mess. Don't "improve" adjacent code, comments, or formatting. Don't refactor what isn't broken. Match existing style.
+Touch only what you must. Clean up only your own mess. Do not "improve" adjacent code, comments, or formatting. Do not refactor code that is not broken. Match the existing style.
 
-## Rule 4 — Simplicity First
+## 4. Simplicity first
 
-Minimum code that solves the problem. Nothing speculative. No features beyond what was asked. No abstractions for single-use code. Test: would a senior engineer say this is overcomplicated? If yes, simplify.
+Write the minimum code that solves the problem. Add nothing speculative. Add no feature beyond what was requested. Add no abstraction for single-use code. Apply this test: would a senior engineer call the code overcomplicated? If yes, simplify it.
 
-## Rule 5 — Surface conflicts, don't average them
+## 5. Surface conflicts, do not average them
 
-If two patterns contradict, pick one (more recent / more tested). Explain why. Flag the other for cleanup. Don't blend conflicting patterns.
+If two patterns contradict, pick one. Prefer the more recent or the more tested pattern. Explain why. Flag the other pattern for cleanup. Do not blend conflicting patterns.
 
-## Rule 6 — Checkpoint after every significant step
+## 6. Checkpoint after every significant step
 
-Summarize what was done, what's verified, what's left. Don't continue from a state you can't describe back. If you lose track, stop and restate.
+Summarize what you did, what you verified, and what is left. Do not continue from a state you cannot describe. If you lose track, stop and restate the state.
 
-## Rule 7 — Fail loud
+## 7. Fail loud
 
-"Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
+"Completed" is wrong if you skipped anything silently. "Tests pass" is wrong if any test was skipped. Surface uncertainty. Do not hide it.
 
-## Rule 8 — Incidental gap ≠ deliberate decision
+## 8. An incidental gap is not a deliberate decision
 
-Don't treat the current code's structure as a deliberate decision unless a design document says so. A helper that omits X is usually an incidental gap (X didn't exist when it was written), not a choice to exclude it. When extending a surface, justify any exclusion on principle, not on the current shape of the code.
+Do not treat the current structure of the code as a deliberate decision unless a design document says so. A helper that omits X is usually an incidental gap, not a choice to exclude X. X did not exist when the helper was written. When you extend a surface, justify every exclusion on principle, not on the current shape of the code.

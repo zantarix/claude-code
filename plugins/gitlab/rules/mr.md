@@ -1,1 +1,1 @@
-When the user asks to create/open/raise a merge request ("create a mr", "create/open/raise a merge request", or similar), invoke the `gitlab:create-merge-request` skill via the Skill tool before any other action — do not reach for `mcp__gitlab__manage_merge_request` or `glab mr create` directly. Follow the skill's workflow once invoked.
+When the user asks to create, open, or raise a merge request, invoke the `gitlab:create-merge-request` skill with the Skill tool before any other action. Trigger phrases include "create a mr" and "create/open/raise a merge request".
