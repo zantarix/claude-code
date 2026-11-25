@@ -2,4 +2,4 @@ A GitLab work item can list pre-work that must happen before the main implementa
 
 A work item that *blocks* this one is a different relationship. For that, use `work-item-links`.
 
-Invoke the `gitlab:create-child-task` skill with the Skill tool. The skill handles the MCP create, the GraphQL fallback, and the resolution of the Task type and the parent. Name a deliverable in each Task title ("Draft ADR for X"). Do not pose a question.
+Invoke the `gitlab:create-child-task` skill with the Skill tool. The skill handles the MCP create and the resolution of the parent. Name a deliverable in each Task title ("Draft ADR for X"). Do not pose a question.

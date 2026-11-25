@@ -27,11 +27,23 @@ Fall back to `main` if no upstream is configured.
 
 ## Step 2: Check whether an MR already exists
 
+Get the project path from the remote. Use it as `project_id` in all MCP calls below:
+
 ```bash
-glab mr list --source-branch <branch> -F json | jq 'length'
+git remote get-url origin | sed -E 's#^(https?://[^/]+/|ssh://([^@/]+@)?[^/]+/|[^@/]+@[^:]+:)##; s#\.git$##'
 ```
 
-If the result is greater than 0, report the existing MR URL to the user and stop — do not create a duplicate.
+List the open MRs for the branch:
+
+```
+mcp__gitlab__browse_merge_requests
+  action: list
+  project_id: <project path>
+  source_branch: <branch>
+  state: opened
+```
+
+If the result is not empty, report the existing MR URL to the user and stop. Do not create a duplicate. Do not use `action: get` with `branch_name` for this check. It also returns merged MRs.
 
 ## Step 3: Summarise the changes
 
@@ -59,34 +71,31 @@ If no session folder is known from this conversation, skip the comment step enti
 
 ## Step 5: Create the MR
 
-```bash
-glab mr create \
-  --title "<title>" \
-  --description "$(cat <<'EOF'
-## Summary
+```
+mcp__gitlab__manage_merge_request
+  action: create
+  project_id: <project path>
+  source_branch: <branch>
+  target_branch: <target>
+  remove_source_branch: true
+  title: "<title>"
+  description: |
+    ## Summary
 
-- <bullet>
-- <bullet>
+    - <bullet>
+    - <bullet>
 
-## Test plan
+    ## Test plan
 
-- [ ] <item>
+    - [ ] <item>
 
-Closes #<number>  ← replace with actual work item number; omit this line entirely if no work item is associated
+    Closes #<number>  ← replace with actual work item number; omit this line entirely if no work item is associated
 
----
-:robot: Submitted by Claude Code on behalf of this user.
-EOF
-)" \
-  --target-branch <target> \
-  --remove-source-branch
+    ---
+    :robot: Submitted by Claude Code on behalf of this user.
 ```
 
-After the command succeeds, capture the MR IID from the command output or by querying:
-
-```bash
-glab mr list --source-branch <branch> -F json | jq '.[0].iid'
-```
+Record the `iid` and `web_url` from the response.
 
 ## Step 6: Post the review as a comment (if found)
 

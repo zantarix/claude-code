@@ -40,9 +40,19 @@ applied, so:
 git branch --show-current
 ```
 
+Get the project path from the remote. Use it as `project_id` in all MCP calls below:
+
+```bash
+git remote get-url origin | sed -E 's#^(https?://[^/]+/|ssh://([^@/]+@)?[^/]+/|[^@/]+@[^:]+:)##; s#\.git$##'
+```
+
 Get the MR for this branch and capture `diff_refs` (`base_sha`, `start_sha`, `head_sha`):
 
-- `mcp__gitlab__browse_merge_requests` action `get`, `branch_name: <branch>`.
+1. `mcp__gitlab__browse_merge_requests` action `list`, `source_branch: <branch>`, `state: all`. If there is more
+   than one result, ask the user which MR to use. Otherwise, use the `iid` of the result.
+2. `mcp__gitlab__browse_merge_requests` action `get`, `merge_request_iid: <iid>`. Read `diff_refs` from it.
+
+Do not use `get` with `branch_name`. Its response does not include `diff_refs`.
 
 `head_sha` is the **pushed** commit the MR points at. If you have local commits that are not
 yet pushed, the MR diff is from the pushed `head_sha`, not your working tree. Either push first,
@@ -102,21 +112,28 @@ For each, `mcp__gitlab__manage_draft_notes` action `create` with a `position`:
 ```
 position: {
   base_sha, start_sha, head_sha,   # from Step 1
+  old_path: "<file>",              # always pass both paths
   new_path: "<file>",
   position_type: "text",
-  new_line: <line>,                # the new-file line number
+  new_line: <line>,                # the new-file line number; omit for a deleted line
+  old_line: <line>,                # omit for an added line; see the line-code gotcha below
 }
 ```
 
 **Line-code gotcha (this will bite you):** the kind of line decides which fields are required.
-GitLab computes a `line_code` from them; get it wrong and it rejects with
-`400 ... Note {:line_code=>["must be a valid line code"]}`.
+GitLab computes a `line_code` from them. If you get them wrong, `create` still succeeds, but the response has
+`line_code: null`. `publish_all` then skips that draft silently, and `publish` of that draft returns a `500`.
+After each `create` with a `position`, check that `line_code` in the response is not null. If it is null, `delete`
+the draft, correct the position, and create it again. If you cannot correct the position, put the finding in the
+summary note (Step 5) instead.
 
 - **Added** line (a `+` line in a hunk) → `new_line` only.
-- **Unchanged** line — *whether or not it sits in a hunk* → you MUST pass BOTH `old_path`+`old_line`
-  AND `new_path`+`new_line`. This is the case for most reconciled findings, since they usually
+- **Unchanged** line — *whether or not it sits in a hunk* → you MUST pass BOTH `old_line`
+  AND `new_line`. This is the case for most reconciled findings, since they usually
   point at code the MR didn't itself change.
-- **Deleted** line (a `-` line) → `old_path` + `old_line` only.
+- **Deleted** line (a `-` line) → `old_line` only.
+
+Always pass both `old_path` and `new_path`, for every kind of line.
 
 Computing `old_line` from a current `new_line`: walk the file's `--unified=0` hunk headers
 (Step 2). For every hunk located **entirely above** the target line, accumulate
@@ -152,10 +169,17 @@ End with the attribution sign-off required by the org agent-role rule:
 
 ## Step 6: Publish the review
 
-`mcp__gitlab__manage_draft_notes` action `publish_all` for the MR. Confirm the published note
-count matches what you staged, and report the MR URL.
+`mcp__gitlab__manage_draft_notes` action `publish_all` for the MR.
 
-If publishing fails partway, list remaining drafts with `mcp__gitlab__browse_mr_discussions`
-action `drafts` (inspect one with action `draft`) — draft enumeration lives only here, not on
-`manage_draft_notes`. Then either retry `publish_all` or `manage_draft_notes` action `delete` the
-stragglers — do not leave a half-published review.
+`publish_all` returns `{"published": true}` even when it skips a draft. Do not trust that response. After it,
+list the remaining drafts with `mcp__gitlab__browse_mr_discussions` action `drafts`. The list must be empty.
+Draft enumeration is only on `browse_mr_discussions`, not on `manage_draft_notes`.
+
+If drafts remain, do not leave a half-published review:
+
+1. Inspect each remaining draft (action `draft`). A null `line_code` means a bad position (see Step 4).
+2. `manage_draft_notes` action `delete` the draft.
+3. Correct the position, create the draft again, and publish it with action `publish`.
+4. If you cannot correct the position, move the finding into a general note instead.
+
+Report the MR URL and the count of published notes.

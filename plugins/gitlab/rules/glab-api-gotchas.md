@@ -1,12 +1,12 @@
-# glab api / MCP gotchas
+# GitLab MCP / glab api gotchas
 
-## Commenting on a non-Issue work item
+## Commenting on a work item
 
-`mcp__gitlab__manage_mr_discussion` (action `comment`, `noteable_type: "issue"`) resolves only classic Issue-type work items through `noteable_id`. If you pass the id (or `gid://gitlab/Issue/<id>`) of a **Task**, Epic, or other non-Issue work item, the call returns a 404 ("Resource not found"). This happens even with correct access. The legacy Issue model, which the tool queries, does not back that work item.
+To comment on a project work item of any type, use `mcp__gitlab__manage_mr_discussion` with action `comment` and `noteable_type: "issue"`. Set `noteable_id` to the work item **IID** (the number in `#N`). Do not use the global work item ID from `browse_work_items`. The global ID gives a 404 ("Resource not found").
 
-To comment on a non-Issue work item, do these steps:
+The MCP cannot comment on an Epic or another group-level work item. For those, do these steps:
 
-1. Get its numeric id with `browse_work_items` (action `get`).
+1. Get the numeric ID with `mcp__gitlab__browse_work_items` (action `get`).
 2. Post the comment with `glab api graphql`, using a `WorkItem` GID:
 
 ```sh
@@ -15,6 +15,8 @@ mutation($noteableId: NoteableID!, $body: String!) {
   createNote(input: {noteableId: $noteableId, body: $body}) { note { id url } errors }
 }' --field noteableId="gid://gitlab/WorkItem/<numeric-id>" --field body="$(cat body.txt)"
 ```
+
+To read comments on any work item, use `mcp__gitlab__browse_work_items` with action `list_discussions`.
 
 ## `glab api` needs `--field` for an `@file` body
 

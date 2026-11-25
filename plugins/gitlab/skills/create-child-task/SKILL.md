@@ -7,11 +7,10 @@ description: |-
   in the description.
 ---
 
-Create child `Task` work items parented to a GitLab work item. Task titles should name a deliverable ("Draft ADR for X", "Decide between A and B"), not pose a question.
+Create child `Task` work items under a GitLab work item. Name a deliverable in each Task title ("Draft ADR for X", "Decide between A and B"). Do not pose a question.
 
-## Preferred: GitLab MCP
-
-First look up the parent's numeric ID via `mcp__gitlab__browse_work_items` (action: get), then:
+1. Get the numeric ID of the parent with `mcp__gitlab__browse_work_items` (action `get`, with `namespace` and `iid`).
+2. Create each Task:
 
 ```
 mcp__gitlab__manage_work_item
@@ -23,27 +22,8 @@ mcp__gitlab__manage_work_item
   parentId: "<numeric-id-of-parent>"
 ```
 
-## Fallback: glab api graphql
-
-```sh
-# Resolve Task type GID (verify per-project if uncertain):
-#   glab api graphql -f query='query { project(fullPath: "PROJECT") { workItemTypes { nodes { id name } } } }'
-TASK_TYPE="gid://gitlab/WorkItems::Type/5"
-
-# Resolve parent GID from its iid
-PARENT=$(glab api graphql -f query='query { project(fullPath: "PROJECT") { workItems(iid: "PARENT_IID") { nodes { id } } } }' | jq -r '.data.project.workItems.nodes[0].id')
-
-glab api graphql -f query="mutation { workItemCreate(input: {
-  namespacePath: \"PROJECT_PATH\",
-  workItemTypeId: \"$TASK_TYPE\",
-  title: \"Draft ADR for X\",
-  descriptionWidget: { description: \"Short body.\" },
-  hierarchyWidget: { parentId: \"$PARENT\" }
-}) { errors workItem { iid webUrl } } }"
-```
-
 ## Gotchas
 
 - `Task` is a project-scoped work item type. `Epic` and `Objective` have their own creation flows.
-- In the GraphQL fallback, embedded double quotes in the description break parsing of the `-f query=...` form. Pass input via `-F variables=@vars.json` with a parameterised mutation.
-- Do not mention the parent iid in the description — the `hierarchyWidget` already records the relationship and surfaces it in the UI.
+- `parentId` takes the numeric ID or the `gid://gitlab/WorkItem/<id>` form. It does not take the iid.
+- Do not mention the parent iid in the description. The hierarchy widget records the relationship and shows it in the UI.

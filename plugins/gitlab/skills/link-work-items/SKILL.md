@@ -7,29 +7,24 @@ description: |-
   "mark these as related") rather than describing the relationship in prose.
 ---
 
-Link two GitLab work items via the relationship API. Prose like "blocked by #N" is invisible to GitLab's board and "Linked items" widget — the formal link is the source of truth.
+Link two GitLab work items through the relationship API. Prose such as "blocked by #N" is invisible to the GitLab board and to the "Linked items" widget. The formal link is the source of truth.
 
-`linkType` is uppercase in both APIs: `RELATED | BLOCKS | BLOCKED_BY`. Direction is from the source: `BLOCKED_BY` on source #16 means "#16 is blocked by the target".
+`linkType` is uppercase: `RELATED | BLOCKS | BLOCKED_BY`. The direction is from the source: `BLOCKED_BY` on source #16 means "#16 is blocked by the target".
 
-## Preferred: GitLab MCP
+1. Get the numeric ID of each work item with `mcp__gitlab__browse_work_items` (action `get`, with `namespace` and `iid`).
+2. Create the link:
 
-Use `mcp__gitlab__manage_work_item` with `action: add_link`. `id` and `targetId` both take the numeric work item ID from `mcp__gitlab__browse_work_items` results. Use `action: remove_link` to delete a link.
-
-## Fallback: glab api graphql
-
-```sh
-# 1. Resolve iid → global ID (the linked-items API takes GIDs, not iids)
-SRC=$(glab api graphql -f query='query { project(fullPath: "PROJECT") { workItems(iid: "SRC_IID") { nodes { id } } } }' | jq -r '.data.project.workItems.nodes[0].id')
-TGT=$(glab api graphql -f query='query { project(fullPath: "PROJECT") { workItems(iid: "TGT_IID") { nodes { id } } } }' | jq -r '.data.project.workItems.nodes[0].id')
-
-# 2. Create the link
-glab api graphql -f query="mutation { workItemAddLinkedItems(input: { id: \"$SRC\", workItemsIds: [\"$TGT\"], linkType: BLOCKED_BY }) { errors workItem { iid } } }"
-
-# 3. Remove (e.g. wrong direction):
-glab api graphql -f query="mutation { workItemRemoveLinkedItems(input: { id: \"$SRC\", workItemsIds: [\"$TGT\"] }) { errors workItem { iid } } }"
 ```
+mcp__gitlab__manage_work_item
+  action: add_link
+  id: "<numeric-id-of-source>"
+  targetId: "<numeric-id-of-target>"
+  linkType: BLOCKED_BY
+```
+
+To delete a link, use `action: remove_link` with the same `id` and `targetId`.
 
 ## Gotchas
 
-- `workItemsIds` is plural (max 10 per call) in the GraphQL fallback.
-- Neither the MCP nor the GraphQL API can update an existing link type. To change direction, remove and re-add.
+- `id` and `targetId` take numeric IDs, not iids.
+- The API cannot change the type of an existing link. To change the direction, remove the link and add it again.

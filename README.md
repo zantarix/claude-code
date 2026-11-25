@@ -120,18 +120,18 @@ Skills, agents, and rules for GitLab projects. Uses the [GitLab MCP server](http
 | Skill | `post-mr-review` | Reconcile a prior code review against the current branch state and publish it to the GitLab MR as a single batched review: inline diff comments for in-diff findings, summary comment for the rest |
 | Skill | `mr-review-comments` | Fetch open MR review comments and discussion threads (diff and general) with resolution status for the current branch |
 | Skill | `create-child-task` | Create pre-work as child `Task` work items parented to a work item |
-| Skill | `custom-work-item-types` | Create or convert work items to custom types (Bug/Incident/Ticket/Tracker) via `glab api graphql`; carries this org's type GIDs |
+| Skill | `custom-work-item-types` | Create custom-typed work items (Bug/Ticket/Tracker) or change a work item's type via `glab api graphql`; carries this org's type GIDs |
 | Skill | `link-work-items` | Link two work items (related / blocks / blocked-by) via the relationship API |
-| Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`) |
+| Skill | `set-work-item-status` | Set a work item's native status field (`Triage` → `To do` → `In progress` → `Done`, plus `Blocked`); `Done` via the MCP, other values via `glab` |
 | Rule | `child-task-work-items` | Track work item pre-work as child `Task`s via the `gitlab:create-child-task` skill rather than bullet points in the description |
 | Rule | `commit-closes-work-item` | Add a `Closes #N` commit footer when a commit completes a work item; a `(#N)` subject reference alone does not close it |
-| Rule | `custom-work-item-types` | Custom types (Bug/Incident/Ticket/Tracker) need the `gitlab:custom-work-item-types` skill |
+| Rule | `custom-work-item-types` | Custom types (Bug/Ticket/Tracker) and type changes need the `gitlab:custom-work-item-types` skill |
 | Rule | `gitlab-ci` | Requires pinning GitLab CI includes/components and Docker images to immutable SHAs |
-| Rule | `glab-api-gotchas` | `glab api`/MCP traps: commenting on non-Issue work items needs a `WorkItem` GID; `@file` bodies need `--field`, not `-f` |
+| Rule | `glab-api-gotchas` | MCP/`glab api` traps: comment on a work item by IID, not global ID; Epic comments need GraphQL; `@file` bodies need `--field`, not `-f` |
 | Rule | `mr` | Always invoke the `gitlab:create-merge-request` skill rather than reaching for MCP or `glab` directly |
-| Rule | `prefer-gitlab-mcp` | GitLab tool order: prefer `mcp__gitlab__*` tools, fall back to `glab` CLI, never raw `curl` |
+| Rule | `prefer-gitlab-mcp` | Use `mcp__gitlab__*` tools for all GitLab operations; lists the few that still need `glab`; never raw `curl` |
 | Rule | `ref-notation` | Honour GitLab reference sigils: `#N` = issue, `!N` = MR, `&N` = epic |
-| Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`) |
+| Rule | `status` | Keep work item status current (`Triage` → `To do` → `In progress` → `Done`, with `Blocked` as a side state) |
 | Rule | `terminology` | "Work item" is the umbrella term (Issue/Task/custom types); default to work-item APIs over legacy `/issues` endpoints |
 | Rule | `work-item-links` | Link related work items via the `gitlab:link-work-items` skill rather than naming them in prose |
 | Hook | `register` | Hands the plugin's `rules/` to the `rules` plugin at session start |

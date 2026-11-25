@@ -16,21 +16,25 @@ git branch --show-current
 
 ### 2. Find the MR IID for this branch
 
+Get the project path from the remote. Use it as `project_id` in all MCP calls below:
+
 ```bash
-glab mr list --source-branch <branch> -F json | jq '.[0].iid'
+git remote get-url origin | sed -E 's#^(https?://[^/]+/|ssh://([^@/]+@)?[^/]+/|[^@/]+@[^:]+:)##; s#\.git$##'
 ```
 
-If the array is empty, report that no open MR exists for this branch and stop.
+```
+mcp__gitlab__browse_merge_requests
+  action: list
+  project_id: <project path>
+  source_branch: <branch>
+  state: opened
+```
+
+If the result is empty, report that no open MR exists for this branch and stop. Otherwise, use the `iid` of the first result.
 
 ### 3. Fetch all discussion threads
 
-Use `mcp__gitlab__browse_mr_discussions` (action: list) to retrieve all discussions for the MR.
-
-Fallback — fetch via REST API:
-
-```bash
-glab api "projects/:fullpath/merge_requests/<iid>/discussions" --paginate
-```
+Use `mcp__gitlab__browse_mr_discussions` (action `list`, `per_page: 100`). If a page returns 100 discussions, fetch the next page (`page: 2`, …). Continue until a page returns fewer than 100.
 
 Filter to discussions where at least one note has `system == false`. Discard discussions composed
 entirely of system-generated notes (e.g. "changed this line in version 2").
@@ -38,7 +42,7 @@ entirely of system-generated notes (e.g. "changed this line in version 2").
 For each qualifying discussion, extract the following from the **first note where `system == false`**:
 
 | Field | Source |
-|---|---|
+| --- | --- |
 | Resolution status | `.resolved` on the discussion object |
 | Comment type | diff if `note.position != null`; general otherwise |
 | File path | `note.position.new_path` (diff comments only) |
